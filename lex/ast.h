@@ -32,8 +32,6 @@ enum class NodeType
 	VAR,
 	FUNC,
 
-	ARGU,
-
 	EQ = 100,
 	GT,
 	LT,

@@ -1926,13 +1926,13 @@ yyreduce:
   case 67:
 /* Line 1787 of yacc.c  */
 #line 245 "el.y"
-    { (yyval.fn) = newast(NodeType::ARGU, (yyvsp[(1) - (1)].fn), -1); }
+    { (yyval.fn) = astsV.createI((yyvsp[(1) - (1)].fn)); }
     break;
 
   case 68:
 /* Line 1787 of yacc.c  */
 #line 246 "el.y"
-    { (yyval.fn) = newast(NodeType::ARGU, (yyvsp[(1) - (3)].fn), (yyvsp[(3) - (3)].fn)); }
+    { (yyval.fn) = astsV.putI((yyvsp[(1) - (3)].fn), (yyvsp[(3) - (3)].fn)); }
     break;
 
   case 69:

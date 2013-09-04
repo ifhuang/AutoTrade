@@ -28,10 +28,10 @@ extern void yyerror(char *s, ...);
 %type <fn> CMP NUMBER NAME TEXT ASM
 %type <fn> order_verb asm
 %type <fn> exp literal name //ast
-%type <fn> variable name_call argu_list
+%type <fn> variable name_call
 %type <fn> order_stmt other_sstmt order_action if_stmt once_stmt matched unmatched cstmt variables assignment block//stmt
 %type <fn> stmts stmt_list //stmts
-%type <fn> variable_list //asts
+%type <fn> variable_list argu_list //asts
 
 %nonassoc ASM
 %left OR
@@ -242,8 +242,8 @@ name_call: name { $$ = newast(NodeType::FUNC, $1, -1); }
       |    name '(' argu_list ')' { $$ = newast(NodeType::FUNC, $1, $3); }
 ;
 
-argu_list: exp { $$ = newast(NodeType::ARGU, $1, -1); }
-      |    argu_list ',' exp { $$ = newast(NodeType::ARGU, $1, $3); }
+argu_list: exp { $$ = astsV.createI($1); }
+      |    argu_list ',' exp { $$ = astsV.putI($1, $3); }
 ;
 
 literal: NUMBER { $$ = newdouble($1); }

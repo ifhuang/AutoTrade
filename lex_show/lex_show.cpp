@@ -36,8 +36,6 @@ namespace{
 		ADDNAME(VAR);
 		ADDNAME(FUNC);
 
-		ADDNAME(ARGU);
-
 		ADDNAME(EQ);
 		ADDNAME(GT);
 		ADDNAME(LT);
@@ -93,6 +91,17 @@ namespace{
 		case NodeType::TF:
 			snode(id, node.bv ? "TRUE" : "FALSE");
 			break;
+		case NodeType::FUNC:
+			dfs(id, node.left);
+			if (~node.right)
+			{
+				int argu = snode(id, "ARGU");
+				for (ast_t ast : astsV[node.right])
+				{
+					dfs(argu, ast);
+				}
+			}
+			break;
 		default:
 			dfs(id, node.left);
 			dfs(id, node.right);
@@ -132,7 +141,8 @@ namespace{
 		{
 			int id = fpr_stmt("ONCE");
 			dfs(id, os.con);
-			dfs_stmt(id, os.block);
+			int t = snode(id, "THEN");
+			dfs_stmt(t, os.block);
 			return id;
 		}
 
