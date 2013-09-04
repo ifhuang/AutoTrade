@@ -12,7 +12,7 @@ vector<ast_t> inputVector;
 
 void putInput(asts_t asts)
 {
-	for(ast_t ast : astsV[asts])
+	for (ast_t ast : astsV[asts])
 	{
 		inputVector.push_back(ast);
 	}

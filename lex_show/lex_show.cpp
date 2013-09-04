@@ -64,7 +64,7 @@ namespace{
 		int id = tot++;
 		string t = boost::replace_all_copy(s, "\"", "\\\"");
 		fpr("%d[label=\"%s\"];\n", id, t.c_str());
-		if(~p)
+		if (~p)
 		{
 			fpr("%d -> %d;\n", p, id);
 		}
@@ -73,11 +73,11 @@ namespace{
 
 	void dfs(int p, ast_t i)
 	{
-		if(i == -1)return;
+		if (i == -1)return;
 		ast &node = astV[i];
 		int id = tot++;
 		fpr("%d[label=%s];\n", id, enumName[node.type].c_str());
-		if(~p)
+		if (~p)
 		{
 			fpr("%d -> %d;\n", p, id);
 		}
@@ -196,7 +196,7 @@ namespace{
 	{
 		if (stmt == -1)return;
 		blockp = p;
-		int id = boost::apply_visitor( stmt_visitor(), stmtV[stmt] );
+		int id = boost::apply_visitor(stmt_visitor(), stmtV[stmt]);
 		if (~id)
 		{
 			fpr("%d -> %d\n", p, id);
@@ -218,7 +218,7 @@ namespace{
 	void dfs_stmts(int p, stmts_t stmts)
 	{
 		int cs = new_subgraph();
-		for(stmt_t stmt : stmtsV[stmts])
+		for (stmt_t stmt : stmtsV[stmts])
 		{
 			dfs_stmt(p, stmt);
 		}

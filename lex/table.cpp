@@ -9,7 +9,7 @@ unordered_map<string, TableItem> vartable;
 
 bool newInput(string name, VType vtype)
 {
-	if(vartable.count(name))
+	if (vartable.count(name))
 	{
 		return false;
 	}

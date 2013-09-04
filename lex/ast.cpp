@@ -12,7 +12,7 @@ VV<ast> VVN(astV);
 int find(char* cs)
 {
 	string s(cs);
-	if(strTable.count(s))
+	if (strTable.count(s))
 	{
 		return strTable[s];
 	}

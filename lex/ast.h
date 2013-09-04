@@ -49,14 +49,14 @@ struct ast
 		bool bv;
 		char *sv;
 		int idx;
-		struct 
+		struct
 		{
 			ast_t left;
 			ast_t right;
 		};
 	};
 
-	ast(NodeType type):type(type){}
+	ast(NodeType type) :type(type){}
 };
 
 extern vector<string> strVector;
