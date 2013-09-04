@@ -11,7 +11,7 @@ extern void yyerror(char *s, ...);
   int fn;
 }
 
-%token INPUTS VARIABLES
+%token INPUTS VARIABLES IBP
 %token NUMBER TRUE FALSE TEXT
 %token CLOSE THIS NEXT BAR MARKET STOP LIMIT
 %token VOLUMN NAME 
@@ -21,22 +21,22 @@ extern void yyerror(char *s, ...);
 
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER
 %token PLOT1
-%token IF THEN ELSE AND OR
+%token IF THEN ELSE AND OR ONCE
 %token BBEGIN BEND 
 
 
-%type <fn> CMP NUMBER NAME TEXT
-%type <fn> order_verb
+%type <fn> CMP NUMBER NAME TEXT ASM
+%type <fn> order_verb asm
 %type <fn> exp literal name //ast
 %type <fn> variable name_call argu_list
-%type <fn> order_stmt other_sstmt order_action if_stmt matched unmatched cstmt variables assignment block//stmt
+%type <fn> order_stmt other_sstmt order_action if_stmt once_stmt matched unmatched cstmt variables assignment block//stmt
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list //asts
 
-%nonassoc ASS
+%nonassoc ASM
 %left OR
 %left AND
-%nonassoc ASM CMP
+%left '=' CMP
 %left ADD SUB
 %left MUL DIV
 %left LSB RSB
@@ -60,7 +60,8 @@ stmt_list: if_stmt ';' { $$ = stmtsV.createI($1); }
          | stmt_list cstmt       { $$ = stmtsV.putI($1, $2); }
 ;
 
-other_sstmt: order_stmt
+other_sstmt: once_stmt
+     |       order_stmt
      |       assignment
      |       name_call
 {
@@ -103,6 +104,10 @@ variable: name '(' exp ')'
 {
   $$ = newast(NodeType::VARDEC, $1, $3);
 }
+        | IBP name '(' exp ')' 
+{
+  $$ = newast(NodeType::IBPVARDEC, $2, $4);
+}
 ;
 
 if_stmt:    matched
@@ -138,9 +143,25 @@ unmatched:  IF exp THEN if_stmt
 }
 ;
 
+once_stmt: ONCE block
+{
+  once_stmt o;
+  o.con = -1;
+  o.block = $2;
+  $$ = stmtV.put(o);
+}
+         | ONCE exp block
+{
+  once_stmt o;
+  o.con = $2;
+  o.block = $3;
+  $$ = stmtV.put(o);
+}
+;
+
 order_stmt: order_verb order_action
 {
-  auto oa = boost::get<order_stmt>(stmtV[$$ = $2]);
+  auto &oa = boost::get<order_stmt>(stmtV[$$ = $2]);
   oa.num = -1;
   oa.op = $1;
 }
@@ -182,13 +203,18 @@ order_action: NEXT BAR MARKET
       }
 ;
 
-assignment: name ASM exp %prec ASS
+assignment: name asm exp //%prec ASM
 {
   asm_stmt as;
   as.var = $1;
+  as.type = $2;
   as.exp = $3;
   $$ = stmtV.put(as);
 }
+;
+
+asm: '=' { $$ = 0; }
+   | ASM
 ;
 
 exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
@@ -197,7 +223,7 @@ exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
    | exp SUB exp { $$ = newast(NodeType::SUB, $1, $3); }
    | exp AND exp { $$ = newast(NodeType::AND, $1, $3); }
    | exp OR exp  { $$ = newast(NodeType::OR,  $1, $3); }
-   | exp ASM exp { $$ = newcmp(0,  $1, $3); }
+   | exp '=' exp { $$ = newcmp(0,  $1, $3); }
    | exp CMP exp { $$ = newcmp($2, $1, $3); }
    | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, NULL); }
    | ADD exp %prec UNARY  { $$ = $2; }

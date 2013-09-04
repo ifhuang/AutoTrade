@@ -88,8 +88,7 @@ extern int yydebug;
      ONCE = 297,
      BBEGIN = 298,
      BEND = 299,
-     ASS = 300,
-     UNARY = 301
+     UNARY = 300
    };
 #endif
 
@@ -104,7 +103,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 108 "el.tab.h"
+#line 107 "el.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

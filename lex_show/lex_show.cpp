@@ -149,6 +149,8 @@ namespace{
 		{
 			int id = fpr_stmt("ASM");
 			dfs(id, as.var);
+			static const string an[] = { "=", "+=", "-=", "*=", "/=" };
+			snode(id, an[as.type]);
 			dfs(id, as.exp);
 			return id;
 		}

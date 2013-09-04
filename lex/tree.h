@@ -50,6 +50,7 @@ struct func_stmt
 struct asm_stmt
 {
 	ast_t var;
+	int type;
 	ast_t exp;
 };
 

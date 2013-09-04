@@ -11,36 +11,38 @@ void yyerror(char *s, ...);
 
 %%
 
-if        { return IF; }
-then      { return THEN; }
-else      { return ELSE; }
+if          { return IF; }
+then        { return THEN; }
+else        { return ELSE; }
+once        { return ONCE; }
 inputs |
-input     { return INPUTS; }
+input       { return INPUTS; }
 variables |
 variable |
 vars |
-var       { return VARIABLES; }  
-buy       { return BUY; }
-sell      { return SELL; }
-short     { return SHORT; }
-sellshort { return SELLSHORT; }
-to        { return TO; }
-cover     { return COVER; }
-buytocover { return BUYTOCOVER; }
-next      { return NEXT; }
-bar       { return BAR; }
-market    { return MARKET; }
-stop      { return STOP; }
-limit     { return LIMIT; }
-close     { return CLOSE; }
-and       { return AND; }
-or        { return OR; }
-true      { return TRUE; }
-false     { return FALSE; }
-begin     { return BBEGIN; }
-end       { return BEND; }
+var         { return VARIABLES; }  
+buy         { return BUY; }
+sell        { return SELL; }
+short       { return SHORT; }
+sellshort   { return SELLSHORT; }
+to          { return TO; }
+cover       { return COVER; }
+buytocover  { return BUYTOCOVER; }
+next        { return NEXT; }
+bar         { return BAR; }
+market      { return MARKET; }
+stop        { return STOP; }
+limit       { return LIMIT; }
+close       { return CLOSE; }
+and         { return AND; }
+or          { return OR; }
+true        { return TRUE; }
+false       { return FALSE; }
+begin       { return BBEGIN; }
+end         { return BEND; }
+intrabarpersist { return IBP; }
 
-\"[^"]\"  { 
+\"[^"]*\"  { 
 yylval.fn = find(yytext);
 return TEXT; }
                              
@@ -69,10 +71,14 @@ return NAME; }
 "/" { return DIV; }
 "[" { return LSB; }
 "]" { return RSB; }
-"=" { return ASM; }
 ":" { return COL; }
 
-[(),;] { return yytext[0]; }
+[(),;=] { return yytext[0]; }
+
+"+=" { yylval.fn = 1; return ASM; }
+"-=" { yylval.fn = 2; return ASM; }
+"*=" { yylval.fn = 3; return ASM; }
+"/=" { yylval.fn = 4; return ASM; }
 
     /* comparison ops, all are a CMP token */
 ">"  { yylval.fn = 1; return CMP; }
