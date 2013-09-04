@@ -18,6 +18,7 @@ enum class NodeType
 	DIV,
 	AND,
 	OR,
+	NOT,
 	BAR,
 	UMINUS,
 

@@ -85,10 +85,11 @@ extern int yydebug;
      ELSE = 294,
      AND = 295,
      OR = 296,
-     ONCE = 297,
-     BBEGIN = 298,
-     BEND = 299,
-     UNARY = 300
+     NOT = 297,
+     ONCE = 298,
+     BBEGIN = 299,
+     BEND = 300,
+     UNARY = 301
    };
 #endif
 
@@ -103,7 +104,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 107 "el.tab.h"
+#line 108 "el.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -36,6 +36,7 @@ limit       { return LIMIT; }
 close       { return CLOSE; }
 and         { return AND; }
 or          { return OR; }
+not         { return NOT; }
 true        { return TRUE; }
 false       { return FALSE; }
 begin       { return BBEGIN; }

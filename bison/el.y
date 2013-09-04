@@ -21,7 +21,7 @@ extern void yyerror(char *s, ...);
 
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER
 %token PLOT1
-%token IF THEN ELSE AND OR ONCE
+%token IF THEN ELSE AND OR NOT ONCE
 %token BBEGIN BEND 
 
 
@@ -36,6 +36,7 @@ extern void yyerror(char *s, ...);
 %nonassoc ASM
 %left OR
 %left AND
+%right NOT
 %left '=' CMP
 %left ADD SUB
 %left MUL DIV
@@ -223,9 +224,10 @@ exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
    | exp SUB exp { $$ = newast(NodeType::SUB, $1, $3); }
    | exp AND exp { $$ = newast(NodeType::AND, $1, $3); }
    | exp OR exp  { $$ = newast(NodeType::OR,  $1, $3); }
+   | NOT exp     { $$ = newast(NodeType::NOT, $2, -1); }
    | exp '=' exp { $$ = newcmp(0,  $1, $3); }
    | exp CMP exp { $$ = newcmp($2, $1, $3); }
-   | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, NULL); }
+   | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
    | ADD exp %prec UNARY  { $$ = $2; }
    | '(' exp ')'  { $$ = $2; }
    | exp LSB exp RSB { $$ = newast(NodeType::BAR, $1, $3); }
