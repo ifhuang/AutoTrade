@@ -102,33 +102,52 @@ namespace{
 
 	struct stmt_visitor : public boost::static_visitor<int>
 	{
-		int operator()(if_stmt & is) const
+		inline static int fpr_stmt(const char *label)
 		{
 			int id = tot++;
-			fpr("%d[label=IF]\n", id);
+			fpr("%d[label=%s, shape=parallelogram]\n", id, label);
+			return id;
+		}
+
+		int operator()(if_stmt & is) const
+		{
+			int id = fpr_stmt("IF");
 			dfs(id, is.con);
 			dfs_stmt(id, is.then);
 			dfs_stmt(id, is.els);
 			return id;
 		}
 
+		int operator()(once_stmt & os) const
+		{
+			int id = fpr_stmt("ONCE");
+			dfs(id, os.con);
+			dfs_stmt(id, os.block);
+			return id;
+		}
+
 		int operator()(order_stmt & os) const
 		{
-			int id = tot++;
+			int id = fpr_stmt("ORDER");
+			snode(id, "\"op:" + to_string(os.op) + "\"");
+			snode(id, "\"type:" + to_string(os.type) + "\"");
+			if (os.type == 1 || os.type == 2)
+			{
+				dfs(id, os.price);
+			}
 			return id;
 		}
 
 		int operator()(func_stmt & fs) const
 		{
-			int id = tot++;
+			int id = fpr_stmt("FUNC");
 			dfs(id, fs.func);
 			return id;
 		}
 
 		int operator()(asm_stmt & as) const
 		{
-			int id = tot++;
-			fpr("%d[label=ASM]\n", id);
+			int id = fpr_stmt("ASM");
 			dfs(id, as.var);
 			dfs(id, as.exp);
 			return id;
@@ -142,7 +161,7 @@ namespace{
 
 		int operator()(var_stmt & vs) const
 		{
-			int id = tot++;
+			int id = fpr_stmt("VAR");
 			for (ast_t var : astsV[vs.vars])
 			{
 				dfs(id, var);
@@ -162,15 +181,37 @@ namespace{
 		}
 	}
 
-	void dfs_stmts(int p, stmts_t stmts)
+	int new_subgraph()
 	{
 		int cs = cstot++;
 		fpr("subgraph cluster%d {\n", cs); it++;
+		return cs;
+	}
+
+	inline void end_subgraph()
+	{
+		it--; fpr("}\n");
+	}
+
+	void dfs_stmts(int p, stmts_t stmts)
+	{
+		int cs = new_subgraph();
 		for(stmt_t stmt : stmtsV[stmts])
 		{
 			dfs_stmt(p, stmt);
 		}
-		it--; fpr("}\n");
+		end_subgraph();
+	}
+
+	void print_input()
+	{
+		int cs = new_subgraph();
+		int id = stmt_visitor::fpr_stmt("INPUT");
+		for (ast_t input : inputVector)
+		{
+			dfs(id, input);
+		}
+		end_subgraph();
 	}
 
 	void generateDot(stmts_t root)
@@ -183,6 +224,7 @@ namespace{
 		fpr("0[label=root]\n");
 		tot = 1;
 		cstot = 0;
+		print_input();
 		dfs_stmts(0, root);
 
 		it--; fpr("}\n");

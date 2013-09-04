@@ -15,20 +15,17 @@ typedef int stmts_t;
 
 extern stmts_t root;
 
-enum class StmtType
-{
-	IF,
-	ORDER,
-	FUNC,
-	ASM,
-	BLOCK
-};
-
 struct if_stmt
 {
 	ast_t con;
 	stmt_t then;
 	stmt_t els;
+};
+
+struct once_stmt
+{
+	ast_t con;
+	stmt_t block;
 };
 
 struct order_action
@@ -66,7 +63,8 @@ struct block_stmt
 	stmts_t stmts;
 };
 
-typedef boost::variant<if_stmt, order_stmt, func_stmt, asm_stmt, block_stmt, var_stmt> stmt;
+typedef boost::variant<if_stmt, once_stmt, order_stmt, func_stmt,
+	asm_stmt, block_stmt, var_stmt> stmt;
 
 extern VV<stmt> stmtV;
 extern VV<vector<stmt_t> > stmtsV;

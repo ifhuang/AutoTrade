@@ -22,6 +22,7 @@ enum class NodeType
 	UMINUS,
 
 	VARDEC,
+	IBPVARDEC,
 
 	NUMERIC,
 	TF,
