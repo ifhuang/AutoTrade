@@ -188,20 +188,19 @@ namespace{
 		it--; fpr("}\n");
 		fclose(fp);
 	}
+}
 
-	int main()
-	{
-		FILE *f = fopen("in.txt", "r");
-		int g = elparse(f);
-		printf(" %d\n", g);
-		fclose(f);
-		if (g)return g;
-		initName();
-		generateDot(root);
-		//system("dot > a.txt");
-		system("dot -Tpng -o out.png out.txt");
-		system("start out.png");
-		return 0;
-	}
-
+int main()
+{
+	FILE *f = fopen("in.txt", "r");
+	int g = elparse(f);
+	printf(" %d\n", g);
+	fclose(f);
+	if (g)return g;
+	initName();
+	generateDot(root);
+	//system("dot > a.txt");
+	system("dot -Tpng -o out.png out.txt");
+	system("start out.png");
+	return 0;
 }

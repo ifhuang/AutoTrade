@@ -65,9 +65,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="el.l" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="ast.cpp" />
     <ClCompile Include="el.tab.cpp" />
     <ClCompile Include="lex.cpp" />
