@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string>
 #include <unordered_map>
+#include <boost/algorithm/string.hpp>
 using namespace std;
 #include "..\lex\tree.h"
 
@@ -21,10 +22,12 @@ namespace{
 		ADDNAME(DIV);
 		ADDNAME(AND);
 		ADDNAME(OR);
+		ADDNAME(NOT);
 		ADDNAME(BAR);
 		ADDNAME(UMINUS);
 
 		ADDNAME(VARDEC);
+		ADDNAME(IBPVARDEC);
 
 		ADDNAME(NUMERIC);
 		ADDNAME(TF);
@@ -58,14 +61,16 @@ namespace{
 		va_end(ap);
 	}
 
-	void snode(int p, const string s)
+	int snode(int p, const string s)
 	{
 		int id = tot++;
-		fpr("%d[label=%s];\n", id, s.c_str());
+		string t = boost::replace_all_copy(s, "\"", "\\\"");
+		fpr("%d[label=\"%s\"];\n", id, t.c_str());
 		if(~p)
 		{
 			fpr("%d -> %d;\n", p, id);
 		}
+		return id;
 	}
 
 	void dfs(int p, ast_t i)
@@ -113,8 +118,13 @@ namespace{
 		{
 			int id = fpr_stmt("IF");
 			dfs(id, is.con);
-			dfs_stmt(id, is.then);
-			dfs_stmt(id, is.els);
+			int t = snode(id, "THEN");
+			dfs_stmt(t, is.then);
+			if (~is.els)
+			{
+				int e = snode(id, "ELSE");
+				dfs_stmt(e, is.els);
+			}
 			return id;
 		}
 
@@ -129,8 +139,8 @@ namespace{
 		int operator()(order_stmt & os) const
 		{
 			int id = fpr_stmt("ORDER");
-			snode(id, "\"op:" + to_string(os.op) + "\"");
-			snode(id, "\"type:" + to_string(os.type) + "\"");
+			snode(id, "op:" + to_string(os.op));
+			snode(id, "type:" + to_string(os.type));
 			if (os.type == 1 || os.type == 2)
 			{
 				dfs(id, os.price);
@@ -223,6 +233,7 @@ namespace{
 		fpr("digraph G {\n"); it++;
 		fpr("compound=true;\n");
 		fpr("ordering=out;\n");
+		fpr("rankdir=LR;\n");
 		fpr("0[label=root]\n");
 		tot = 1;
 		cstot = 0;
