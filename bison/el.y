@@ -19,14 +19,14 @@ extern void yyerror(char *s, ...);
 %token CMP ASM ADD SUB MUL DIV LSB RSB
 %token COL COM
 
-%token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER
+%token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER SHARE
 %token PLOT1
 %token IF THEN ELSE AND OR NOT ONCE
 %token BBEGIN BEND 
 
 
 %type <fn> CMP NUMBER NAME TEXT ASM
-%type <fn> order_verb asm
+%type <fn> order_verb asm order_amount
 %type <fn> exp literal name //ast
 %type <fn> variable name_call
 %type <fn> order_stmt other_sstmt order_action if_stmt once_stmt matched unmatched cstmt variables assignment block//stmt
@@ -160,11 +160,11 @@ once_stmt: ONCE block
 }
 ;
 
-order_stmt: order_verb order_action
+order_stmt: order_verb order_amount order_action
 {
-  auto &oa = boost::get<order_stmt>(stmtV[$$ = $2]);
-  oa.num = -1;
+  auto &oa = boost::get<order_stmt>(stmtV[$$ = $3]);
   oa.op = $1;
+  oa.num = $2;
 }
 ;
 
@@ -175,6 +175,9 @@ order_verb: BUY  { $$ = 0; }
       |     SELL SHORT { $$ = 3; }
       |     SELLSHORT  { $$ = 3; }
 ;
+
+order_amount: /* empty */ { $$ = -1; }
+      |     exp SHARE
 
 order_action: NEXT BAR MARKET
 {

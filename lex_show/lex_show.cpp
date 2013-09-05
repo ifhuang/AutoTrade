@@ -150,6 +150,7 @@ namespace{
 		{
 			int id = fpr_stmt("ORDER");
 			snode(id, "op:" + to_string(os.op));
+			dfs(id, os.num);
 			snode(id, "type:" + to_string(os.type));
 			if (os.type == 1 || os.type == 2)
 			{

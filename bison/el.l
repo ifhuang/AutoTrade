@@ -9,7 +9,13 @@ void yyerror(char *s, ...);
 %option never-interactive
 %option nounistd
 
+%x COMMENT
 %%
+
+"{"          { BEGIN(COMMENT); }
+<COMMENT>"}" { BEGIN(INITIAL); }
+<COMMENT>\n|.
+<COMMENT><<EOF>> { yyerror("Unterminated comment"); }
 
 if          { return IF; }
 then        { return THEN; }
@@ -42,6 +48,8 @@ false       { return FALSE; }
 begin       { return BBEGIN; }
 end         { return BEND; }
 intrabarpersist { return IBP; }
+share |
+shares      { return SHARE; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

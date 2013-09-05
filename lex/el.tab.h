@@ -79,17 +79,18 @@ extern int yydebug;
      TO = 288,
      COVER = 289,
      BUYTOCOVER = 290,
-     PLOT1 = 291,
-     IF = 292,
-     THEN = 293,
-     ELSE = 294,
-     AND = 295,
-     OR = 296,
-     NOT = 297,
-     ONCE = 298,
-     BBEGIN = 299,
-     BEND = 300,
-     UNARY = 301
+     SHARE = 291,
+     PLOT1 = 292,
+     IF = 293,
+     THEN = 294,
+     ELSE = 295,
+     AND = 296,
+     OR = 297,
+     NOT = 298,
+     ONCE = 299,
+     BBEGIN = 300,
+     BEND = 301,
+     UNARY = 302
    };
 #endif
 
@@ -104,7 +105,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 108 "el.tab.h"
+#line 109 "el.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
