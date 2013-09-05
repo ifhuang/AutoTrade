@@ -29,7 +29,7 @@ extern void yyerror(char *s, ...);
 %type <fn> order_verb asm order_amount order_name
 %type <fn> exp literal name text //ast
 %type <fn> variable name_call
-%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once matched unmatched cstmt variables assignment block//stmt
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched matched unmatched cstmt variables assignment block //stmt
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list argu_list //asts
 
@@ -149,8 +149,12 @@ unmatched_once: ONCE unmatched             { $$ = new_once(-1, $2); }
               | ONCE '(' exp ')' unmatched { $$ = new_once($3, $5); }
 ;
 
-matched_once: ONCE matched             { $$ = new_once(-1, $2); }
-            | ONCE '(' exp ')' matched { $$ = new_once($3, $5); }
+matched_once: ONCE once_matched             { $$ = new_once(-1, $2); }
+            | ONCE '(' exp ')' once_matched { $$ = new_once($3, $5); }
+;
+
+once_matched: /* empty */ { $$ = -1; }
+            | matched
 ;
 
 order_stmt: order_verb order_name order_amount order_action

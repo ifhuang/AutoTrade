@@ -1,0 +1,11 @@
+once (true)  begin  end;
+
+Once once if true then once ;
+
+if true then once if true then alert else alert else alert;
+
+if true then once begin end else alert;
+
+if true then once alert else alert;
+
+once
