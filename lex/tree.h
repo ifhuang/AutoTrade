@@ -25,7 +25,7 @@ struct if_stmt
 struct once_stmt
 {
 	ast_t con;
-	stmt_t block;
+	stmt_t stmt;
 };
 
 struct order_action
@@ -37,6 +37,7 @@ struct order_action
 struct order_stmt
 {
 	int op;
+	ast_t name;
 	ast_t num;
 	int type;
 	ast_t price;
@@ -73,6 +74,7 @@ extern VV<vector<ast_t> >astsV;
 
 extern vector<ast_t> inputVector;
 
+int new_once(ast_t con, stmt_t stmt);
 void putInput(asts_t asts);
 void pre();
 void post();

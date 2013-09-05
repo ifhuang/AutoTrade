@@ -49,7 +49,9 @@ begin       { return BBEGIN; }
 end         { return BEND; }
 intrabarpersist { return IBP; }
 share |
-shares      { return SHARE; }
+shares |
+contract |
+contracts       { return SHARE; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

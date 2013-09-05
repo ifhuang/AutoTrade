@@ -26,10 +26,10 @@ extern void yyerror(char *s, ...);
 
 
 %type <fn> CMP NUMBER NAME TEXT ASM
-%type <fn> order_verb asm order_amount
-%type <fn> exp literal name //ast
+%type <fn> order_verb asm order_amount order_name
+%type <fn> exp literal name text //ast
 %type <fn> variable name_call
-%type <fn> order_stmt other_sstmt order_action if_stmt once_stmt matched unmatched cstmt variables assignment block//stmt
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once matched unmatched cstmt variables assignment block//stmt
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list argu_list //asts
 
@@ -61,7 +61,7 @@ stmt_list: if_stmt ';' { $$ = stmtsV.createI($1); }
          | stmt_list cstmt       { $$ = stmtsV.putI($1, $2); }
 ;
 
-other_sstmt: once_stmt
+other_sstmt: matched_once
      |       order_stmt
      |       assignment
      |       name_call
@@ -126,7 +126,8 @@ matched:    other_sstmt
 }
 ;
 
-unmatched:  IF exp THEN if_stmt
+unmatched:  unmatched_once
+      |     IF exp THEN if_stmt
 {
   if_stmt i;
   i.con = $2;
@@ -144,27 +145,20 @@ unmatched:  IF exp THEN if_stmt
 }
 ;
 
-once_stmt: ONCE block
-{
-  once_stmt o;
-  o.con = -1;
-  o.block = $2;
-  $$ = stmtV.put(o);
-}
-         | ONCE exp block
-{
-  once_stmt o;
-  o.con = $2;
-  o.block = $3;
-  $$ = stmtV.put(o);
-}
+unmatched_once: ONCE unmatched             { $$ = new_once(-1, $2); }
+              | ONCE '(' exp ')' unmatched { $$ = new_once($3, $5); }
 ;
 
-order_stmt: order_verb order_amount order_action
+matched_once: ONCE matched             { $$ = new_once(-1, $2); }
+            | ONCE '(' exp ')' matched { $$ = new_once($3, $5); }
+;
+
+order_stmt: order_verb order_name order_amount order_action
 {
-  auto &oa = boost::get<order_stmt>(stmtV[$$ = $3]);
+  auto &oa = boost::get<order_stmt>(stmtV[$$ = $4]);
   oa.op = $1;
-  oa.num = $2;
+  oa.name = $2;
+  oa.num = $3;
 }
 ;
 
@@ -176,8 +170,13 @@ order_verb: BUY  { $$ = 0; }
       |     SELLSHORT  { $$ = 3; }
 ;
 
+order_name: /* empty */  { $$ = -1; }
+ //  |     exp { $$ = $1; }
+      ;
+
 order_amount: /* empty */ { $$ = -1; }
-      |     exp SHARE
+      |       exp SHARE
+      ;
 
 order_action: NEXT BAR MARKET
 {
@@ -240,6 +239,7 @@ exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
 
 name: NAME  { $$ = newname($1); }
     | CLOSE { $$ = newname(0); }
+;
 
 name_call: name { $$ = newast(NodeType::FUNC, $1, -1); }
       |    name '(' argu_list ')' { $$ = newast(NodeType::FUNC, $1, $3); }
@@ -252,8 +252,10 @@ argu_list: exp { $$ = astsV.createI($1); }
 literal: NUMBER { $$ = newdouble($1); }
       |  TRUE   { $$ = newtf(true); }
       |  FALSE  { $$ = newtf(false); }
-      |  TEXT   { $$ = newtext($1); }
+      |  text
 ;
+
+text: TEXT   { $$ = newtext($1); } ;
 
 block: BBEGIN stmts BEND
 {

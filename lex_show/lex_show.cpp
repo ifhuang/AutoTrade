@@ -142,7 +142,7 @@ namespace{
 			int id = fpr_stmt("ONCE");
 			dfs(id, os.con);
 			int t = snode(id, "THEN");
-			dfs_stmt(t, os.block);
+			dfs_stmt(t, os.stmt);
 			return id;
 		}
 
@@ -193,17 +193,6 @@ namespace{
 		}
 	};
 
-	void dfs_stmt(int p, stmt_t stmt)
-	{
-		if (stmt == -1)return;
-		blockp = p;
-		int id = boost::apply_visitor(stmt_visitor(), stmtV[stmt]);
-		if (~id)
-		{
-			fpr("%d -> %d\n", p, id);
-		}
-	}
-
 	int new_subgraph()
 	{
 		int cs = cstot++;
@@ -216,14 +205,28 @@ namespace{
 		it--; fpr("}\n");
 	}
 
+	void dfs_stmt(int p, stmt_t stmt)
+	{
+		if (stmt == -1)return;
+		int cs = new_subgraph();
+		fpr("color=blue;\n");
+		blockp = p;
+		int id = boost::apply_visitor(stmt_visitor(), stmtV[stmt]);
+		end_subgraph();
+		if (~id)
+		{
+			fpr("%d -> %d\n", p, id);
+		}
+	}
+
 	void dfs_stmts(int p, stmts_t stmts)
 	{
-		int cs = new_subgraph();
+		//int cs = new_subgraph();
 		for (stmt_t stmt : stmtsV[stmts])
 		{
 			dfs_stmt(p, stmt);
 		}
-		end_subgraph();
+		//end_subgraph();
 	}
 
 	void print_input()

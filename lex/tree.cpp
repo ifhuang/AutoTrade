@@ -18,6 +18,14 @@ void putInput(asts_t asts)
 	}
 }
 
+int new_once(ast_t con, stmt_t stmt)
+{
+	once_stmt o;
+	o.con = con;
+	o.stmt = stmt;
+	return stmtV.put(o);
+}
+
 void pre()
 {
 	astpre();
