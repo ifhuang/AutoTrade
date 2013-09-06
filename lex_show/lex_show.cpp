@@ -148,6 +148,18 @@ namespace{
 			return id;
 		}
 
+		int operator()(for_stmt & fs) const
+		{
+			int id = fpr_stmt("FOR");
+			dfs(id, fs.var);
+			snode(id, fs.type == 0 ? "TO" : "DOWNTO");
+			dfs(id, fs.from);
+			dfs(id, fs.to);
+			int t = snode(id, "THEN");
+			dfs_stmt(t, fs.block);
+			return id;
+		}
+
 		int operator()(order_stmt & os) const
 		{
 			int id = fpr_stmt("ORDER");

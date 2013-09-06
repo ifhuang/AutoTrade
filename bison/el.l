@@ -59,6 +59,9 @@ above |
 over        { return ABOVE; }
 below |
 under       { return BELOW; }
+for         { return FOR; }
+downto      { return DOWNTO; }
+
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

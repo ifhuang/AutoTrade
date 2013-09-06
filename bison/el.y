@@ -21,15 +21,15 @@ extern void yyerror(char *s, ...);
 
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER SHARE
 %token PLOT1
-%token IF THEN ELSE AND OR NOT ONCE
+%token IF THEN ELSE AND OR NOT ONCE FOR DOWNTO
 %token BBEGIN BEND 
 
 
 %type <fn> CMP NUMBER NAME TEXT ASM
-%type <fn> order_verb asm order_amount order_name
+%type <fn> order_verb asm order_amount order_name for_type
 %type <fn> exp literal name text //ast
 %type <fn> variable name_call
-%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched matched unmatched cstmt variables assignment block //stmt
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt matched unmatched cstmt variables assignment block //stmt
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list argu_list //asts
 
@@ -62,6 +62,7 @@ stmt_list: if_stmt ';' { $$ = stmtsV.createI($1); }
 ;
 
 other_sstmt: matched_once
+     |       for_stmt
      |       order_stmt
      |       assignment
      |       name_call
@@ -156,6 +157,22 @@ matched_once: ONCE once_matched             { $$ = new_once(-1, $2); }
 once_matched: /* empty */ { $$ = -1; }
             | matched
 ;
+
+for_stmt: FOR name '=' exp for_type exp block
+{
+    for_stmt fs;
+    fs.var = $2;
+    fs.type = $5;
+    fs.from = $4;
+    fs.to = $6;
+    fs.block = $7;
+    $$ = stmtV.put(fs);
+}
+;
+
+for_type: TO { $$ = 0; }
+        | DOWNTO { $$ = 1; }
+        ;
 
 order_stmt: order_verb order_name order_amount order_action
 {

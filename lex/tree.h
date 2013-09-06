@@ -28,10 +28,13 @@ struct once_stmt
 	stmt_t stmt;
 };
 
-struct order_action
+struct for_stmt
 {
+	ast_t var;
 	int type;
-	ast_t price;
+	ast_t from;
+	ast_t to;
+	stmt_t block;
 };
 
 struct order_stmt
@@ -65,7 +68,7 @@ struct block_stmt
 	stmts_t stmts;
 };
 
-typedef boost::variant<if_stmt, once_stmt, order_stmt, func_stmt,
+typedef boost::variant<if_stmt, once_stmt, for_stmt, order_stmt, func_stmt,
 	asm_stmt, block_stmt, var_stmt> stmt;
 
 extern VV<stmt> stmtV;
