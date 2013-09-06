@@ -1,3 +1,4 @@
+   /* -*-mode: flex-mode-*- */
 %{
 #include <stdarg.h>
 int find(char* cs);
@@ -51,7 +52,13 @@ intrabarpersist { return IBP; }
 share |
 shares |
 contract |
-contracts       { return SHARE; }
+contracts   { return SHARE; }
+cross |
+crosses     { return CROSS; }
+above |
+over        { return ABOVE; }
+below |
+under       { return BELOW; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

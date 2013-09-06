@@ -37,7 +37,9 @@ enum class NodeType
 	LT,
 	NE,
 	GE,
-	LE
+	LE,
+	CA,
+	CB
 };
 
 struct ast

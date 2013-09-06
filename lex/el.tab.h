@@ -72,25 +72,28 @@ extern int yydebug;
      RSB = 281,
      COL = 282,
      COM = 283,
-     BUY = 284,
-     SELL = 285,
-     SHORT = 286,
-     SELLSHORT = 287,
-     TO = 288,
-     COVER = 289,
-     BUYTOCOVER = 290,
-     SHARE = 291,
-     PLOT1 = 292,
-     IF = 293,
-     THEN = 294,
-     ELSE = 295,
-     AND = 296,
-     OR = 297,
-     NOT = 298,
-     ONCE = 299,
-     BBEGIN = 300,
-     BEND = 301,
-     UNARY = 302
+     CROSS = 284,
+     ABOVE = 285,
+     BELOW = 286,
+     BUY = 287,
+     SELL = 288,
+     SHORT = 289,
+     SELLSHORT = 290,
+     TO = 291,
+     COVER = 292,
+     BUYTOCOVER = 293,
+     SHARE = 294,
+     PLOT1 = 295,
+     IF = 296,
+     THEN = 297,
+     ELSE = 298,
+     AND = 299,
+     OR = 300,
+     NOT = 301,
+     ONCE = 302,
+     BBEGIN = 303,
+     BEND = 304,
+     UNARY = 305
    };
 #endif
 
@@ -105,7 +108,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 109 "el.tab.h"
+#line 112 "el.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

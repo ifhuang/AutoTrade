@@ -8,4 +8,6 @@ if true then once begin end else alert;
 
 if true then once alert else alert;
 
-once
+once;
+
+if true then once else once 

@@ -42,6 +42,8 @@ namespace{
 		ADDNAME(NE);
 		ADDNAME(GE);
 		ADDNAME(LE);
+		ADDNAME(CA);
+		ADDNAME(CB);
 	}
 
 	FILE *fp;

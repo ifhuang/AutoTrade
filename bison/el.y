@@ -17,7 +17,7 @@ extern void yyerror(char *s, ...);
 %token VOLUMN NAME 
  // operator
 %token CMP ASM ADD SUB MUL DIV LSB RSB
-%token COL COM
+%token COL COM CROSS ABOVE BELOW
 
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER SHARE
 %token PLOT1
@@ -37,7 +37,7 @@ extern void yyerror(char *s, ...);
 %left OR
 %left AND
 %right NOT
-%left '=' CMP
+%left '=' CMP CROSS ABOVE BELOW
 %left ADD SUB
 %left MUL DIV
 %left LSB RSB
@@ -233,6 +233,8 @@ exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
    | NOT exp     { $$ = newast(NodeType::NOT, $2, -1); }
    | exp '=' exp { $$ = newcmp(0,  $1, $3); }
    | exp CMP exp { $$ = newcmp($2, $1, $3); }
+   | exp CROSS ABOVE exp { $$ = newcmp(6, $1, $4); }
+   | exp CROSS BELOW exp { $$ = newcmp(7, $1, $4); }
    | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
    | ADD exp %prec UNARY  { $$ = $2; }
    | '(' exp ')'  { $$ = $2; }
