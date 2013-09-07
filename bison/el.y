@@ -13,7 +13,7 @@ extern void yyerror(char *s, ...);
 
 %token INPUTS VARIABLES IBP
 %token NUMBER TRUE FALSE TEXT
-%token CLOSE THIS NEXT BAR MARKET STOP LIMIT
+%token OPEN CLOSE THIS NEXT BAR MARKET STOP LIMIT ALL
 %token VOLUMN NAME 
  // operator
 %token CMP ASM ADD SUB MUL DIV LSB RSB
@@ -186,7 +186,7 @@ while_stmt: WHILE exp block
 }
 ;
 
-repeat_stmt: REPEAT stmt_list UNTIL exp ';'
+repeat_stmt: REPEAT stmt_list UNTIL exp
 {
   while_stmt ws;
   ws.type = 1;
@@ -194,7 +194,7 @@ repeat_stmt: REPEAT stmt_list UNTIL exp ';'
   ws.block = $2;
   $$ = stmtV.put(ws);
 }
-           | REPEAT UNTIL exp ';'
+           | REPEAT UNTIL exp
 {
   while_stmt ws;
   ws.type = 1;
@@ -228,6 +228,7 @@ order_name: /* empty */  { $$ = -1; }
 
 order_amount: /* empty */ { $$ = -1; }
       |       exp SHARE
+      |       ALL SHARE { $$ = -2; }
       ;
 
 order_time: THIS BAR { $$ = 0; }
@@ -235,10 +236,11 @@ order_time: THIS BAR { $$ = 0; }
 ;
 
 order_action: MARKET    { $$ = new_order(0, -1); }
+            | OPEN      { $$ = new_order(0, -1); }
             | exp STOP  { $$ = new_order(1, $1); }
             | exp LIMIT { $$ = new_order(2, $1); }
             | CLOSE     { $$ = new_order(3, -1); }
-            | /*empty*/ { $$ = new_order(3, -1); }      
+            | /*empty*/ { $$ = new_order(3, -1); }
 ;
 
 assignment: name asm exp //%prec ASM

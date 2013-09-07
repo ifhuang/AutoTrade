@@ -35,11 +35,13 @@ sellshort   { return SELLSHORT; }
 to          { return TO; }
 cover       { return COVER; }
 buytocover  { return BUYTOCOVER; }
+this        { return THIS; }
 next        { return NEXT; }
 bar         { return BAR; }
 market      { return MARKET; }
 stop        { return STOP; }
 limit       { return LIMIT; }
+open        { return OPEN; }
 close       { return CLOSE; }
 and         { return AND; }
 or          { return OR; }
@@ -64,6 +66,7 @@ downto      { return DOWNTO; }
 while       { return WHILE; }
 repeat      { return REPEAT; }
 until       { return UNTIL; }
+all         { return ALL; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);
@@ -77,12 +80,17 @@ return NUMBER; }
 a |
 an |
 at |
+based |
 by |
+does |
+from |
 is |
 of |
 on |
+place |
 than |
-the     /* ignore */
+the |
+was     /* ignore */
 
 [_a-z][_a-z0-9]* { 
 yylval.fn = find(yytext);

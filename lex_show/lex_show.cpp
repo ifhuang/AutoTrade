@@ -168,7 +168,15 @@ namespace{
 		{
 			int id = fpr_stmt("ORDER");
 			snode(id, "op:" + to_string(os.op));
-			dfs(id, os.num);
+			if (os.num == -2)
+			{
+				snode(id, "ALL");
+			}
+			else
+			{
+				dfs(id, os.num);
+			}
+			snode(id, to_string(os.time));
 			snode(id, "type:" + to_string(os.type));
 			if (os.type == 1 || os.type == 2)
 			{
