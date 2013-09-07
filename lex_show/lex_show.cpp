@@ -160,6 +160,15 @@ namespace{
 			return id;
 		}
 
+		int operator()(while_stmt & ws) const
+		{
+			int id = fpr_stmt("WHILE");
+			dfs(id, ws.con);
+			int t = snode(id, "THEN");
+			dfs_stmt(t, ws.block);
+			return id;
+		}
+
 		int operator()(order_stmt & os) const
 		{
 			int id = fpr_stmt("ORDER");

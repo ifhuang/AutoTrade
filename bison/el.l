@@ -61,6 +61,7 @@ below |
 under       { return BELOW; }
 for         { return FOR; }
 downto      { return DOWNTO; }
+while       { return WHILE; }
 
 
 \"[^"]*\"  { 

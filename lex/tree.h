@@ -37,6 +37,12 @@ struct for_stmt
 	stmt_t block;
 };
 
+struct while_stmt
+{
+	ast_t con;
+	stmt_t block;
+};
+
 struct order_stmt
 {
 	int op;
@@ -68,8 +74,8 @@ struct block_stmt
 	stmts_t stmts;
 };
 
-typedef boost::variant<if_stmt, once_stmt, for_stmt, order_stmt, func_stmt,
-	asm_stmt, block_stmt, var_stmt> stmt;
+typedef boost::variant<if_stmt, once_stmt, for_stmt, while_stmt,
+	order_stmt, func_stmt, asm_stmt, block_stmt, var_stmt> stmt;
 
 extern VV<stmt> stmtV;
 extern VV<vector<stmt_t> > stmtsV;
