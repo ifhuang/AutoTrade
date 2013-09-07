@@ -114,8 +114,6 @@ namespace{
 	void dfs_stmts(int p, stmts_t stmts);
 	void dfs_stmt(int p, stmt_t stmt);
 
-	int blockp;
-
 	struct stmt_visitor : public boost::static_visitor<int>
 	{
 		inline static int fpr_stmt(const char *label)
@@ -143,8 +141,7 @@ namespace{
 		{
 			int id = fpr_stmt("ONCE");
 			dfs(id, os.con);
-			int t = snode(id, "THEN");
-			dfs_stmt(t, os.stmt);
+			dfs_stmt(id, os.stmt);
 			return id;
 		}
 
@@ -155,8 +152,7 @@ namespace{
 			snode(id, fs.type == 0 ? "TO" : "DOWNTO");
 			dfs(id, fs.from);
 			dfs(id, fs.to);
-			int t = snode(id, "THEN");
-			dfs_stmt(t, fs.block);
+			dfs_stmt(id, fs.block);
 			return id;
 		}
 
@@ -164,8 +160,7 @@ namespace{
 		{
 			int id = fpr_stmt("WHILE");
 			dfs(id, ws.con);
-			int t = snode(id, "THEN");
-			dfs_stmt(t, ws.block);
+			dfs_stmt(id, ws.block);
 			return id;
 		}
 
@@ -201,8 +196,9 @@ namespace{
 
 		int operator()(block_stmt & bs) const
 		{
-			dfs_stmts(blockp, bs.stmts);
-			return -1;
+			int id = fpr_stmt("BLOCK");
+			dfs_stmts(id, bs.stmts);
+			return id;
 		}
 
 		int operator()(var_stmt & vs) const
@@ -233,7 +229,6 @@ namespace{
 		if (stmt == -1)return;
 		int cs = new_subgraph();
 		fpr("color=blue;\n");
-		blockp = p;
 		int id = boost::apply_visitor(stmt_visitor(), stmtV[stmt]);
 		end_subgraph();
 		if (~id)

@@ -21,7 +21,7 @@ extern void yyerror(char *s, ...);
 
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER SHARE
 %token PLOT1
-%token IF THEN ELSE AND OR NOT ONCE FOR DOWNTO WHILE
+%token IF THEN ELSE AND OR NOT ONCE FOR DOWNTO WHILE REPEAT UNTIL
 %token BBEGIN BEND 
 
 
@@ -275,6 +275,7 @@ name: NAME  { $$ = newname($1); }
 ;
 
 name_call: name { $$ = newast(NodeType::FUNC, $1, -1); }
+      |    name '(' ')' { $$ = newast(NodeType::FUNC, $1, -1); }
       |    name '(' argu_list ')' { $$ = newast(NodeType::FUNC, $1, $3); }
 ;
 
@@ -290,12 +291,13 @@ literal: NUMBER { $$ = newdouble($1); }
 
 text: TEXT   { $$ = newtext($1); } ;
 
-block: BBEGIN stmts BEND
+block: BBEGIN stmt_list BEND
 {
   block_stmt bs;
   bs.stmts = $2;
   $$ = stmtV.put(bs);
 }
+     | BBEGIN BEND { $$ = -1; }
 ;
 %%
 

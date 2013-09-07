@@ -62,7 +62,8 @@ under       { return BELOW; }
 for         { return FOR; }
 downto      { return DOWNTO; }
 while       { return WHILE; }
-
+repeat      { return REPEAT; }
+until       { return UNTIL; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

@@ -94,9 +94,11 @@ extern int yydebug;
      FOR = 303,
      DOWNTO = 304,
      WHILE = 305,
-     BBEGIN = 306,
-     BEND = 307,
-     UNARY = 308
+     REPEAT = 306,
+     UNTIL = 307,
+     BBEGIN = 308,
+     BEND = 309,
+     UNARY = 310
    };
 #endif
 
@@ -111,7 +113,7 @@ typedef union YYSTYPE
 
 
 /* Line 2053 of yacc.c  */
-#line 115 "el.tab.h"
+#line 117 "el.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
