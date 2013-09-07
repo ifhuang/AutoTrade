@@ -29,7 +29,7 @@ extern void yyerror(char *s, ...);
 %type <fn> order_verb asm order_amount order_name for_type
 %type <fn> exp literal name text //ast
 %type <fn> variable name_call
-%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt matched unmatched cstmt variables assignment block //stmt
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables assignment block //stmt
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list argu_list //asts
 
@@ -64,6 +64,7 @@ stmt_list: if_stmt ';' { $$ = stmtsV.createI($1); }
 other_sstmt: matched_once
      |       for_stmt
      |       while_stmt
+     |       repeat_stmt
      |       order_stmt
      |       assignment
      |       name_call
@@ -177,10 +178,29 @@ for_type: TO { $$ = 0; }
 
 while_stmt: WHILE exp block
 {
-    while_stmt ws;
-    ws.con = $2;
-    ws.block = $3;
-    $$ = stmtV.put(ws);
+  while_stmt ws;
+  ws.type = 0;
+  ws.con = $2;
+  ws.block = $3;
+  $$ = stmtV.put(ws);
+}
+;
+
+repeat_stmt: REPEAT stmt_list UNTIL exp ';'
+{
+  while_stmt ws;
+  ws.type = 1;
+  ws.con = $4;
+  ws.block = $2;
+  $$ = stmtV.put(ws);
+}
+           | REPEAT UNTIL exp ';'
+{
+  while_stmt ws;
+  ws.type = 1;
+  ws.con = $3;
+  ws.block = -1;
+  $$ = stmtV.put(ws);
 }
 ;
 

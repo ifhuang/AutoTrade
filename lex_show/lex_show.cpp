@@ -158,7 +158,7 @@ namespace{
 
 		int operator()(while_stmt & ws) const
 		{
-			int id = fpr_stmt("WHILE");
+			int id = fpr_stmt(ws.type == 0 ? "WHILE" : "REPEAT");
 			dfs(id, ws.con);
 			dfs_stmt(id, ws.block);
 			return id;

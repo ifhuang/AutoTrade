@@ -39,6 +39,7 @@ struct for_stmt
 
 struct while_stmt
 {
+	int type;
 	ast_t con;
 	stmt_t block;
 };
