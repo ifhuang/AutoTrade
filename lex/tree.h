@@ -49,6 +49,7 @@ struct order_stmt
 	int op;
 	ast_t name;
 	ast_t num;
+	int time;
 	int type;
 	ast_t price;
 };
@@ -85,6 +86,7 @@ extern VV<vector<ast_t> >astsV;
 extern vector<ast_t> inputVector;
 
 int new_once(ast_t con, stmt_t stmt);
+int new_order(int type, ast_t price);
 void putInput(asts_t asts);
 void pre();
 void post();

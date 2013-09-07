@@ -26,7 +26,7 @@ extern void yyerror(char *s, ...);
 
 
 %type <fn> CMP NUMBER NAME TEXT ASM
-%type <fn> order_verb asm order_amount order_name for_type
+%type <fn> order_verb asm order_amount order_name for_type order_time
 %type <fn> exp literal name text //ast
 %type <fn> variable name_call
 %type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables assignment block //stmt
@@ -204,12 +204,13 @@ repeat_stmt: REPEAT stmt_list UNTIL exp ';'
 }
 ;
 
-order_stmt: order_verb order_name order_amount order_action
+order_stmt: order_verb order_name order_amount order_time order_action
 {
-  auto &oa = boost::get<order_stmt>(stmtV[$$ = $4]);
+  auto &oa = boost::get<order_stmt>(stmtV[$$ = $5]);
   oa.op = $1;
   oa.name = $2;
   oa.num = $3;
+  oa.time = $4;
 }
 ;
 
@@ -229,32 +230,15 @@ order_amount: /* empty */ { $$ = -1; }
       |       exp SHARE
       ;
 
-order_action: NEXT BAR MARKET
-{
-  order_stmt o;
-  o.type = 0;
-  $$ = stmtV.put(o);
-}
-      |       NEXT BAR exp STOP
-      {
-	order_stmt o;
-	o.type = 1;
-	o.price = $3;
-	$$ = stmtV.put(o);
-      }
-      |       NEXT BAR exp LIMIT
-      {
-	order_stmt o;
-	o.type = 2;
-	o.price = $3;
-	$$ = stmtV.put(o);
-      }
-      |       THIS BAR CLOSE
-      {
-	order_stmt o;
-	o.type = 3;
-	$$ = stmtV.put(o);
-      }
+order_time: THIS BAR { $$ = 0; }
+          | NEXT BAR { $$ = 1; }
+;
+
+order_action: MARKET    { $$ = new_order(0, -1); }
+            | exp STOP  { $$ = new_order(1, $1); }
+            | exp LIMIT { $$ = new_order(2, $1); }
+            | CLOSE     { $$ = new_order(3, -1); }
+            | /*empty*/ { $$ = new_order(3, -1); }      
 ;
 
 assignment: name asm exp //%prec ASM

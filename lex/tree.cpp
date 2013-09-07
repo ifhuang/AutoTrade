@@ -26,6 +26,14 @@ int new_once(ast_t con, stmt_t stmt)
 	return stmtV.put(o);
 }
 
+int new_order(int type, ast_t price)
+{
+	order_stmt o;
+	o.type = type;
+	o.price = price;
+	return stmtV.put(o);
+}
+
 void pre()
 {
 	astpre();
