@@ -33,21 +33,20 @@ extern void yyerror(char *s, ...);
 %type <fn> stmts stmt_list //stmts
 %type <fn> variable_list argu_list //asts
 
-%nonassoc ASM
 %left OR
 %left AND
-%right NOT
+%precedence NOT
 %left '=' CMP CROSS ABOVE BELOW
 %left ADD SUB
 %left MUL DIV
-%left LSB RSB
-%right UNARY
+%precedence LSB
+%precedence UNARY
 
 %%
 
 start: stmts { root = $1; }
 
-stmts: /* empty */ { $$ = stmtsV.create(); }
+stmts: %empty { $$ = stmtsV.create(); }
      | stmt_list
      | if_stmt     { $$ = stmtsV.createI($1); }
      | stmt_list if_stmt { $$ = stmtsV.putI($1, $2); }
@@ -156,7 +155,7 @@ matched_once: ONCE once_matched             { $$ = new_once(-1, $2); }
             | ONCE '(' exp ')' once_matched { $$ = new_once($3, $5); }
 ;
 
-once_matched: /* empty */ { $$ = -1; }
+once_matched: %empty { $$ = -1; }
             | matched
 ;
 
@@ -222,11 +221,11 @@ order_verb: BUY  { $$ = 0; }
       |     SELLSHORT  { $$ = 3; }
 ;
 
-order_name: /* empty */  { $$ = -1; }
+order_name: %empty  { $$ = -1; }
  //  |     exp { $$ = $1; }
       ;
 
-order_amount: /* empty */ { $$ = -1; }
+order_amount: %empty { $$ = -1; }
       |       exp SHARE
       |       ALL SHARE { $$ = -2; }
       ;
@@ -240,7 +239,7 @@ order_action: MARKET    { $$ = new_order(0, -1); }
             | exp STOP  { $$ = new_order(1, $1); }
             | exp LIMIT { $$ = new_order(2, $1); }
             | CLOSE     { $$ = new_order(3, -1); }
-            | /*empty*/ { $$ = new_order(3, -1); }
+            | %empty    { $$ = new_order(3, -1); }
 ;
 
 assignment: name asm exp //%prec ASM
@@ -306,4 +305,3 @@ block: BBEGIN stmt_list BEND
      | BBEGIN BEND { $$ = -1; }
 ;
 %%
-
