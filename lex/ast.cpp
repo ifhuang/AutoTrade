@@ -7,10 +7,11 @@ using namespace std;
 unordered_map<string, int> strTable;
 int strTableSize;
 vector<string> strVector;
+string errorMessage;
 
 VV<ast> VVN(astV);
 
-int find(char* cs)
+int find(const char *cs)
 {
 	string s(cs);
 	boost::algorithm::to_lower(s);
@@ -93,6 +94,7 @@ void astpre()
 	strTableSize = 0;
 	astV.clear();
 	find("close");
+	errorMessage.clear();
 }
 
 void astpost()

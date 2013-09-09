@@ -1,14 +1,15 @@
 #ifndef AST_H
-#define AST_H
+# define AST_H
 
 #include <string>
 #include <vector>
 using namespace std;
+#include "lex.h"
 #include "vv.h"
 
 typedef int ast_t;
 
-int find(char* cs);
+
 
 enum class NodeType
 {

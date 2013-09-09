@@ -79,6 +79,7 @@
     <ClInclude Include="ast.h" />
     <ClInclude Include="el.tab.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="lex.h" />
     <ClInclude Include="operator.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />

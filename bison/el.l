@@ -1,9 +1,8 @@
    /* -*-mode: flex-mode-*- */
 %{
 #include <stdarg.h>
-int find(char* cs);
 #include "el.tab.h"
-void yyerror(const char *s, ...);
+#include "lex.h"
 %}
 %option noyywrap
 %option caseless
@@ -120,27 +119,18 @@ return NAME; }
 
 \/\/.*      /* ignore */
 [ \t\r\n] /* ignore */
-.     { yyerror("Mystery character %c\n", *yytext); }
+.     { yyerror("Mystery character %c\n", *yytext); return *yytext; }
 %%
 
 void yyerror(const char *s, ...)
 {
     va_list ap;
     va_start(ap, s);
-
-    fprintf(stderr, "error: ");
-    vfprintf(stderr, s, ap);
-    va_end(ap);
-    fprintf(stderr, "\n");
-}
-
-void yyl()
-{
-	int d;
-	while(d=yylex())
-	{
-		printf("%d\n", d);
-	}
+    static char str[1000];
+    vsprintf_s(str, s, ap);
+	va_end(ap);
+	errorMessage += "error: ";
+	errorMessage += str;
 }
 
 

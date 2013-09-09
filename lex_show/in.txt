@@ -1,13 +1,4 @@
-inputs: abc(close),abc1("a"[100]);
-var: abca(close),abc1a("a"[100]);
-var:aaa(true);
-aaa=true<>false;
-abca=abca+1;
-buy next bar close stop;
-if true then aaa=false else aaa=true;
+once repeat until true = true; 
 
-if alertenabled then aaa=false;
 
-alert;
-
-inputs:as(CurrentBar );
+buy all share  bar

@@ -291,7 +291,11 @@ int main()
 	int g = elparse(f);
 	printf(" %d\n", g);
 	fclose(f);
-	if (g)return g;
+	if (g)
+	{
+		printf("%s\n", errorMessage.c_str());
+		return g;
+	}
 	initName();
 	generateDot(root);
 	//system("dot > a.txt");

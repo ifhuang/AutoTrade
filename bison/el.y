@@ -1,10 +1,6 @@
 %{
-#include <stdio.h>
 #include "tree.h"
-#include "operator.h"
 extern int yylex();
-extern void yyerror(const char *s, ...);
-
 %}
 
 %union{
