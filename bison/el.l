@@ -3,7 +3,7 @@
 #include <stdarg.h>
 int find(char* cs);
 #include "el.tab.h"
-void yyerror(char *s, ...);
+void yyerror(const char *s, ...);
 %}
 %option noyywrap
 %option caseless
@@ -123,7 +123,7 @@ return NAME; }
 .     { yyerror("Mystery character %c\n", *yytext); }
 %%
 
-void yyerror(char *s, ...)
+void yyerror(const char *s, ...)
 {
     va_list ap;
     va_start(ap, s);

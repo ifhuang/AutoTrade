@@ -3,13 +3,16 @@
 #include "tree.h"
 #include "operator.h"
 extern int yylex();
-extern void yyerror(char *s, ...);
+extern void yyerror(const char *s, ...);
 
 %}
 
 %union{
   int fn;
 }
+
+%define parse.error verbose
+%define parse.lac full
 
 %token INPUTS VARIABLES IBP
 %token NUMBER TRUE FALSE TEXT

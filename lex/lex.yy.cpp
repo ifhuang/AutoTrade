@@ -656,7 +656,7 @@ char *yytext;
 #include <stdarg.h>
 int find(char* cs);
 #include "el.tab.h"
-void yyerror(char *s, ...);
+void yyerror(const char *s, ...);
 #define YY_NO_UNISTD_H 1
 
 #line 663 "lex.yy.c"
@@ -2319,7 +2319,7 @@ void yyfree (void * ptr )
 
 
 
-void yyerror(char *s, ...)
+void yyerror(const char *s, ...)
 {
     va_list ap;
     va_start(ap, s);
