@@ -1,4 +1,5 @@
 #include <unordered_map>
+#include <boost/algorithm/string.hpp>
 #include "ast.h"
 #include "vv.h"
 using namespace std;
@@ -12,6 +13,7 @@ VV<ast> VVN(astV);
 int find(char* cs)
 {
 	string s(cs);
+	boost::algorithm::to_lower(s);
 	if (strTable.count(s))
 	{
 		return strTable[s];

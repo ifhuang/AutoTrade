@@ -31,6 +31,7 @@ enum class NodeType
 
 	VAR,
 	FUNC,
+	VOID,
 
 	EQ = 100,
 	GT,
