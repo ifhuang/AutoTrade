@@ -153,7 +153,22 @@ namespace Type
 
 		void operator()(for_stmt & fs) const
 		{
-
+			string name = get_var(fs.var);
+			VSource source = find_name(name);
+			if (source != VSource::Variable)
+			{
+				throw exception("array or varable expected");
+			}
+			Variable var = varTable[name];
+			if (var.type != VType::NUMERIC)
+			{
+				throw Types_are_not_compatible();
+			}
+			VType ft = get_type(fs.from);
+			if (ft == VType::TEXT)throw Types_are_not_compatible();
+			VType tt = get_type(fs.to);
+			if (tt == VType::TEXT)throw Types_are_not_compatible();
+			check(fs.block);
 		}
 
 		void operator()(while_stmt & ws) const
@@ -172,6 +187,25 @@ namespace Type
 			check_func(fs.func);
 		}
 
+		static void check_asm_variable(string name, asm_stmt &as)
+		{
+			Variable var = varTable[name];
+			switch (var.type)
+			{
+			case VType::NUMERIC:
+				break;
+			case VType::TEXT:
+			case VType::TF:
+				if (as.type != 0)throw Invalid_type_operation();
+				break;
+			}
+			VType rightType = get_type(as.exp);
+			if (var.type != rightType)
+			{
+				throw Types_are_not_compatible();
+			}
+		}
+
 		void operator()(asm_stmt & as) const
 		{
 			string name = get_var(as.var);
@@ -179,23 +213,7 @@ namespace Type
 			switch (source)
 			{
 			case VSource::Variable:
-				{
-					Variable var = varTable[name];
-					switch (var.type)
-					{
-					case VType::NUMERIC:
-						break;
-					case VType::TEXT:
-					case VType::TF:
-						if (as.type != 0)throw Invalid_type_operation();
-						break;
-					}
-					VType rightType = get_type(as.exp);
-					if (var.type != rightType)
-					{
-						throw Types_are_not_compatible();
-					}
-								  }
+				check_asm_variable(name, as);
 				break;
 			default:
 				throw exception("array or varable expected");
