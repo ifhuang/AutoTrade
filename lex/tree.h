@@ -68,6 +68,7 @@ struct asm_stmt
 
 struct var_stmt
 {
+	int type;
 	asts_t vars;
 };
 
@@ -96,6 +97,7 @@ int new_once(ast_t con, stmt_t stmt);
 int new_order(int type, ast_t price);
 int new_while(int type, ast_t con, stmt_t block);
 int new_print(int location, asts_t list);
+int new_var(int type, asts_t vars);
 
 void putInput(asts_t asts);
 void pre();

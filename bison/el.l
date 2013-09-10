@@ -26,7 +26,9 @@ input       { return INPUTS; }
 variables |
 variable |
 vars |
-var         { return VARIABLES; }  
+var         { return VARIABLES; }
+array |
+arrays      { return ARRAYS; }
 buy         { return BUY; }
 sell        { return SELL; }
 short       { return SHORT; }

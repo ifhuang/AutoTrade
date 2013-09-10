@@ -22,11 +22,12 @@ int find(const char *cs)
 	return strTable[s] = strTableSize++;
 }
 
-int newast(NodeType type, int left, int right)
+int newast(NodeType type, ast_t left, ast_t right, ast_t mid)
 {
 	ast node(type);
 	node.left = left;
 	node.right = right;
+	node.mid = mid;
 	return astV.put(node);
 }
 

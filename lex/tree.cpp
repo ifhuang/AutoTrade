@@ -55,6 +55,12 @@ int new_print(int location, asts_t list)
 	return stmtV.put(ps);
 }
 
+int new_var(int type, asts_t vars)
+{
+	var_stmt vs;	vs.type = type;
+	vs.vars = vars;	return stmtV.put(vs);
+}
+
 void pre()
 {
 	astpre();

@@ -24,6 +24,7 @@ enum class NodeType
 	UMINUS,
 
 	VARDEC,
+	ARRDEC,
 	IBPVARDEC,
 
 	PRINT,
@@ -70,7 +71,7 @@ extern vector<string> strVector;
 
 extern VV<ast> astV;
 
-int newast(NodeType type, ast_t left, ast_t right);
+int newast(NodeType type, ast_t left, ast_t right, ast_t mid = -1);
 int newname(int idx);
 int newdouble(int idx);
 int newtext(int idx);

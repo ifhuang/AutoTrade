@@ -10,7 +10,7 @@ extern int yylex();
 %define parse.error verbose
 %define parse.lac full
 
-%token INPUTS VARIABLES IBP
+%token INPUTS VARIABLES IBP ARRAYS
 %token NUMBER TRUE FALSE TEXT
 %token OPEN CLOSE THIS NEXT BAR MARKET STOP LIMIT ALL
 %token VOLUMN NAME 
@@ -27,10 +27,10 @@ extern int yylex();
 
 %type <fn> CMP NUMBER NAME TEXT ASM
 %type <fn> order_verb asm order_amount order_name for_type order_time print_location
-%type <fn> exp literal name text variable name_call print_element //ast
-%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables assignment block print_stmt //stmt
+%type <fn> exp nexp literal number name text variable array name_call print_element //ast
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables arrays assignment block print_stmt //stmt
 %type <fn> stmts stmt_list //stmts
-%type <fn> variable_list argu_list print_list //asts
+%type <fn> variable_list argu_list print_list array_list dimension_list //asts
 
 %left OR
 %left AND
@@ -77,25 +77,35 @@ other_sstmt: matched_once
 
 cstmt: inputs { $$ = -1; }
      | variables
+     | arrays
      ;
 
 inputs: INPUTS ':' variable_list ';' { putInput($3); } ;
 
-variables: VARIABLES ':' variable_list ';'
-    {
-      var_stmt vs;
-      vs.vars = $3;
-      $$ = stmtV.put(vs);
-    }
-    ;
+variables: VARIABLES ':' variable_list ';' { $$ = new_var(0, $3); } ;
 
 variable_list: variable                   { $$ = astsV.createI($1); }
              | variable_list ',' variable { $$ = astsV.putI($1, $3); }
              ;
 
 variable: name '(' exp ')'     { $$ = newast(NodeType::VARDEC, $1, $3); }
-        | IBP name '(' exp ')' { $$ = newast(NodeType::IBPVARDEC, $2, $4); }
+  //      | IBP name '(' exp ')' { $$ = newast(NodeType::IBPVARDEC, $2, $4); }
         ;
+
+arrays: ARRAYS ':' array_list ';' { $$ = new_var(1, $3); } ;
+
+array_list: array                { $$ = astsV.createI($1); }
+          | array_list ',' array { $$ = astsV.putI($1, $3); }
+          ;
+
+array: name LSB dimension_list RSB '(' exp ')'
+       { $$ = newast(NodeType::ARRDEC, $1, $6, $3); }
+ //    | IBP name LSB dimension_list RSB '(' exp ')'
+     ;
+
+dimension_list: nexp                    { $$ = astsV.createI($1); }
+              | dimension_list ',' nexp { $$ = astsV.putI($1, $3); }
+              ;
 
 if_stmt:    matched
       |     unmatched
@@ -209,12 +219,22 @@ exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
    | exp CROSS ABOVE exp { $$ = newcmp(6, $1, $4); }
    | exp CROSS BELOW exp { $$ = newcmp(7, $1, $4); }
    | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
-   | ADD exp %prec UNARY  { $$ = $2; }
-   | '(' exp ')'  { $$ = $2; }
+   | ADD exp %prec UNARY { $$ = $2; }
+   | '(' exp ')' { $$ = $2; }
    | exp LSB exp RSB { $$ = newast(NodeType::BAR, $1, $3); }
    | literal
    | name_call
    ;
+
+nexp: nexp MUL nexp { $$ = newast(NodeType::MUL, $1, $3); }
+    | nexp DIV nexp { $$ = newast(NodeType::DIV, $1, $3); }
+    | nexp ADD nexp { $$ = newast(NodeType::ADD, $1, $3); }
+    | nexp SUB nexp { $$ = newast(NodeType::SUB, $1, $3); }
+    | SUB nexp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
+    | ADD nexp %prec UNARY { $$ = $2; }
+    | '(' nexp ')'  { $$ = $2; }
+    | number
+    ;
 
 name: NAME  { $$ = newname($1); }
     | CLOSE { $$ = newname(0); }
@@ -229,11 +249,13 @@ argu_list: exp { $$ = astsV.createI($1); }
       |    argu_list ',' exp { $$ = astsV.putI($1, $3); }
       ;
 
-literal: NUMBER { $$ = newdouble($1); }
+literal: number
       |  TRUE   { $$ = newtf(true); }
       |  FALSE  { $$ = newtf(false); }
       |  text
       ;
+
+number: NUMBER { $$ = newdouble($1); } ;
 
 text: TEXT { $$ = newtext($1); } ;
 
