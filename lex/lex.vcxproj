@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClCompile Include="ast.cpp" />
     <ClCompile Include="el.tab.cpp" />
+    <ClCompile Include="execution.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="lex.yy.cpp" />
@@ -78,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="ast.h" />
     <ClInclude Include="el.tab.h" />
+    <ClInclude Include="execution.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="lex.h" />
     <ClInclude Include="operator.h" />
