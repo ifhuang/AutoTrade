@@ -66,6 +66,15 @@ int newcmp(int fn, int lhs, int rhs)
 	return astV.put(node);
 }
 
+int newprint(ast_t exp, ast_t n, ast_t m)
+{
+	ast node(NodeType::PRINT);
+	node.left = exp;
+	node.mid = n;
+	node.right = m;
+	return astV.put(node);
+}
+
 void applyBar(ast *node, int bar)
 {
 	switch (node->type)

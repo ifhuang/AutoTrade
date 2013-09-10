@@ -15,7 +15,7 @@
 "{"          { BEGIN(COMMENT); }
 <COMMENT>"}" { BEGIN(INITIAL); }
 <COMMENT>\n|.
-<COMMENT><<EOF>> { yyerror("Unterminated comment"); }
+<COMMENT><<EOF>> { yyerror("Unterminated comment\n"); return '{'; }
 
 if          { return IF; }
 then        { return THEN; }
@@ -66,6 +66,9 @@ while       { return WHILE; }
 repeat      { return REPEAT; }
 until       { return UNTIL; }
 all         { return ALL; }
+print       { return PRINT; }
+printer     { return PRINTER; }
+file        { return PFILE; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);
@@ -101,9 +104,8 @@ return NAME; }
 "/" { return DIV; }
 "[" { return LSB; }
 "]" { return RSB; }
-":" { return COL; }
 
-[(),;=] { return yytext[0]; }
+[(),:;=] { return yytext[0]; }
 
 "+=" { yylval.fn = 1; return ASM; }
 "-=" { yylval.fn = 2; return ASM; }
@@ -118,7 +120,7 @@ return NAME; }
 "<=" { yylval.fn = 5; return CMP; }
 
 \/\/.*      /* ignore */
-[ \t\r\n] /* ignore */
+[ \t\r\n]   /* ignore */
 .     { yyerror("Mystery character %c\n", *yytext); return *yytext; }
 %%
 

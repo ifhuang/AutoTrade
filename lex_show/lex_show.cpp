@@ -29,6 +29,8 @@ namespace{
 		ADDNAME(VARDEC);
 		ADDNAME(IBPVARDEC);
 
+		ADDNAME(PRINT);
+
 		ADDNAME(NUMERIC);
 		ADDNAME(TF);
 		ADDNAME(TEXT);
@@ -103,6 +105,11 @@ namespace{
 					dfs(argu, ast);
 				}
 			}
+			break;
+		case NodeType::PRINT:
+			dfs(id, node.left);
+			dfs(id, node.mid);
+			dfs(id, node.right);
 			break;
 		default:
 			dfs(id, node.left);
@@ -215,6 +222,20 @@ namespace{
 			for (ast_t var : astsV[vs.vars])
 			{
 				dfs(id, var);
+			}
+			return id;
+		}
+
+		int operator()(print_stmt & ps) const
+		{
+			int id = fpr_stmt("PRINT");
+			snode(id, ps.location == -1 ? "PRINTER" : strVector[ps.location]);
+			if (~ps.list)
+			{
+				for (ast_t idx : astsV[ps.list])
+				{
+					dfs(id, idx);
+				}
 			}
 			return id;
 		}

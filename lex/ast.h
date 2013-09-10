@@ -26,6 +26,8 @@ enum class NodeType
 	VARDEC,
 	IBPVARDEC,
 
+	PRINT,
+
 	NUMERIC,
 	TF,
 	TEXT,
@@ -56,6 +58,7 @@ struct ast
 		struct
 		{
 			ast_t left;
+			ast_t mid;
 			ast_t right;
 		};
 	};
@@ -73,9 +76,9 @@ int newdouble(int idx);
 int newtext(int idx);
 int newtf(bool bv);
 int newcmp(int fn, ast_t lhs, ast_t rhs);
+int newprint(ast_t exp, ast_t n = -1, ast_t m = -1);
 
 void astpre();
 void astpost();
 void printTree(ast* node);
-
 #endif

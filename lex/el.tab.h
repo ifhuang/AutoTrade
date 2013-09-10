@@ -71,35 +71,36 @@ extern int yydebug;
     DIV = 281,
     LSB = 282,
     RSB = 283,
-    COL = 284,
-    COM = 285,
-    CROSS = 286,
-    ABOVE = 287,
-    BELOW = 288,
-    BUY = 289,
-    SELL = 290,
-    SHORT = 291,
-    SELLSHORT = 292,
-    TO = 293,
-    COVER = 294,
-    BUYTOCOVER = 295,
-    SHARE = 296,
-    PLOT1 = 297,
-    IF = 298,
-    THEN = 299,
-    ELSE = 300,
-    AND = 301,
-    OR = 302,
-    NOT = 303,
-    ONCE = 304,
-    FOR = 305,
-    DOWNTO = 306,
-    WHILE = 307,
-    REPEAT = 308,
-    UNTIL = 309,
-    BBEGIN = 310,
-    BEND = 311,
-    UNARY = 312
+    CROSS = 284,
+    ABOVE = 285,
+    BELOW = 286,
+    BUY = 287,
+    SELL = 288,
+    SHORT = 289,
+    SELLSHORT = 290,
+    TO = 291,
+    COVER = 292,
+    BUYTOCOVER = 293,
+    SHARE = 294,
+    PLOT1 = 295,
+    IF = 296,
+    THEN = 297,
+    ELSE = 298,
+    AND = 299,
+    OR = 300,
+    NOT = 301,
+    ONCE = 302,
+    FOR = 303,
+    DOWNTO = 304,
+    WHILE = 305,
+    REPEAT = 306,
+    UNTIL = 307,
+    BBEGIN = 308,
+    BEND = 309,
+    PRINT = 310,
+    PRINTER = 311,
+    PFILE = 312,
+    UNARY = 313
   };
 #endif
 
@@ -112,7 +113,7 @@ union YYSTYPE
 
   int fn;
 
-#line 116 "el.tab.h" /* yacc.c:1909  */
+#line 117 "el.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -240,6 +240,11 @@ namespace Type
 				declare_var(name, type);
 			}
 		}
+
+		void operator()(print_stmt & ps) const
+		{
+
+		}
 	};
 
 	void check(stmt_t stmt)
