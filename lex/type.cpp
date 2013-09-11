@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "type.h"
 
 #include <string>
 #include <boost/variant.hpp>
@@ -6,11 +6,23 @@
 using namespace std;
 
 #include "table.h"
-#include "type.h"
+#include "tree.h"
 
 namespace Type
 {
-	VType get_type(ast_t idx);
+	SetUpEnviroment enviroment;
+
+	int ReserveSpace(VType value_type, int size = 1)
+	{
+		if (value_type == VType::VOID)throw exception();
+		int vt = static_cast<int>(value_type);
+
+		int position = Type::enviroment.nums[vt];
+		Type::enviroment.nums[vt] += size;
+		return position;
+	}
+
+	VType get_type(ast_t &idx, bool is_input = false);
 
 	string get_var(ast_t idx)
 	{
@@ -22,7 +34,7 @@ namespace Type
 	void check_paras(StdFunction function, asts_t idx)
 	{
 		auto &paras = function.paras;
-		if (idx == -1)
+		if (idx < 0)
 		{
 			if (!paras.empty() && function.min != 0)
 			{
@@ -46,18 +58,42 @@ namespace Type
 		}
 	}
 
-	VType check_func(ast_t idx)
+	VType check_func(ast_t &idx, bool is_input = false)
 	{
 		ast &func = astV[idx];
 		string name = get_var(func.left);
 		VSource source = find_name(name);
-		if (source != VSource::StdFunction)throw exception("Unknown Function");
-		StdFunction &function = funcTable[name];
-		check_paras(function, func.right);
-		return function.result;
+		switch (source)
+		{
+		case VSource::StdFunction:
+			{
+				StdFunction &function = funcTable[name];
+				check_paras(function, func.right);
+				return function.result;
+								 }
+		case VSource::Input:
+			{
+				if (is_input)throw exception("input cannot contain input");
+				if (func.right != -2)throw exception("not a function, is input");
+				Input input = inputTable[name];
+				idx = input.exp;
+				return input.type;
+						   }
+		case VSource::Variable:
+			{
+				if (is_input)throw exception("input cannot contain variable");
+				if (func.right != -2)throw exception("not a function, is variable");
+				Variable variable = varTable[name];
+				return variable.type;
+							  }
+		case VSource::Undefined:
+			throw exception("Unknown Function");
+		default:
+			throw exception();
+		}
 	}
 
-	VType get_type(ast_t idx)
+	VType get_type(ast_t &idx, bool is_input)
 	{
 		ast &node = astV[idx];
 		switch (node.type)
@@ -239,7 +275,8 @@ namespace Type
 					throw exception("this word has already been defined");
 				}
 				VType type = get_type(var.right);
-				declare_var(name, type);
+				int position = ReserveSpace(type);
+				declare_var(name, position, type);
 			}
 		}
 
@@ -273,7 +310,12 @@ namespace Type
 				throw exception("this word has already been defined");
 			}
 			VType type = get_type(input.right);
-			declare_input(name, type, input.right);
+			Input in;
+			in.name = name;
+			in.type = type;
+			in.exp = input.right;
+			inputTable[name] = in;
+			enviroment.inputs.push_back(in);
 		}
 	}
 

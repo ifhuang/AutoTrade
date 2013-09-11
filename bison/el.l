@@ -71,6 +71,9 @@ all         { return ALL; }
 print       { return PRINT; }
 printer     { return PRINTER; }
 file        { return PFILE; }
+switch      { return SWITCH; }
+default     { return default; }
+case        { return CASE; }
 
 \"[^"]*\"  { 
 yylval.fn = find(yytext);

@@ -9,8 +9,9 @@ using namespace std;
 
 #include "functions.h"
 
+
 unordered_map<string, StdFunction> funcTable;
-unordered_map<string, Input> inputTable;
+unordered_map<string, Type::Input> inputTable;
 unordered_map<string, Variable> varTable;
 
 void init_func_table()
@@ -26,19 +27,12 @@ VSource find_name(string name)
 	return VSource::Undefined;
 }
 
-void declare_var(string name, VType type)
+void declare_var(string name, int postion, VType type)
 {
 	Variable var;
+	var.position = postion;
 	var.type = type;
 	varTable[name] = var;
-}
-
-void declare_input(string name, VType type, ast_t idx)
-{
-	Input input;
-	input.type = type;
-	input.idx = idx;
-	inputTable[name] = input;
 }
 
 struct stmt_visitor : public boost::static_visitor<int>

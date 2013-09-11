@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "ast.h"
+#include "type.h"
 
 enum class VSource { StdFunction, Input, Variable, Undefined };
-enum class VType { NUMERIC, TF, TEXT, VOID };
 
 struct TableInfo
 {
@@ -32,20 +32,15 @@ struct StdFunction{
 };
 
 struct Variable{
+	int position;
 	VType type;
-};
-
-struct Input{
-	VType type;
-	ast_t idx;
 };
 
 extern std::unordered_map<std::string, StdFunction> funcTable;
-extern std::unordered_map<std::string, Input> inputTable;
+extern std::unordered_map<std::string, Type::Input> inputTable;
 extern std::unordered_map<std::string, Variable> varTable;
 
 VSource find_name(std::string name);
-void declare_input(std::string name, VType type, ast_t idx);
-void declare_var(std::string name, VType type);
+void declare_var(std::string name, int postion, VType type);
 
 #endif

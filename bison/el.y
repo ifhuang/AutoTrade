@@ -21,6 +21,7 @@ extern int yylex();
 %token BUY SELL SHORT SELLSHORT TO COVER BUYTOCOVER SHARE
 %token PLOT1
 %token IF THEN ELSE AND OR NOT ONCE FOR DOWNTO WHILE REPEAT UNTIL
+%token SWITCH DEFAULT CASE
 %token BBEGIN BEND 
 %token PRINT PRINTER PFILE
 
@@ -63,6 +64,7 @@ other_sstmt: matched_once
      |       for_stmt
      |       while_stmt
      |       repeat_stmt
+     |       switch_stmt
      |       order_stmt
      |       assignment
      |       name_call
@@ -154,6 +156,27 @@ repeat_stmt: REPEAT stmt_list UNTIL exp { $$ = new_while(1, $4, $2); }
            | REPEAT UNTIL exp { $$ = new_while(1, $3, -1); }
            ;
 
+switch_stmt: SWITCH '(' exp ')' BBEGIN section_list BEND ;
+
+section_list: section
+            | section_list section
+            ;
+
+section: case_option ':' stmt_list ;
+
+case_option: DEFAULT
+           | CASE case_list
+           ;
+
+case_list: case
+         | case_list ',' case
+         ;
+
+case: exp
+    | exp TO exp
+    | exp DOWNTO exp
+    ;
+
 order_stmt: order_verb order_name order_amount order_time order_action
     {
       auto &oa = boost::get<order_stmt>(stmtV[$$ = $5]);
@@ -240,7 +263,7 @@ name: NAME  { $$ = newname($1); }
     | CLOSE { $$ = newname(0); }
     ;
 
-name_call: name { $$ = newast(NodeType::FUNC, $1, -1); }
+name_call: name { $$ = newast(NodeType::FUNC, $1, -2); }
       |    name '(' ')' { $$ = newast(NodeType::FUNC, $1, -1); }
       |    name '(' argu_list ')' { $$ = newast(NodeType::FUNC, $1, $3); }
       ;
