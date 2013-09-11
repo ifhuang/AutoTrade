@@ -106,5 +106,6 @@ int new_var(int type, asts_t vars);
 void putInput(asts_t asts);
 void pre();
 void post();
+int elparse(FILE *f);
 
 #endif

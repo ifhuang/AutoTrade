@@ -1,13 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-int elparse(FILE *f);
+#include "tree.h"
 
 int main()
 {
 	FILE *f = fopen("in.txt", "r");
 	int g = elparse(f);
-	printf("%d\n", g);
+	printf(" %d\n", g);
 	fclose(f);
-	return 0;
+	if (g)
+	{
+		printf("%s\n", errorMessage.c_str());
+		return g;
+	}
 }

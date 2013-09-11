@@ -30,16 +30,16 @@ namespace Type{
 		std::vector<Initialize> initialize_list[3];
 	};
 
-	struct Invalid_type_operation{
+	struct InvalidTypeOperation{
 
 	};
 
-	struct Logical_expression_expected
+	struct LogicalExpressionExpected
 	{
 
 	};
 
-	struct Types_are_not_compatible
+	struct TypesNotCompatible
 	{
 
 	};

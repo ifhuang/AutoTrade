@@ -85,8 +85,6 @@ void post()
 	astpost();
 }
 
-void yyrestart(FILE * input_file);
-
 int elparse(FILE *f)
 {
 	//yydebug = 1;

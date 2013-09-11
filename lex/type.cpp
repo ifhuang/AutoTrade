@@ -31,7 +31,7 @@ namespace Type
 		return strVector[node.idx];
 	}
 
-	void check_paras(StdFunction function, asts_t idx)
+	void check_paras(StdFunction function, asts_t idx, bool is_input = false)
 	{
 		auto &paras = function.paras;
 		if (idx < 0)
@@ -50,7 +50,7 @@ namespace Type
 		}
 		for (size_t i = 0; i < args.size(); i++)
 		{
-			VType at = get_type(args[i]);
+			VType at = get_type(args[i], is_input);
 			if (at != paras[i])
 			{
 				throw exception("Incorrect argument type");
@@ -65,27 +65,24 @@ namespace Type
 		VSource source = find_name(name);
 		switch (source)
 		{
-		case VSource::StdFunction:
-			{
-				StdFunction &function = funcTable[name];
-				check_paras(function, func.right);
-				return function.result;
-								 }
-		case VSource::Input:
-			{
-				if (is_input)throw exception("input cannot contain input");
-				if (func.right != -2)throw exception("not a function, is input");
-				Input input = inputTable[name];
-				idx = input.exp;
-				return input.type;
-						   }
-		case VSource::Variable:
-			{
-				if (is_input)throw exception("input cannot contain variable");
-				if (func.right != -2)throw exception("not a function, is variable");
-				Variable variable = varTable[name];
-				return variable.type;
-							  }
+		case VSource::StdFunction: {
+			StdFunction &function = funcTable[name];
+			check_paras(function, func.right, is_input);
+			return function.result;
+								   }
+		case VSource::Input: {
+			if (is_input)throw exception("input cannot contain input");
+			if (func.right != -2)throw exception("not a function, is input");
+			Input input = inputTable[name];
+			idx = input.exp;
+			return input.type;
+							 }
+		case VSource::Variable:	{
+			if (is_input)throw exception("input cannot contain variable");
+			if (func.right != -2)throw exception("not a function, is variable");
+			Variable variable = varTable[name];
+			return variable.type;
+								}
 		case VSource::Undefined:
 			throw exception("Unknown Function");
 		default:
@@ -103,33 +100,33 @@ namespace Type
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if ((l == VType::NUMERIC || l == VType::TEXT) && l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::SUB:
 		case NodeType::MUL:
 		case NodeType::DIV:
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if (l == VType::NUMERIC && l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::AND:
 		case NodeType::OR:
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if (l == VType::TF && l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::NOT:
 			l = get_type(node.left);
 			if (l == VType::TF)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::BAR:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if (r == VType::TEXT)throw Invalid_type_operation();
+			if (r == VType::TEXT)throw InvalidTypeOperation();
 			return l;
 		case NodeType::UMINUS:
 			l = get_type(node.left);
 			if (l == VType::NUMERIC)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::NUMERIC:
 			node.dv = boost::lexical_cast<double>(strVector[node.idx]);
 			return VType::NUMERIC;
@@ -142,7 +139,7 @@ namespace Type
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if (l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::GT:
 		case NodeType::LT:
 		case NodeType::GE:
@@ -150,15 +147,15 @@ namespace Type
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if ((l == VType::NUMERIC || l == VType::TEXT) && l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::CA:
 		case NodeType::CB:
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if (l == VType::NUMERIC && l == r)return l;
-			throw Invalid_type_operation();
+			throw InvalidTypeOperation();
 		case NodeType::FUNC:
-			return check_func(idx);
+			return check_func(idx, is_input);
 		default:
 			throw exception();
 		}
@@ -178,14 +175,14 @@ namespace Type
 	{
 		void operator()(if_stmt & is) const
 		{
-			if (get_type(is.con) != VType::TF)throw Logical_expression_expected();
+			if (get_type(is.con) != VType::TF)throw LogicalExpressionExpected();
 			check(is.then);
 			check(is.els);
 		}
 
 		void operator()(once_stmt & os) const
 		{
-			if (get_type(os.con) != VType::TF)throw Logical_expression_expected();
+			if (get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
 			check(os.stmt);
 		}
 
@@ -200,18 +197,18 @@ namespace Type
 			Variable var = varTable[name];
 			if (var.type != VType::NUMERIC)
 			{
-				throw Types_are_not_compatible();
+				throw TypesNotCompatible();
 			}
 			VType ft = get_type(fs.from);
-			if (ft == VType::TEXT)throw Types_are_not_compatible();
+			if (ft == VType::TEXT)throw TypesNotCompatible();
 			VType tt = get_type(fs.to);
-			if (tt == VType::TEXT)throw Types_are_not_compatible();
+			if (tt == VType::TEXT)throw TypesNotCompatible();
 			check(fs.block);
 		}
 
 		void operator()(while_stmt & ws) const
 		{
-			if (get_type(ws.con) != VType::TF)throw Logical_expression_expected();
+			if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected();
 			check(ws.block);
 		}
 
@@ -239,13 +236,13 @@ namespace Type
 				break;
 			case VType::TEXT:
 			case VType::TF:
-				if (as.type != 0)throw Invalid_type_operation();
+				if (as.type != 0)throw InvalidTypeOperation();
 				break;
 			}
 			VType rightType = get_type(as.exp);
 			if (var.type != rightType)
 			{
-				throw Types_are_not_compatible();
+				throw TypesNotCompatible();
 			}
 		}
 
@@ -297,8 +294,6 @@ namespace Type
 		boost::apply_visitor(check_visitor(), stmtV[stmt]);
 	}
 
-
-
 	void check_input()
 	{
 		for (ast_t idx : inputVector)
@@ -314,7 +309,7 @@ namespace Type
 			{
 				throw exception("this word has already been defined");
 			}
-			VType type = get_type(input.right);
+			VType type = get_type(input.right, true);
 			Input in;
 			in.name = name;
 			in.type = type;
