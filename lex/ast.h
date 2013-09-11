@@ -3,13 +3,11 @@
 
 #include <string>
 #include <vector>
-using namespace std;
+
 #include "lex.h"
 #include "vv.h"
 
 typedef int ast_t;
-
-
 
 enum class NodeType
 {
@@ -67,7 +65,7 @@ struct ast
 	ast(NodeType type) :type(type){}
 };
 
-extern vector<string> strVector;
+extern std::vector<std::string> strVector;
 
 extern VV<ast> astV;
 
@@ -82,4 +80,5 @@ int newprint(ast_t exp, ast_t n = -1, ast_t m = -1);
 void astpre();
 void astpost();
 void printTree(ast* node);
+
 #endif

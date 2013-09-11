@@ -1,11 +1,9 @@
 #ifndef TREE_H
-#define TREE_H
+# define TREE_H
 
-#include <unordered_map>
 #include <vector>
-#include <string>
 #include <boost/variant.hpp>
-using namespace std;
+
 #include "ast.h"
 #include "vv.h"
 
@@ -87,10 +85,10 @@ typedef boost::variant<if_stmt, once_stmt, for_stmt, while_stmt,
 	order_stmt, func_stmt, asm_stmt, block_stmt, var_stmt, print_stmt> stmt;
 
 extern VV<stmt> stmtV;
-extern VV<vector<stmt_t> > stmtsV;
-extern VV<vector<ast_t> >astsV;
+extern VV<std::vector<stmt_t> > stmtsV;
+extern VV<std::vector<ast_t> >astsV;
 
-extern vector<ast_t> inputVector;
+extern std::vector<ast_t> inputVector;
 
 int new_if(ast_t con, stmt_t then, stmt_t els = -1);
 int new_once(ast_t con, stmt_t stmt);
@@ -102,4 +100,5 @@ int new_var(int type, asts_t vars);
 void putInput(asts_t asts);
 void pre();
 void post();
+
 #endif

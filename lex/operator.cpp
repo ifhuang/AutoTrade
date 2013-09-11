@@ -1,5 +1,7 @@
 #include "operator.h"
 
+using namespace std;
+
 namespace Execution{
 
 	Value add_visitor::operator()(double lhs, double rhs) const

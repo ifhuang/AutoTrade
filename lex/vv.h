@@ -1,12 +1,14 @@
 #ifndef VV_H
-#define VV_H
+# define VV_H
+
+#include <vector>
 
 #define VVN(x) x(#x)
 
 template <typename T>
 struct VV
 {
-	vector<T> v;
+	std::vector<T> v;
 	const char *n;
 
 	VV(const char *n) :n(n){}

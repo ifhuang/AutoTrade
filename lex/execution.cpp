@@ -1,12 +1,14 @@
+#include "execution.h"
+
 #include <string>
 #include <boost/variant.hpp>
 #include <boost/lexical_cast.hpp>
 using namespace std;
-#include "type.h"
-#include "tree.h"
-#include "table.h"
-#include "execution.h"
+
 #include "operator.h"
+#include "table.h"
+#include "tree.h"
+#include "type.h"
 
 namespace Execution{
 

@@ -1,6 +1,9 @@
-#include <stdio.h>
-#include "el.tab.h"
 #include "tree.h"
+
+#include <stdio.h>
+using namespace std;
+
+#include "el.tab.h"
 
 stmts_t root;
 
@@ -23,7 +26,8 @@ int new_if(ast_t con, stmt_t then, stmt_t els)
 	if_stmt i;
 	i.con = con;
 	i.then = then;
-	i.els = els;	return stmtV.put(i);
+	i.els = els;
+	return stmtV.put(i);
 }
 
 int new_once(ast_t con, stmt_t stmt)
@@ -44,7 +48,11 @@ int new_order(int type, ast_t price)
 
 int new_while(int type, ast_t con, stmt_t block)
 {
-	while_stmt ws;	ws.type = type;	ws.con = con;	ws.block = block;	return stmtV.put(ws);
+	while_stmt ws;
+	ws.type = type;
+	ws.con = con;
+	ws.block = block;
+	return stmtV.put(ws);
 }
 
 int new_print(int location, asts_t list)
@@ -57,8 +65,10 @@ int new_print(int location, asts_t list)
 
 int new_var(int type, asts_t vars)
 {
-	var_stmt vs;	vs.type = type;
-	vs.vars = vars;	return stmtV.put(vs);
+	var_stmt vs;
+	vs.type = type;
+	vs.vars = vars;
+	return stmtV.put(vs);
 }
 
 void pre()

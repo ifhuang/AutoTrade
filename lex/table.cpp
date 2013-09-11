@@ -1,10 +1,12 @@
+#include "table.h"
+
 #include <stdio.h>
-#include <map>
 #include <algorithm>
+#include <map>
 #include <unordered_map>
 #include <boost/variant.hpp>
 using namespace std;
-#include "table.h"
+
 #include "functions.h"
 
 unordered_map<string, StdFunction> funcTable;

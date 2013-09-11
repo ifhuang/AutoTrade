@@ -1,8 +1,8 @@
 #ifndef OPERATOR_H
 # define OPERATOR_H
 
-#include "tree.h"
 #include "execution.h"
+#include "tree.h"
 
 namespace Execution{
 
@@ -12,7 +12,7 @@ namespace Execution{
 		Value operator()(const T &, const U &) const { throw Internal_exception(); }
 
 		Value operator()(double lhs, double rhs) const;
-		Value operator()(const string & lhs, const string & rhs) const;
+		Value operator()(const std::string & lhs, const std::string & rhs) const;
 	};
 
 	struct sub_visitor : public boost::static_visitor<Value>
@@ -101,7 +101,7 @@ namespace Execution{
 		Value operator()(const T &, const U &) const { throw Internal_exception(); }
 
 		Value operator()(double lhs, double rhs) const;
-		Value operator()(const string & lhs, const string & rhs) const;
+		Value operator()(const std::string & lhs, const std::string & rhs) const;
 	};
 
 	struct ge_visitor : public boost::static_visitor<Value>
@@ -110,7 +110,7 @@ namespace Execution{
 		Value operator()(const T &, const U &) const { throw Internal_exception(); }
 
 		Value operator()(double lhs, double rhs) const;
-		Value operator()(const string & lhs, const string & rhs) const;
+		Value operator()(const std::string & lhs, const std::string & rhs) const;
 	};
 
 	struct ca_visitor : public boost::static_visitor<Value>

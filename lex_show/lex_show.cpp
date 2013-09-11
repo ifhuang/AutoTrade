@@ -1,11 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string>
 #include <unordered_map>
 #include <boost/algorithm/string.hpp>
 using namespace std;
-#include "..\lex\tree.h"
+
+#include "../lex/tree.h"
 
 #define ADDNAME(x) enumName[NodeType::x] = #x
 

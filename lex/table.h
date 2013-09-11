@@ -1,9 +1,9 @@
 #ifndef TABLE_H
-#define TABLE_H
+# define TABLE_H
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include "ast.h"
 
@@ -22,12 +22,12 @@ struct TableInfo
 
 struct StdFunction{
 	VType result;
-	vector<VType> paras;
+	std::vector<VType> paras;
 	int min = -1;
-	virtual ast call(int bar, vector<ast_t> ps);
+	virtual ast call(int bar, std::vector<ast_t> ps);
 
 	StdFunction() {}
-	StdFunction(VType result, vector<VType> paras) :result(result), paras(paras) {}
+	StdFunction(VType result, std::vector<VType> paras) :result(result), paras(paras) {}
 	//Function(const Function &b) :result(b.result), paras(b.paras){}
 };
 
@@ -40,12 +40,12 @@ struct Input{
 	ast_t idx;
 };
 
-extern unordered_map<string, StdFunction> funcTable;
-extern unordered_map<string, Input> inputTable;
-extern unordered_map<string, Variable> varTable;
+extern std::unordered_map<std::string, StdFunction> funcTable;
+extern std::unordered_map<std::string, Input> inputTable;
+extern std::unordered_map<std::string, Variable> varTable;
 
-VSource find_name(string name);
-void declare_input(string name, VType type, ast_t idx);
-void declare_var(string name, VType type);
+VSource find_name(std::string name);
+void declare_input(std::string name, VType type, ast_t idx);
+void declare_var(std::string name, VType type);
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_H
 # define FUNCTIONS_H
 
+#include <vector>
+
 #include "table.h"
 
 namespace Func
@@ -10,7 +12,7 @@ namespace Func
 	{
 		Average();
 
-		virtual ast call(int bar, vector<ast_t> ps);
+		virtual ast call(int bar, std::vector<ast_t> ps);
 
 	};
 }

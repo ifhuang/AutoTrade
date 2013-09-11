@@ -1,10 +1,12 @@
+#include "tree.h"
+
 #include <string>
 #include <boost/variant.hpp>
 #include <boost/lexical_cast.hpp>
 using namespace std;
-#include "type.h"
-#include "tree.h"
+
 #include "table.h"
+#include "type.h"
 
 namespace Type
 {
