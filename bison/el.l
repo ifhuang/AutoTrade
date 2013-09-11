@@ -3,18 +3,27 @@
 #include <stdarg.h>
 #include "el.tab.h"
 #include "lex.h"
+
+int yycolumn = 1;
+
+#define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno; \
+    yylloc.first_column = yycolumn; yylloc.last_column = yycolumn + yyleng; \
+    yycolumn += yyleng;
+
 %}
 %option noyywrap
 %option caseless
 %option never-interactive
 %option nounistd
+%option yylineno
 
 %x COMMENT
 %%
 
 "{"          { BEGIN(COMMENT); }
 <COMMENT>"}" { BEGIN(INITIAL); }
-<COMMENT>\n|.
+<COMMENT>\n  { yycolumn = 1; }
+<COMMENT>.
 <COMMENT><<EOF>> { yyerror("Unterminated comment\n"); return '{'; }
 
 if          { return IF; }
@@ -125,8 +134,9 @@ return NAME; }
 "<=" { yylval.fn = 5; return CMP; }
 
 \/\/.*      /* ignore */
-[ \t\r\n]   /* ignore */
-.     { yyerror("Mystery character %c\n", *yytext); return *yytext; }
+[ \t\r]   /* ignore */
+\n   { yycolumn = 1; }
+.    { yyerror("Mystery character %c\n", *yytext); return *yytext; }
 %%
 
 void yyerror(const char *s, ...)

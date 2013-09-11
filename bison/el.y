@@ -7,6 +7,7 @@ extern int yylex();
   int fn;
 }
 
+%locations
 %define parse.error verbose
 %define parse.lac full
 
