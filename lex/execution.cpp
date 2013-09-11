@@ -118,6 +118,11 @@ namespace Execution{
 			}
 		}
 
+		void operator()(switch_stmt & ws) const
+		{
+
+		}
+
 		void operator()(order_stmt & os) const
 		{
 

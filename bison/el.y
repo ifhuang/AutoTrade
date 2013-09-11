@@ -28,10 +28,10 @@ extern int yylex();
 
 %type <fn> CMP NUMBER NAME TEXT ASM
 %type <fn> order_verb asm order_amount order_name for_type order_time print_location
-%type <fn> exp nexp literal number name text variable array name_call print_element //ast
-%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables arrays assignment block print_stmt //stmt
+%type <fn> exp nexp literal number name text variable array name_call print_element section case case_option //ast
+%type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables arrays assignment block print_stmt switch_stmt //stmt
 %type <fn> stmts stmt_list //stmts
-%type <fn> variable_list argu_list print_list array_list dimension_list //asts
+%type <fn> variable_list argu_list print_list array_list dimension_list section_list case_list //asts
 
 %left OR
 %left AND
@@ -156,25 +156,32 @@ repeat_stmt: REPEAT stmt_list UNTIL exp { $$ = new_while(1, $4, $2); }
            | REPEAT UNTIL exp { $$ = new_while(1, $3, -1); }
            ;
 
-switch_stmt: SWITCH '(' exp ')' BBEGIN section_list BEND ;
+switch_stmt: SWITCH '(' exp ')' BBEGIN section_list BEND 
+    {
+        switch_stmt ss;
+        ss.con = $3;
+        ss.sections = $6;
+        $$ = stmtV.put(ss);
+    }
+    ;
 
-section_list: section
-            | section_list section
+section_list: section              { $$ = astsV.createI($1); }
+            | section_list section { $$ = astsV.putI($1, $2); }
             ;
 
-section: case_option ':' stmt_list ;
+section: case_option ':' stmt_list { $$ = newast(NodeType::SECTION, $1, $3); }
 
-case_option: DEFAULT
-           | CASE case_list
+case_option: DEFAULT        { $$ = -1; }
+           | CASE case_list { $$ = $2; }
            ;
 
-case_list: case
-         | case_list ',' case
+case_list: case               { $$ = astsV.createI($1); }
+         | case_list ',' case { $$ = astsV.putI($1, $3); }
          ;
 
-case: exp
-    | exp TO exp
-    | exp DOWNTO exp
+case: exp            { $$ = newcase($1, -1, 0); }
+    | exp TO exp     { $$ = newcase($1, $3, 1); }
+    | exp DOWNTO exp { $$ = newcase($1, $3, 2); }
     ;
 
 order_stmt: order_verb order_name order_amount order_time order_action

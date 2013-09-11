@@ -78,6 +78,15 @@ int newprint(ast_t exp, ast_t n, ast_t m)
 	return astV.put(node);
 }
 
+int newcase(ast_t left, ast_t right, int type)
+{
+	ast node(NodeType::CASE);
+	node.left = left;
+	node.right = right;
+	node.mid = type;
+	return astV.put(node);
+}
+
 void applyBar(ast *node, int bar)
 {
 	switch (node->type)

@@ -72,7 +72,7 @@ print       { return PRINT; }
 printer     { return PRINTER; }
 file        { return PFILE; }
 switch      { return SWITCH; }
-default     { return default; }
+default     { return DEFAULT; }
 case        { return CASE; }
 
 \"[^"]*\"  { 

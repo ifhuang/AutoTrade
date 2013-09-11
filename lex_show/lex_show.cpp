@@ -172,6 +172,12 @@ namespace{
 			return id;
 		}
 
+		int operator()(switch_stmt & ws) const
+		{
+			int id = fpr_stmt("SWITCH");
+			return id;
+		}
+
 		int operator()(order_stmt & os) const
 		{
 			int id = fpr_stmt("ORDER");

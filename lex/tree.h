@@ -42,6 +42,12 @@ struct while_stmt
 	stmt_t block;
 };
 
+struct switch_stmt
+{
+	ast_t con;
+	asts_t sections;
+};
+
 struct order_stmt
 {
 	int op;
@@ -81,7 +87,7 @@ struct print_stmt
 	asts_t list;
 };
 
-typedef boost::variant<if_stmt, once_stmt, for_stmt, while_stmt,
+typedef boost::variant<if_stmt, once_stmt, for_stmt, while_stmt, switch_stmt,
 	order_stmt, func_stmt, asm_stmt, block_stmt, var_stmt, print_stmt> stmt;
 
 extern VV<stmt> stmtV;

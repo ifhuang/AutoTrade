@@ -215,6 +215,11 @@ namespace Type
 			check(ws.block);
 		}
 
+		void operator()(switch_stmt & ws) const
+		{
+
+		}
+
 		void operator()(order_stmt & os) const
 		{
 

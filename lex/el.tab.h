@@ -96,12 +96,15 @@ extern int yydebug;
     WHILE = 306,
     REPEAT = 307,
     UNTIL = 308,
-    BBEGIN = 309,
-    BEND = 310,
-    PRINT = 311,
-    PRINTER = 312,
-    PFILE = 313,
-    UNARY = 314
+    SWITCH = 309,
+    DEFAULT = 310,
+    CASE = 311,
+    BBEGIN = 312,
+    BEND = 313,
+    PRINT = 314,
+    PRINTER = 315,
+    PFILE = 316,
+    UNARY = 317
   };
 #endif
 
@@ -114,7 +117,7 @@ union YYSTYPE
 
   int fn;
 
-#line 118 "el.tab.h" /* yacc.c:1909  */
+#line 121 "el.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
