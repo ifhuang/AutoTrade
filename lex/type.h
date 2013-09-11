@@ -30,19 +30,26 @@ namespace Type{
 		std::vector<Initialize> initialize_list[3];
 	};
 
-	struct InvalidTypeOperation{
-
-	};
-
-	struct LogicalExpressionExpected
+	class SemanticError : public std::exception
 	{
-
+	public:
+		SemanticError() {}
+		SemanticError(const char * const & message) : exception(message) {}
 	};
 
-	struct TypesNotCompatible
-	{
-
+	struct InvalidTypeOperation : SemanticError{
+		InvalidTypeOperation() : SemanticError("invalid type operation") {}
 	};
+
+	struct LogicalExpressionExpected : SemanticError{
+		LogicalExpressionExpected() : SemanticError("logical expression expected") {}
+	};
+
+	struct TypesNotCompatible : SemanticError{
+		TypesNotCompatible() : SemanticError("types not compatible") {}
+	};
+
+	void type_check();
 }
 
 #endif

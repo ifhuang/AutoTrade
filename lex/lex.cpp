@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "tree.h"
+#include "type.h"
 
 int main()
 {
@@ -14,4 +15,14 @@ int main()
 		printf("%s\n", errorMessage.c_str());
 		return g;
 	}
+	
+	try
+	{
+		Type::type_check();
+	}
+	catch (Type::SemanticError e)
+	{
+		printf("%s\n", e.what());
+	}
+	return 0;
 }

@@ -14,7 +14,7 @@ namespace Type
 
 	int ReserveSpace(VType value_type, int size = 1)
 	{
-		if (value_type == VType::VOID)throw exception();
+		if (value_type == VType::VOID)throw SemanticError();
 		int vt = static_cast<int>(value_type);
 
 		int position = Type::enviroment.nums[vt];
@@ -27,7 +27,7 @@ namespace Type
 	string get_var(ast_t idx)
 	{
 		ast &node = astV[idx];
-		if (node.type != NodeType::VAR)throw exception("Internal get_var");
+		if (node.type != NodeType::VAR)throw SemanticError("Internal get_var");
 		return strVector[node.idx];
 	}
 
@@ -38,7 +38,7 @@ namespace Type
 		{
 			if (!paras.empty() && function.min != 0)
 			{
-				throw exception("Invalid number of parameters");
+				throw SemanticError("Invalid number of parameters");
 			}
 			return;
 		}
@@ -46,14 +46,14 @@ namespace Type
 		if (function.min == -1 && paras.size() != args.size()
 			|| function.min != -1 && paras.size() < args.size())
 		{
-			throw exception("Invalid number of parameters");
+			throw SemanticError("Invalid number of parameters");
 		}
 		for (size_t i = 0; i < args.size(); i++)
 		{
 			VType at = get_type(args[i], is_input);
 			if (at != paras[i])
 			{
-				throw exception("Incorrect argument type");
+				throw SemanticError("Incorrect argument type");
 			}
 		}
 	}
@@ -71,22 +71,22 @@ namespace Type
 			return function.result;
 								   }
 		case VSource::Input: {
-			if (is_input)throw exception("input cannot contain input");
-			if (func.right != -2)throw exception("not a function, is input");
+			if (is_input)throw SemanticError("input cannot contain input");
+			if (func.right != -2)throw SemanticError("not a function, is input");
 			Input input = inputTable[name];
 			idx = input.exp;
 			return input.type;
 							 }
 		case VSource::Variable:	{
-			if (is_input)throw exception("input cannot contain variable");
-			if (func.right != -2)throw exception("not a function, is variable");
+			if (is_input)throw SemanticError("input cannot contain variable");
+			if (func.right != -2)throw SemanticError("not a function, is variable");
 			Variable variable = varTable[name];
 			return variable.type;
 								}
 		case VSource::Undefined:
-			throw exception("Unknown Function");
+			throw SemanticError("Unknown Function");
 		default:
-			throw exception();
+			throw SemanticError();
 		}
 	}
 
@@ -99,20 +99,23 @@ namespace Type
 		case NodeType::ADD:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if ((l == VType::NUMERIC || l == VType::TEXT) && l == r)return l;
+			if (l != r)throw TypesNotCompatible();
+			if (l == VType::NUMERIC || l == VType::TEXT)return l;
 			throw InvalidTypeOperation();
 		case NodeType::SUB:
 		case NodeType::MUL:
 		case NodeType::DIV:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if (l == VType::NUMERIC && l == r)return l;
+			if (l != r)throw TypesNotCompatible();
+			if (l == VType::NUMERIC)return l;
 			throw InvalidTypeOperation();
 		case NodeType::AND:
 		case NodeType::OR:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if (l == VType::TF && l == r)return l;
+			if (l != r)throw TypesNotCompatible();
+			if (l == VType::TF)return l;
 			throw InvalidTypeOperation();
 		case NodeType::NOT:
 			l = get_type(node.left);
@@ -128,7 +131,14 @@ namespace Type
 			if (l == VType::NUMERIC)return l;
 			throw InvalidTypeOperation();
 		case NodeType::NUMERIC:
-			node.dv = boost::lexical_cast<double>(strVector[node.idx]);
+			try
+			{
+				node.dv = boost::lexical_cast<double>(strVector[node.idx]);
+			}
+			catch (boost::bad_lexical_cast)
+			{
+				throw SemanticError("bad numeric");
+			}
 			return VType::NUMERIC;
 		case NodeType::TF:
 			return VType::TF;
@@ -139,25 +149,27 @@ namespace Type
 			l = get_type(node.left);
 			r = get_type(node.right);
 			if (l == r)return l;
-			throw InvalidTypeOperation();
+			throw TypesNotCompatible();
 		case NodeType::GT:
 		case NodeType::LT:
 		case NodeType::GE:
 		case NodeType::LE:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if ((l == VType::NUMERIC || l == VType::TEXT) && l == r)return l;
+			if (l != r)throw TypesNotCompatible();
+			if (l == VType::NUMERIC || l == VType::TEXT)return l;
 			throw InvalidTypeOperation();
 		case NodeType::CA:
 		case NodeType::CB:
 			l = get_type(node.left);
 			r = get_type(node.right);
-			if (l == VType::NUMERIC && l == r)return l;
+			if (l != r)throw TypesNotCompatible();
+			if (l == VType::NUMERIC)return l;
 			throw InvalidTypeOperation();
 		case NodeType::FUNC:
 			return check_func(idx, is_input);
 		default:
-			throw exception();
+			throw SemanticError();
 		}
 	}
 
@@ -182,7 +194,7 @@ namespace Type
 
 		void operator()(once_stmt & os) const
 		{
-			if (get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
+			if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
 			check(os.stmt);
 		}
 
@@ -192,7 +204,7 @@ namespace Type
 			VSource source = find_name(name);
 			if (source != VSource::Variable)
 			{
-				throw exception("array or varable expected");
+				throw SemanticError("array or varable expected");
 			}
 			Variable var = varTable[name];
 			if (var.type != VType::NUMERIC)
@@ -256,7 +268,7 @@ namespace Type
 				check_asm_variable(name, as);
 				break;
 			default:
-				throw exception("array or varable expected");
+				throw SemanticError("array or varable expected");
 			}
 		}
 
@@ -274,7 +286,7 @@ namespace Type
 				VSource source = find_name(name);
 				if (source != VSource::Undefined)
 				{
-					throw exception("this word has already been defined");
+					throw SemanticError("this word has already been defined");
 				}
 				VType type = get_type(var.right);
 				int position = ReserveSpace(type);
@@ -301,13 +313,13 @@ namespace Type
 			ast &input = astV[idx];
 			if (input.type == NodeType::IBPVARDEC)
 			{
-				throw exception("This attribute can be applied only for variables");
+				throw SemanticError("This attribute can be applied only for variables");
 			}
 			string name = get_var(input.left);
 			VSource source = find_name(name);
 			if (source != VSource::Undefined)
 			{
-				throw exception("this word has already been defined");
+				throw SemanticError("this word has already been defined");
 			}
 			VType type = get_type(input.right, true);
 			Input in;
