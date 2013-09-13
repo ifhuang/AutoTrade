@@ -32,8 +32,8 @@ struct StdFunction{
 };
 
 struct Variable{
-	int position;
 	VType type;
+	int position;
 };
 
 extern std::unordered_map<std::string, StdFunction> funcTable;

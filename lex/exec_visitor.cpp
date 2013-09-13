@@ -73,34 +73,21 @@ namespace{
         char *buffp = buff;
         size_t remain = 256;
     };
-}
+}  // namespace
 
-void exec_visitor::operator()(var_stmt & vs) const
+void exec_visitor::operator()(if_stmt & is) const
 {
-
+    bool con = check_value<bool>(is.con);
+    exec(con ? is.then : is.then);
 }
 
-void exec_visitor::operator()(block_stmt & bs) const
+void exec_visitor::operator()(once_stmt & os) const
 {
-    exec_stmts(bs.stmts);
+    bool con = os.con == -1 || check_value<bool>(os.con);
+    if (con)exec(os.stmt);
 }
 
-void exec_visitor::operator()(asm_stmt & as) const
-{
-
-}
-
-void exec_visitor::operator()(func_stmt & fs) const
-{
-
-}
-
-void exec_visitor::operator()(order_stmt & os) const
-{
-
-}
-
-void exec_visitor::operator()(switch_stmt & ws) const
+void exec_visitor::operator()(for_stmt & fs) const
 {
 
 }
@@ -123,21 +110,34 @@ void exec_visitor::operator()(while_stmt & ws) const
     }
 }
 
-void exec_visitor::operator()(for_stmt & fs) const
+void exec_visitor::operator()(switch_stmt & ws) const
 {
 
 }
 
-void exec_visitor::operator()(once_stmt & os) const
+void exec_visitor::operator()(order_stmt & os) const
 {
-    bool con = os.con == -1 || check_value<bool>(os.con);
-    if (con)exec(os.stmt);
+
 }
 
-void exec_visitor::operator()(if_stmt & is) const
+void exec_visitor::operator()(func_stmt & fs) const
 {
-    bool con = check_value<bool>(is.con);
-    exec(con ? is.then : is.then);
+
+}
+
+void exec_visitor::operator()(asm_stmt & as) const
+{
+
+}
+
+void exec_visitor::operator()(block_stmt & bs) const
+{
+    exec_stmts(bs.stmts);
+}
+
+void exec_visitor::operator()(var_stmt & vs) const
+{
+
 }
 
 void exec_visitor::operator()(print_stmt & ps) const

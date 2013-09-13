@@ -71,11 +71,25 @@ void check_visitor::operator()(for_stmt & fs) const
     check(fs.block);
 }
 
-
-
-void check_visitor::operator()(block_stmt & bs) const
+void check_visitor::operator()(while_stmt & ws) const
 {
-    check_stmts(bs.stmts);
+    if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected();
+    check(ws.block);
+}
+
+void check_visitor::operator()(switch_stmt & ws) const
+{
+
+}
+
+void check_visitor::operator()(order_stmt & os) const
+{
+
+}
+
+void check_visitor::operator()(func_stmt & fs) const
+{
+    check_func(fs.func);
 }
 
 void check_visitor::operator()(asm_stmt & as) const
@@ -92,25 +106,9 @@ void check_visitor::operator()(asm_stmt & as) const
     }
 }
 
-void check_visitor::operator()(func_stmt & fs) const
+void check_visitor::operator()(block_stmt & bs) const
 {
-    check_func(fs.func);
-}
-
-void check_visitor::operator()(order_stmt & os) const
-{
-
-}
-
-void check_visitor::operator()(switch_stmt & ws) const
-{
-
-}
-
-void check_visitor::operator()(while_stmt & ws) const
-{
-    if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected();
-    check(ws.block);
+    check_stmts(bs.stmts);
 }
 
 void check_visitor::operator()(var_stmt & vs) const
