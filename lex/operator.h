@@ -9,7 +9,7 @@ namespace Execution{
 	struct add_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 		Value operator()(const std::string & lhs, const std::string & rhs) const;
@@ -18,7 +18,7 @@ namespace Execution{
 	struct sub_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 	};
@@ -26,7 +26,7 @@ namespace Execution{
 	struct mul_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 	};
@@ -34,7 +34,7 @@ namespace Execution{
 	struct div_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 	};
@@ -42,7 +42,7 @@ namespace Execution{
 	struct and_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(bool lhs, bool rhs) const;
 	};
@@ -50,7 +50,7 @@ namespace Execution{
 	struct or_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(bool lhs, bool rhs) const;
 	};
@@ -58,7 +58,7 @@ namespace Execution{
 	struct not_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T>
-		Value operator()(const T &) const { throw Internal_exception(); }
+		Value operator()(const T &) const { throw InternalException(); }
 
 		Value operator()(bool lhs) const;
 	};
@@ -66,7 +66,7 @@ namespace Execution{
 	struct uminus_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T>
-		Value operator()(const T &) const { throw Internal_exception(); }
+		Value operator()(const T &) const { throw InternalException(); }
 
 		Value operator()(double lhs) const;
 	};
@@ -74,7 +74,7 @@ namespace Execution{
 	struct eq_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		template <typename T>
 		Value operator()(const T & lhs, const T & rhs) const
@@ -86,7 +86,7 @@ namespace Execution{
 	struct ne_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		template <typename T>
 		Value operator()(const T & lhs, const T & rhs) const
@@ -98,7 +98,7 @@ namespace Execution{
 	struct gt_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 		Value operator()(const std::string & lhs, const std::string & rhs) const;
@@ -107,7 +107,7 @@ namespace Execution{
 	struct ge_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 		Value operator()(const std::string & lhs, const std::string & rhs) const;
@@ -116,7 +116,7 @@ namespace Execution{
 	struct ca_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>
-		Value operator()(const T &, const U &) const { throw Internal_exception(); }
+		Value operator()(const T &, const U &) const { throw InternalException(); }
 
 		Value operator()(double lhs, double rhs) const;
 	};

@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
+#include "execution.h"
 #include "tree.h"
 #include "type.h"
 
@@ -24,5 +25,6 @@ int main()
 	{
 		printf("%s\n", e.what());
 	}
+	Execution::execute();
 	return 0;
 }

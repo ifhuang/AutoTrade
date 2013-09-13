@@ -24,8 +24,13 @@ namespace Type{
 		ast_t exp;
 	};
 
-	struct SetUpEnviroment{
+	class SetUpEnviroment{
+	public:
+		int ReserveSpace(VType value_type, ast_t exp, int size = 1);
+
 		std::vector<Input> inputs;
+
+	private:
 		int nums[3];
 		std::vector<Initialize> initialize_list[3];
 	};

@@ -1,13 +1,12 @@
 #include "execution.h"
 
-#include <string>
-#include <boost/variant.hpp>
+#include <iostream>
 #include <boost/lexical_cast.hpp>
 using namespace std;
 
+#include "exec_visitor.h"
 #include "operator.h"
 #include "table.h"
-#include "tree.h"
 #include "type.h"
 
 namespace Execution{
@@ -65,8 +64,6 @@ namespace Execution{
 		return double(0.0);
 	}
 
-	void exec(stmt_t stmt);
-
 	void exec_stmts(stmts_t idx)
 	{
 		for (stmt_t stmt : stmtsV[idx])
@@ -75,100 +72,14 @@ namespace Execution{
 		}
 	}
 
-	template<typename T>
-	T check_value(ast_t idx)
-	{
-		return boost::get<T>(value(idx));
-	}
-
-	struct exec_visitor : public boost::static_visitor<>
-	{
-		void operator()(if_stmt & is) const
-		{
-			bool con = check_value<bool>(is.con);
-			exec(con ? is.then : is.then);
-		}
-
-		void operator()(once_stmt & os) const
-		{
-			bool con = check_value<bool>(os.con);
-			if (con)exec(os.stmt);
-		}
-
-		void operator()(for_stmt & fs) const
-		{
-			
-		}
-
-		void operator()(while_stmt & ws) const
-		{
-			if (ws.type == 0)
-			{
-				while (check_value<bool>(ws.con))
-				{
-					exec(ws.block);
-				}
-			}
-			else
-			{
-				do 
-				{
-					exec(ws.block);
-				} while (check_value<bool>(ws.con));
-			}
-		}
-
-		void operator()(switch_stmt & ws) const
-		{
-
-		}
-
-		void operator()(order_stmt & os) const
-		{
-
-		}
-
-		void operator()(func_stmt & fs) const
-		{
-			
-		}
-
-		static void check_asm_variable(string name, asm_stmt &as)
-		{
-			
-		}
-
-		void operator()(asm_stmt & as) const
-		{
-			
-		}
-
-		void operator()(block_stmt & bs) const
-		{
-			exec_stmts(bs.stmts);
-		}
-
-		void operator()(var_stmt & vs) const
-		{
-			
-		}
-
-		void operator()(print_stmt & ps) const
-		{
-
-		}
-	};
-
 	void exec(stmt_t stmt)
 	{
 		if (stmt == -1)return;
-		//boost::apply_visitor(exec_visitor(), stmtV[stmt]);
+		boost::apply_visitor(exec_visitor(), stmtV[stmt]);
 	}
-
-
 
 	void execute()
 	{
-
+		exec_stmts(root);
 	}
 }

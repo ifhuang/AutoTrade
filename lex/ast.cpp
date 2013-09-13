@@ -13,15 +13,25 @@ string errorMessage;
 
 VV<ast> VVN(astV);
 
-int find(const char *cs)
+int find(string s)
 {
-	string s(cs);
 	boost::algorithm::to_lower(s);
 	if (strTable.count(s))
 	{
 		return strTable[s];
 	}
 	return strTable[s] = strTableSize++;
+}
+
+int find(const char *cs)
+{
+	return find(string(cs));
+}
+
+int find(const char *cs, int length)
+{
+	string s(cs, cs + length);
+	return find(s);
 }
 
 int newast(NodeType type, ast_t left, ast_t right, ast_t mid)

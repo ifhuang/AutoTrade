@@ -1267,7 +1267,7 @@ case 62:
 YY_RULE_SETUP
 #line 87 "el.l"
 { 
-yylval.fn = find(yytext);
+yylval.fn = find(yytext + 1, yyleng - 2);
 return TEXT; }
 	YY_BREAK
 case 63:

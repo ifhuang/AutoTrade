@@ -85,7 +85,7 @@ default     { return DEFAULT; }
 case        { return CASE; }
 
 \"[^"]*\"  { 
-yylval.fn = find(yytext);
+yylval.fn = find(yytext + 1, yyleng - 2);
 return TEXT; }
                              
 ([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?[0-9]+)? { 
@@ -133,7 +133,7 @@ return NAME; }
 ">=" { yylval.fn = 4; return CMP; }
 "<=" { yylval.fn = 5; return CMP; }
 
-\/\/.*      /* ignore */
+\/\/.*    /* ignore */
 [ \t\r]   /* ignore */
 \n   { yycolumn = 1; }
 .    { yyerror("Mystery character %c\n", *yytext); return *yytext; }

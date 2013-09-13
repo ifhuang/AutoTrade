@@ -10,15 +10,21 @@ using namespace std;
 
 namespace Type
 {
+	int kAstTrue;
+
 	SetUpEnviroment enviroment;
 
-	int ReserveSpace(VType value_type, int size = 1)
+	int SetUpEnviroment::ReserveSpace(VType value_type, ast_t exp, int size /*= 1*/)
 	{
 		if (value_type == VType::VOID)throw SemanticError();
 		int vt = static_cast<int>(value_type);
 
-		int position = Type::enviroment.nums[vt];
-		Type::enviroment.nums[vt] += size;
+		int position = nums[vt];
+		nums[vt] += size;
+		Initialize init;
+		init.size = size;
+		init.exp = exp;
+		initialize_list[vt].push_back(init);
 		return position;
 	}
 
@@ -196,6 +202,7 @@ namespace Type
 		{
 			if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
 			check(os.stmt);
+			os.con_position = enviroment.ReserveSpace(VType::TF, kAstTrue);
 		}
 
 		void operator()(for_stmt & fs) const
@@ -289,14 +296,42 @@ namespace Type
 					throw SemanticError("this word has already been defined");
 				}
 				VType type = get_type(var.right);
-				int position = ReserveSpace(type);
+				int position = enviroment.ReserveSpace(type, var.right);
 				declare_var(name, position, type);
 			}
 		}
 
+		static int check_n_m(ast &print)
+		{
+			if (print.mid == -1)return 0;
+			if (get_type(print.mid) != VType::NUMERIC)throw SemanticError("n must be numeric");
+			if (print.right == -1)return 1;
+			if (get_type(print.right) != VType::NUMERIC)throw SemanticError("m must be numeric");
+			return 2;
+		}
+
 		void operator()(print_stmt & ps) const
 		{
-
+			if(~ps.list)
+			{
+				for (ast_t item : astsV[ps.list])
+				{
+					ast &print = astV[item];
+					VType l_type = get_type(print.left);
+					int nm = check_n_m(print);
+					switch (l_type)
+					{
+					case VType::NUMERIC:
+						break;
+					case VType::TF:
+					case VType::TEXT:
+						if (nm == 2)throw SemanticError("m cannot apply to this type");
+						break;
+					default:
+						throw SemanticError();
+					}
+				}
+			}
 		}
 	};
 
@@ -331,8 +366,14 @@ namespace Type
 		}
 	}
 
+	void init()
+	{
+		kAstTrue = newtf(true);
+	}
+
 	void type_check()
 	{
+		init();
 		check_input();
 		check_stmts(root);
 	}

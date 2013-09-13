@@ -45,6 +45,9 @@
     <ClCompile Include="execution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="exec_visitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="execution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exec_visitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

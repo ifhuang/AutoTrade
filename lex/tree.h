@@ -23,6 +23,7 @@ struct if_stmt
 struct once_stmt
 {
 	ast_t con;
+	int con_position;
 	stmt_t stmt;
 };
 
