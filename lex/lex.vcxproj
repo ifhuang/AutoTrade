@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ast.cpp" />
+    <ClCompile Include="check_visitor.cpp" />
     <ClCompile Include="el.tab.cpp" />
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="exec_visitor.cpp" />
@@ -79,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast.h" />
+    <ClInclude Include="check_visitor.h" />
     <ClInclude Include="el.tab.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="exec_visitor.h" />
