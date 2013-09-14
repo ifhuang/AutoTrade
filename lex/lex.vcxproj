@@ -74,6 +74,7 @@
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="lex.yy.cpp" />
     <ClCompile Include="operator.cpp" />
+    <ClCompile Include="run_time_environment.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="type.cpp" />
@@ -85,8 +86,10 @@
     <ClInclude Include="execution.h" />
     <ClInclude Include="exec_visitor.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="global.h" />
     <ClInclude Include="lex.h" />
     <ClInclude Include="operator.h" />
+    <ClInclude Include="run_time_environment.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="type.h" />

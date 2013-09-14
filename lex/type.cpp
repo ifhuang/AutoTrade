@@ -13,17 +13,14 @@ namespace Type
 
     SetUpEnviroment enviroment;
 
-    int SetUpEnviroment::ReserveSpace(VType value_type, ast_t exp, int size /*= 1*/)
+    int SetUpEnviroment::ReserveSpace(ast_t exp, int size /*= 1*/)
     {
-        if (value_type == VType::VOID)throw SemanticError();
-        int vt = static_cast<int>(value_type);
-
-        int position = nums[vt];
-        nums[vt] += size;
+        int position = num_variables;
+        num_variables += size;
         Initialize init;
         init.size = size;
         init.exp = exp;
-        initialize_list[vt].push_back(init);
+        initialize_list.push_back(init);
         return position;
     }
 

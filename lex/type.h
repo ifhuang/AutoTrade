@@ -19,20 +19,18 @@ namespace Type{
     };
 
     struct Initialize{
-        int position;
         int size;
         ast_t exp;
     };
 
     class SetUpEnviroment{
     public:
-        int ReserveSpace(VType value_type, ast_t exp, int size = 1);
+        int ReserveSpace(ast_t exp, int size = 1);
 
         std::vector<Input> inputs;
 
-    private:
-        int nums[3];
-        std::vector<Initialize> initialize_list[3];
+        int num_variables;
+        std::vector<Initialize> initialize_list;
     };
 
     class SemanticError : public std::exception

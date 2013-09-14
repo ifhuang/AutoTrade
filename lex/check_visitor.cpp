@@ -10,8 +10,8 @@ using namespace Type;
 namespace{
     void check_asm_variable(string name, asm_stmt &as)
     {
-        Variable var = varTable[name];
-        switch (var.type)
+        Variable variable = varTable[name];
+        switch (variable.type)
         {
         case VType::NUMERIC:
             break;
@@ -21,10 +21,13 @@ namespace{
             break;
         }
         VType rightType = get_type(as.exp);
-        if (var.type != rightType)
+        if (variable.type != rightType)
         {
             throw TypesNotCompatible();
         }
+        ast &var = astV[as.var];
+        var.left = variable.type;
+        var.right = variable.position;
     }
 
     int check_n_m(ast &print)
@@ -123,7 +126,7 @@ void check_visitor::operator()(var_stmt & vs) const
             throw SemanticError("this word has already been defined");
         }
         VType type = get_type(var.right);
-        int position = enviroment.ReserveSpace(type, var.right);
+        int position = enviroment.ReserveSpace(var.right);
         declare_var(name, position, type);
     }
 }

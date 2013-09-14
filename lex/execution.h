@@ -10,6 +10,13 @@ namespace Execution{
 
 	typedef boost::variant<double, bool, std::string> Value;
 
+    class RuntimeException : public std::exception
+    {
+    public:
+        RuntimeException() {}
+        RuntimeException(const char * const & message) : exception(message) {}
+    };
+
 	struct InternalException
 	{
 
