@@ -57,6 +57,9 @@
     <ClCompile Include="executor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="exec_visitor_print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">

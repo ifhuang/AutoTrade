@@ -4,11 +4,13 @@
 #include <string>
 #include <vector>
 
+#include "global.h"
 #include "tree.h"
 
 namespace lex{
 
     enum VType { NUMERIC, TF, TEXT, VOID };
+    enum AsmType { kEQ, kADD, kSUB, kMUL, kDIV };
 
     struct Input
     {
@@ -25,12 +27,15 @@ namespace lex{
 
     class SetUpEnviroment{
     public:
+        SetUpEnviroment() {}
         int ReserveSpace(ast_t exp, int size = 1);
 
         std::vector<Input> inputs;
 
-        int num_variables;
+        int num_variables = 0;
         std::vector<Initialize> initialize_list;
+    private:
+        DISALLOW_COPY_AND_ASSIGN(SetUpEnviroment);
     };
 
     class SemanticError : public std::exception

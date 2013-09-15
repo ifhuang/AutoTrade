@@ -82,8 +82,7 @@ namespace lex
             if (func.right != -2)throw SemanticError("not a function, is variable");
             Variable variable = varTable[name];
             func.type = NodeType::VAR;
-            func.left = variable.type;
-            func.right = variable.position;
+            func.idx = variable.position;
             return variable.type;
                                 }
         case VSource::Undefined:

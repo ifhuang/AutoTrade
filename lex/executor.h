@@ -9,9 +9,10 @@ namespace lex{
     class Executor
     {
     public:
-        Executor(SetUpEnviroment sue);
-        void execute();
+        Executor(const SetUpEnviroment & sue);
+        ~Executor();
 
+        void execute();
         Value value(ast_t idx);
         void exec(stmt_t stmt);
         void exec_stmts(stmts_t idx);
@@ -21,8 +22,13 @@ namespace lex{
         {
             return boost::get<T>(value(idx));
         }
+
+        RunTimeEnvironment *rte_ = nullptr;
     private:
-        RunTimeEnvironment *rte_;
+        void SetUp();
+
+        const SetUpEnviroment &sue_;
+        
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };
 

@@ -26,7 +26,7 @@ namespace lex{
         delete[] variable_array_;
     }
 
-    Value RunTimeEnvironment::GetVar(int position)
+    Value& RunTimeEnvironment::GetVar(int position)
     {
         if (position < 0 || position >= num_variables_)
         {

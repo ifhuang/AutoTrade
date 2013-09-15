@@ -1,14 +1,21 @@
 #include "executor.h"
 
+#include <vector>
 #include <boost/variant.hpp>
+using namespace std;
 
 #include "exec_visitor.h"
 #include "operator.h"
 
 namespace lex{
-    Executor::Executor(SetUpEnviroment sue)
+    Executor::Executor(const SetUpEnviroment & sue) :sue_(sue)
     {
 
+    }
+
+    Executor::~Executor()
+    {
+        if (rte_)delete rte_;
     }
 
     Value Executor::value(ast_t idx)
@@ -58,6 +65,8 @@ namespace lex{
             return boost::apply_visitor(ca_visitor(), value(n.right), value(n.left));
         case NodeType::FUNC:
             //return check_func(idx);
+        case NodeType::VAR:
+            return rte_->GetVar(n.idx);
         default:
             throw RuntimeException();
         }
@@ -78,8 +87,25 @@ namespace lex{
         boost::apply_visitor(exec_visitor(this), stmtV[stmt]);
     }
 
+    void Executor::SetUp()
+    {
+        if (!rte_)
+        {
+            int n = sue_.initialize_list.size();
+            vector<RteInitialize> rte_list(n);
+            for (int i = 0; i < n; i++)
+            {
+                const Initialize &init = sue_.initialize_list[i];
+                rte_list[i].size = init.size;
+                rte_list[i].value = value(init.exp);
+            }
+            rte_ = new RunTimeEnvironment(rte_list);
+        }
+    }
+
     void Executor::execute()
     {
+        SetUp();
         exec_stmts(root);
     }
 

@@ -20,7 +20,7 @@ namespace lex{
     public:
         RunTimeEnvironment(std::vector<RteInitialize> list);
         ~RunTimeEnvironment();
-        Value GetVar(int position);
+        Value& GetVar(int position);
 
     private:
         int num_variables_;

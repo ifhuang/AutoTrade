@@ -71,6 +71,7 @@
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="executor.cpp" />
     <ClCompile Include="exec_visitor.cpp" />
+    <ClCompile Include="exec_visitor_print.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="lex.yy.cpp" />

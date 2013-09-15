@@ -25,6 +25,7 @@ int main()
     catch (SemanticError e)
     {
         printf("%s\n", e.what());
+        return 0;
     }
     Executor executor(enviroment);
     executor.execute();

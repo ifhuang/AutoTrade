@@ -17,7 +17,7 @@ namespace{
             break;
         case VType::TEXT:
         case VType::TF:
-            if (as.type != 0)throw InvalidTypeOperation();
+            if (as.type != kEQ)throw InvalidTypeOperation();
             break;
         }
         VType rightType = get_type(as.exp);
@@ -26,8 +26,7 @@ namespace{
             throw TypesNotCompatible();
         }
         ast &var = astV[as.var];
-        var.left = variable.type;
-        var.right = variable.position;
+        var.idx = variable.position;
     }
 
     int check_n_m(ast &print)
@@ -51,7 +50,7 @@ void check_visitor::operator()(once_stmt & os) const
 {
     if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
     check(os.stmt);
-    if (~os.con)os.con_position = enviroment.ReserveSpace(VType::TF, kAstTrue);
+    os.con_position = enviroment.ReserveSpace(VType::TF, kAstTrue);
 }
 
 void check_visitor::operator()(for_stmt & fs) const
