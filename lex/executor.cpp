@@ -39,6 +39,8 @@ namespace lex{
             return boost::apply_visitor(not_visitor(), value(n.left));
         case NodeType::BAR:
             return boost::apply_visitor(or_visitor(), value(n.left), value(n.right));
+        case NodeType::UPLUS:
+            return check_value<double>(n.left);
         case NodeType::UMINUS:
             return boost::apply_visitor(not_visitor(), value(n.left));
         case NodeType::NUMERIC:
@@ -75,6 +77,7 @@ namespace lex{
 
     void Executor::exec_stmts(stmts_t idx)
     {
+        if (idx == -1)return;
         for (stmt_t stmt : stmtsV[idx])
         {
             exec(stmt);

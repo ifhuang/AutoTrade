@@ -168,7 +168,7 @@ namespace{
 		{
 			int id = fpr_stmt(ws.type == 0 ? "WHILE" : "REPEAT");
 			dfs(id, ws.con);
-			dfs_stmt(id, ws.block);
+            dfs_stmts(id, ws.stmts);
 			return id;
 		}
 

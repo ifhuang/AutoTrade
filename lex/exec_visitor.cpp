@@ -43,15 +43,15 @@ void exec_visitor::operator()(while_stmt & ws) const
     {
         while (exe_->check_value<bool>(ws.con))
         {
-            exe_->exec(ws.block);
+            exe_->exec_stmts(ws.stmts);
         }
     }
     else
     {
         do
         {
-            exe_->exec(ws.block);
-        } while (exe_->check_value<bool>(ws.con));
+            exe_->exec_stmts(ws.stmts);
+        } while (!exe_->check_value<bool>(ws.con));
     }
 }
 

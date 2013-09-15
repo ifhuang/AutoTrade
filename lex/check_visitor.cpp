@@ -50,7 +50,7 @@ void check_visitor::operator()(once_stmt & os) const
 {
     if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
     check(os.stmt);
-    os.con_position = enviroment.ReserveSpace(VType::TF, kAstTrue);
+    os.con_position = enviroment.ReserveSpace(kAstTrue);
 }
 
 void check_visitor::operator()(for_stmt & fs) const
@@ -76,7 +76,7 @@ void check_visitor::operator()(for_stmt & fs) const
 void check_visitor::operator()(while_stmt & ws) const
 {
     if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected();
-    check(ws.block);
+    check_stmts(ws.stmts);
 }
 
 void check_visitor::operator()(switch_stmt & ws) const

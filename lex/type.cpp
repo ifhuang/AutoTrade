@@ -129,6 +129,7 @@ namespace lex
             if (r == VType::TEXT)throw InvalidTypeOperation();
             return l;
         case NodeType::UMINUS:
+        case NodeType::UPLUS:
             l = get_type(node.left);
             if (l == VType::NUMERIC)return l;
             throw InvalidTypeOperation();
@@ -150,7 +151,7 @@ namespace lex
         case NodeType::NE:
             l = get_type(node.left);
             r = get_type(node.right);
-            if (l == r)return l;
+            if (l == r)return VType::TF;
             throw TypesNotCompatible();
         case NodeType::GT:
         case NodeType::LT:
@@ -159,14 +160,14 @@ namespace lex
             l = get_type(node.left);
             r = get_type(node.right);
             if (l != r)throw TypesNotCompatible();
-            if (l == VType::NUMERIC || l == VType::TEXT)return l;
+            if (l == VType::NUMERIC || l == VType::TEXT)return VType::TF;
             throw InvalidTypeOperation();
         case NodeType::CA:
         case NodeType::CB:
             l = get_type(node.left);
             r = get_type(node.right);
             if (l != r)throw TypesNotCompatible();
-            if (l == VType::NUMERIC)return l;
+            if (l == VType::NUMERIC)return VType::TF;
             throw InvalidTypeOperation();
         case NodeType::FUNC:
             return check_func(idx, is_input);

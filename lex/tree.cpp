@@ -46,12 +46,12 @@ int new_order(int type, ast_t price)
 	return stmtV.put(o);
 }
 
-int new_while(int type, ast_t con, stmt_t block)
+int new_while(int type, ast_t con, stmts_t stmts)
 {
 	while_stmt ws;
 	ws.type = type;
 	ws.con = con;
-	ws.block = block;
+    ws.stmts = stmts;
 	return stmtV.put(ws);
 }
 

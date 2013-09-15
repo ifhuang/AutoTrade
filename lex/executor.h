@@ -28,7 +28,7 @@ namespace lex{
         void SetUp();
 
         const SetUpEnviroment &sue_;
-        
+
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };
 

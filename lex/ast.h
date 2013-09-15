@@ -19,6 +19,7 @@ enum class NodeType
 	OR,
 	NOT,
 	BAR,
+    UPLUS,
 	UMINUS,
 
 	VARDEC,

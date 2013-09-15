@@ -40,7 +40,7 @@ struct while_stmt
 {
 	int type;
 	ast_t con;
-	stmt_t block;
+    stmts_t stmts;
 };
 
 struct switch_stmt
@@ -100,7 +100,7 @@ extern std::vector<ast_t> inputVector;
 int new_if(ast_t con, stmt_t then, stmt_t els = -1);
 int new_once(ast_t con, stmt_t stmt);
 int new_order(int type, ast_t price);
-int new_while(int type, ast_t con, stmt_t block);
+int new_while(int type, ast_t con, stmts_t stmts);
 int new_print(int location, asts_t list);
 int new_var(int type, asts_t vars);
 

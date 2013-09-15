@@ -31,7 +31,7 @@ extern int yylex();
 %type <fn> order_verb asm order_amount order_name for_type order_time print_location
 %type <fn> exp nexp literal number name text variable array name_call print_element section case case_option //ast
 %type <fn> order_stmt other_sstmt order_action if_stmt matched_once unmatched_once once_matched for_stmt while_stmt repeat_stmt matched unmatched cstmt variables arrays assignment block print_stmt switch_stmt //stmt
-%type <fn> stmts stmt_list //stmts
+%type <fn> stmts stmt_list stmt_list_optional //stmts
 %type <fn> variable_list argu_list print_list array_list dimension_list section_list case_list //asts
 
 %left OR
@@ -60,6 +60,10 @@ stmt_list: if_stmt ';' { $$ = stmtsV.createI($1); }
          | stmt_list if_stmt ';' { $$ = stmtsV.putI($1, $2); }
          | stmt_list cstmt       { $$ = stmtsV.putI($1, $2); }
          ;
+
+stmt_list_optional: %empty { $$ = -1; }
+                  | stmt_list
+                  ;
 
 other_sstmt: matched_once
      |       for_stmt
@@ -151,11 +155,10 @@ for_type: TO { $$ = 0; }
         | DOWNTO { $$ = 1; }
         ;
 
-while_stmt: WHILE exp block { $$ = new_while(0, $2, $3); } ;
+while_stmt: WHILE exp BBEGIN stmt_list_optional BEND
+            { $$ = new_while(0, $2, $4); } ;
 
-repeat_stmt: REPEAT stmt_list UNTIL exp { $$ = new_while(1, $4, $2); }
-           | REPEAT UNTIL exp { $$ = new_while(1, $3, -1); }
-           ;
+repeat_stmt: REPEAT stmt_list_optional UNTIL exp { $$ = new_while(1, $4, $2); } ;
 
 switch_stmt: SWITCH '(' exp ')' BBEGIN section_list BEND 
     {
@@ -262,7 +265,7 @@ nexp: nexp MUL nexp { $$ = newast(NodeType::MUL, $1, $3); }
     | nexp ADD nexp { $$ = newast(NodeType::ADD, $1, $3); }
     | nexp SUB nexp { $$ = newast(NodeType::SUB, $1, $3); }
     | SUB nexp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
-    | ADD nexp %prec UNARY { $$ = $2; }
+    | ADD nexp %prec UNARY { $$ = newast(NodeType::UPLUS, $2, -1); }
     | '(' nexp ')'  { $$ = $2; }
     | number
     ;
