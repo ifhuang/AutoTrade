@@ -699,6 +699,7 @@ char *yytext;
 /* -*-mode: flex-mode-*- */
 #line 3 "el.l"
 #include <stdarg.h>
+#include <sstream>
 #include "el.tab.h"
 #include "lex.h"
 
@@ -710,7 +711,7 @@ int yycolumn = 1;
 
 #define YY_NO_UNISTD_H 1
 
-#line 714 "lex.yy.c"
+#line 715 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -893,10 +894,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 21 "el.l"
+#line 22 "el.l"
 
 
-#line 900 "lex.yy.c"
+#line 901 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -987,443 +988,443 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 23 "el.l"
+#line 24 "el.l"
 { BEGIN(COMMENT); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 24 "el.l"
+#line 25 "el.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 25 "el.l"
+#line 26 "el.l"
 { yycolumn = 1; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 26 "el.l"
+#line 27 "el.l"
 
 	YY_BREAK
 case YY_STATE_EOF(COMMENT):
-#line 27 "el.l"
+#line 28 "el.l"
 { yyerror("Unterminated comment\n"); return '{'; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 29 "el.l"
+#line 30 "el.l"
 { return IF; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 30 "el.l"
+#line 31 "el.l"
 { return THEN; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 31 "el.l"
+#line 32 "el.l"
 { return ELSE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "el.l"
+#line 33 "el.l"
 { return ONCE; }
 	YY_BREAK
 case 9:
-#line 34 "el.l"
+#line 35 "el.l"
 case 10:
 YY_RULE_SETUP
-#line 34 "el.l"
+#line 35 "el.l"
 { return INPUTS; }
 	YY_BREAK
 case 11:
-#line 36 "el.l"
-case 12:
 #line 37 "el.l"
-case 13:
+case 12:
 #line 38 "el.l"
+case 13:
+#line 39 "el.l"
 case 14:
 YY_RULE_SETUP
-#line 38 "el.l"
+#line 39 "el.l"
 { return VARIABLES; }
 	YY_BREAK
 case 15:
-#line 40 "el.l"
+#line 41 "el.l"
 case 16:
 YY_RULE_SETUP
-#line 40 "el.l"
+#line 41 "el.l"
 { return ARRAYS; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 41 "el.l"
+#line 42 "el.l"
 { return BUY; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 42 "el.l"
+#line 43 "el.l"
 { return SELL; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 43 "el.l"
+#line 44 "el.l"
 { return SHORT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 44 "el.l"
+#line 45 "el.l"
 { return SELLSHORT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 45 "el.l"
+#line 46 "el.l"
 { return TO; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 46 "el.l"
+#line 47 "el.l"
 { return COVER; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 47 "el.l"
+#line 48 "el.l"
 { return BUYTOCOVER; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 48 "el.l"
+#line 49 "el.l"
 { return THIS; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 49 "el.l"
+#line 50 "el.l"
 { return NEXT; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 50 "el.l"
+#line 51 "el.l"
 { return BAR; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 51 "el.l"
+#line 52 "el.l"
 { return MARKET; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 52 "el.l"
+#line 53 "el.l"
 { return STOP; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 53 "el.l"
+#line 54 "el.l"
 { return LIMIT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 54 "el.l"
+#line 55 "el.l"
 { return OPEN; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 55 "el.l"
+#line 56 "el.l"
 { return CLOSE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 56 "el.l"
+#line 57 "el.l"
 { return AND; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 57 "el.l"
+#line 58 "el.l"
 { return OR; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 58 "el.l"
+#line 59 "el.l"
 { return NOT; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 59 "el.l"
+#line 60 "el.l"
 { return TRUE; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 60 "el.l"
+#line 61 "el.l"
 { return FALSE; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 61 "el.l"
+#line 62 "el.l"
 { return BBEGIN; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 62 "el.l"
+#line 63 "el.l"
 { return BEND; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 63 "el.l"
+#line 64 "el.l"
 { return IBP; }
 	YY_BREAK
 case 40:
-#line 65 "el.l"
-case 41:
 #line 66 "el.l"
-case 42:
+case 41:
 #line 67 "el.l"
+case 42:
+#line 68 "el.l"
 case 43:
 YY_RULE_SETUP
-#line 67 "el.l"
+#line 68 "el.l"
 { return SHARE; }
 	YY_BREAK
 case 44:
-#line 69 "el.l"
+#line 70 "el.l"
 case 45:
 YY_RULE_SETUP
-#line 69 "el.l"
+#line 70 "el.l"
 { return CROSS; }
 	YY_BREAK
 case 46:
-#line 71 "el.l"
+#line 72 "el.l"
 case 47:
 YY_RULE_SETUP
-#line 71 "el.l"
+#line 72 "el.l"
 { return ABOVE; }
 	YY_BREAK
 case 48:
-#line 73 "el.l"
+#line 74 "el.l"
 case 49:
 YY_RULE_SETUP
-#line 73 "el.l"
+#line 74 "el.l"
 { return BELOW; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 74 "el.l"
+#line 75 "el.l"
 { return FOR; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 75 "el.l"
+#line 76 "el.l"
 { return DOWNTO; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 76 "el.l"
+#line 77 "el.l"
 { return WHILE; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 77 "el.l"
+#line 78 "el.l"
 { return REPEAT; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 78 "el.l"
+#line 79 "el.l"
 { return UNTIL; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 79 "el.l"
+#line 80 "el.l"
 { return ALL; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 80 "el.l"
+#line 81 "el.l"
 { return PRINT; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 81 "el.l"
+#line 82 "el.l"
 { return PRINTER; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 82 "el.l"
+#line 83 "el.l"
 { return PFILE; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 83 "el.l"
+#line 84 "el.l"
 { return SWITCH; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 84 "el.l"
+#line 85 "el.l"
 { return DEFAULT; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 85 "el.l"
+#line 86 "el.l"
 { return CASE; }
 	YY_BREAK
 case 62:
 /* rule 62 can match eol */
 YY_RULE_SETUP
-#line 87 "el.l"
+#line 88 "el.l"
 { 
 yylval.fn = find(yytext + 1, yyleng - 2);
 return TEXT; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 91 "el.l"
+#line 92 "el.l"
 { 
 yylval.fn = find(yytext);
 return NUMBER; }
 	YY_BREAK
 /* Skip words */
 case 64:
-#line 97 "el.l"
-case 65:
 #line 98 "el.l"
-case 66:
+case 65:
 #line 99 "el.l"
-case 67:
+case 66:
 #line 100 "el.l"
-case 68:
+case 67:
 #line 101 "el.l"
-case 69:
+case 68:
 #line 102 "el.l"
-case 70:
+case 69:
 #line 103 "el.l"
-case 71:
+case 70:
 #line 104 "el.l"
-case 72:
+case 71:
 #line 105 "el.l"
-case 73:
+case 72:
 #line 106 "el.l"
-case 74:
+case 73:
 #line 107 "el.l"
-case 75:
+case 74:
 #line 108 "el.l"
-case 76:
+case 75:
 #line 109 "el.l"
+case 76:
+#line 110 "el.l"
 case 77:
 YY_RULE_SETUP
-#line 109 "el.l"
+#line 110 "el.l"
 /* ignore */
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 111 "el.l"
+#line 112 "el.l"
 { 
 yylval.fn = find(yytext);
 return NAME; }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 115 "el.l"
+#line 116 "el.l"
 { return ADD; }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 116 "el.l"
+#line 117 "el.l"
 { return SUB; }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 117 "el.l"
+#line 118 "el.l"
 { return MUL; }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 118 "el.l"
+#line 119 "el.l"
 { return DIV; }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 119 "el.l"
+#line 120 "el.l"
 { return LSB; }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 120 "el.l"
+#line 121 "el.l"
 { return RSB; }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 122 "el.l"
+#line 123 "el.l"
 { return yytext[0]; }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 124 "el.l"
+#line 125 "el.l"
 { yylval.fn = 1; return ASM; }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 125 "el.l"
+#line 126 "el.l"
 { yylval.fn = 2; return ASM; }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 126 "el.l"
+#line 127 "el.l"
 { yylval.fn = 3; return ASM; }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 127 "el.l"
+#line 128 "el.l"
 { yylval.fn = 4; return ASM; }
 	YY_BREAK
 /* comparison ops, all are a CMP token */
 case 90:
 YY_RULE_SETUP
-#line 130 "el.l"
+#line 131 "el.l"
 { yylval.fn = 1; return CMP; }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 131 "el.l"
+#line 132 "el.l"
 { yylval.fn = 2; return CMP; }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 132 "el.l"
+#line 133 "el.l"
 { yylval.fn = 3; return CMP; }
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 133 "el.l"
+#line 134 "el.l"
 { yylval.fn = 4; return CMP; }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 134 "el.l"
+#line 135 "el.l"
 { yylval.fn = 5; return CMP; }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 136 "el.l"
+#line 137 "el.l"
 /* ignore */
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 137 "el.l"
+#line 138 "el.l"
 /* ignore */
 	YY_BREAK
 case 97:
 /* rule 97 can match eol */
 YY_RULE_SETUP
-#line 138 "el.l"
+#line 139 "el.l"
 { yycolumn = 1; }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 139 "el.l"
+#line 140 "el.l"
 { yyerror("Mystery character %c\n", *yytext); return *yytext; }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 140 "el.l"
+#line 141 "el.l"
 ECHO;
 	YY_BREAK
-#line 1427 "lex.yy.c"
+#line 1428 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2430,9 +2431,32 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 140 "el.l"
+#line 141 "el.l"
 
 
+
+std::string location_print(YYLTYPE const * const yylocp)
+{
+    std::stringstream res;
+    int end_col = yylocp->last_column ? yylocp->last_column - 1 : 0;
+    if (0 <= yylocp->first_line)
+    {
+        res << yylocp->first_line;
+        if (0 <= yylocp->first_column)
+            res << '.' << yylocp->first_column;
+    }
+    if (0 <= yylocp->last_line)
+    {
+        if (yylocp->first_line < yylocp->last_line)
+        {
+            res << '-' << yylocp->last_line;
+            if (0 <= end_col)res << '.' << end_col;
+        }
+        else if (0 <= end_col && yylocp->first_column < end_col)
+            res << '-' << end_col;
+    }
+    return res.str();
+}
 
 void yyerror(const char *s, ...)
 {
@@ -2441,9 +2465,8 @@ void yyerror(const char *s, ...)
     static char str[1000];
     vsprintf_s(str, s, ap);
 	va_end(ap);
-	errorMessage += "error: ";
+	errorMessage += "(" + location_print(&yylloc) + "): error: ";
 	errorMessage += str;
 }
-
 
 
