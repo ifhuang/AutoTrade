@@ -16,6 +16,8 @@ namespace{
         case VType::NUMERIC:
             break;
         case VType::TEXT:
+            if (as.type != kEQ && as.type != kADD)throw InvalidTypeOperation();
+            break;
         case VType::TF:
             if (as.type != kEQ)throw InvalidTypeOperation();
             break;
