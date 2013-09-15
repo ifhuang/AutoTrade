@@ -5,7 +5,7 @@ using namespace std;
 
 #include "table.h"
 #include "type.h"
-using namespace Type;
+using namespace lex;
 
 namespace{
     void check_asm_variable(string name, asm_stmt &as)

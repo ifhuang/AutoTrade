@@ -54,6 +54,9 @@
     <ClCompile Include="run_time_environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="executor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="run_time_environment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "functions.h"
 
 using namespace std;
+using namespace lex;
 
 namespace Func
 {

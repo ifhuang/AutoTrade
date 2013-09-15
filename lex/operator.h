@@ -1,10 +1,10 @@
-#ifndef OPERATOR_H
-# define OPERATOR_H
+#ifndef OPERATOR_H_
+#define OPERATOR_H_
 
 #include "execution.h"
 #include "tree.h"
 
-namespace Execution{
+namespace lex{
 
 	struct add_visitor : public boost::static_visitor<Value>
 	{
@@ -120,6 +120,6 @@ namespace Execution{
 
 		Value operator()(double lhs, double rhs) const;
 	};
-}
+}  // namespace lex
 
-#endif
+#endif  // OPERATOR_H_

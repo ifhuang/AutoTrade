@@ -1,9 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-#include "execution.h"
+#include "executor.h"
 #include "tree.h"
 #include "type.h"
+using namespace lex;
 
 int main()
 {
@@ -19,12 +20,13 @@ int main()
 
     try
     {
-        Type::type_check();
+        type_check();
     }
-    catch (Type::SemanticError e)
+    catch (SemanticError e)
     {
         printf("%s\n", e.what());
     }
-    Execution::execute();
+    Executor executor(enviroment);
+    executor.execute();
     return 0;
 }

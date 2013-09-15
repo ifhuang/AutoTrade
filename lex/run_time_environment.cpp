@@ -1,32 +1,38 @@
 #include "run_time_environment.h"
 
-using namespace Execution;
-using namespace Type;
+namespace lex{
 
-
-RunTimeEnvironment::RunTimeEnvironment(SetUpEnviroment sue)
-{
-    num_variables_ = sue.num_variables;
-    variable_array_ = new Value[sue.num_variables];
-    int initp = 0;
-    for (Initialize init : sue.initialize_list)
+    RunTimeEnvironment::RunTimeEnvironment(std::vector<RteInitialize> list)
     {
-        Value v = value(init.exp);
+        num_variables_ = 0;
+        for (RteInitialize init : list)num_variables_ += init.size;
+        variable_array_ = new Value[num_variables_];
+        int initp = 0;
+        for (RteInitialize init : list)
+        {
+            for (int i = 0; i < init.size; i++)variable_array_[initp + i] = init.value;
+            initp += init.size;
+        }
+        /*for (Initialize init : sue.initialize_list)
+        {
+        Value v = exe.value(init.exp);
         for (int i = 0; i < init.size; i++)variable_array_[initp + i] = v;
         initp += init.size;
+        }*/
     }
-}
 
-RunTimeEnvironment::~RunTimeEnvironment()
-{
-    delete[] variable_array_;
-}
-
-Value RunTimeEnvironment::GetVar(int position)
-{
-    if (position < 0 || position >= num_variables_)
+    RunTimeEnvironment::~RunTimeEnvironment()
     {
-        throw RuntimeException("variable array out of range");
+        delete[] variable_array_;
     }
-    return variable_array_[position];
-}
+
+    Value RunTimeEnvironment::GetVar(int position)
+    {
+        if (position < 0 || position >= num_variables_)
+        {
+            throw RuntimeException("variable array out of range");
+        }
+        return variable_array_[position];
+    }
+
+}  // namespace lex

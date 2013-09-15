@@ -8,7 +8,7 @@
 namespace Func
 {
 
-	struct Average : StdFunction
+	struct Average : lex::StdFunction
 	{
 		Average();
 

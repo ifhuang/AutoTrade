@@ -1,14 +1,14 @@
-#ifndef TYPE_H
-# define TYPE_H
+#ifndef TYPE_H_
+#define TYPE_H_
 
 #include <string>
 #include <vector>
 
 #include "tree.h"
 
-enum VType { NUMERIC, TF, TEXT, VOID };
+namespace lex{
 
-namespace Type{
+    enum VType { NUMERIC, TF, TEXT, VOID };
 
     struct Input
     {
@@ -61,6 +61,6 @@ namespace Type{
     void check(stmt_t stmt);
     void check_stmts(stmts_t idx);
     void type_check();
-}
+}  // namespace lex
 
-#endif
+#endif  // TYPE_H_

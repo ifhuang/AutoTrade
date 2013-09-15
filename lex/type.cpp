@@ -7,7 +7,7 @@ using namespace std;
 #include "check_visitor.h"
 #include "table.h"
 
-namespace Type
+namespace lex
 {
     int kAstTrue;
 
@@ -226,4 +226,4 @@ namespace Type
         check_input();
         check_stmts(root);
     }
-}
+}  // namespace lex

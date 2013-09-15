@@ -2,7 +2,7 @@
 
 using namespace std;
 
-namespace Execution{
+namespace lex{
 
 	Value add_visitor::operator()(double lhs, double rhs) const
 	{
@@ -70,10 +70,10 @@ namespace Execution{
 	}
 
 
-	Execution::Value ca_visitor::operator()(double lhs, double rhs) const
+	Value ca_visitor::operator()(double lhs, double rhs) const
 	{
 		//
 		return false;
 	}
 
-}
+}  // namespace lex
