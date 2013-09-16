@@ -1,11 +1,13 @@
 #ifndef EXECUTOR_H_
 #define EXECUTOR_H_
 
+#include <vector>
+
 #include "execution.h"
 #include "run_time_environment.h"
 #include "type.h"
 
-namespace lex{
+namespace lex {
     class Executor
     {
     public:
@@ -26,6 +28,8 @@ namespace lex{
         RunTimeEnvironment *rte_ = nullptr;
     private:
         void SetUp();
+        std::vector<Value> exec_paras(asts_t idx);
+        Value exec_func(ast_t idx);
 
         const SetUpEnviroment &sue_;
 

@@ -7,6 +7,7 @@
 
 #include "ast.h"
 #include "execution.h"
+#include "global.h"
 #include "type.h"
 
 namespace lex{
@@ -22,15 +23,17 @@ namespace lex{
         int varsText;
     };
 
-    struct StdFunction{
+    class StdFunction{
+    public:
+        StdFunction(VType result, std::vector<VType> paras) : result(result), paras(paras) {}
+
+        virtual Value call(int bar, std::vector<Value> ps) const = 0;
+
         VType result;
         std::vector<VType> paras;
         int min = -1;
-        virtual Value call(int bar, std::vector<ast_t> ps);
-
-        StdFunction() {}
-        StdFunction(VType result, std::vector<VType> paras) :result(result), paras(paras) {}
-        //Function(const Function &b) :result(b.result), paras(b.paras){}
+    private:
+        DISALLOW_COPY_AND_ASSIGN(StdFunction);
     };
 
     struct Variable{
@@ -38,7 +41,7 @@ namespace lex{
         int position;
     };
 
-    extern std::unordered_map<std::string, StdFunction> funcTable;
+    extern std::unordered_map<std::string, const StdFunction *> const funcTable;
     extern std::unordered_map<std::string, Input> inputTable;
     extern std::unordered_map<std::string, Variable> varTable;
 

@@ -8,11 +8,12 @@
 namespace Func
 {
 
-	struct Average : lex::StdFunction
+	class SNumToStr : public lex::StdFunction
 	{
-		Average();
+    public:
+        SNumToStr();
 
-		virtual lex::Value call(int bar, std::vector<ast_t> ps);
+        lex::Value call(int bar, std::vector<lex::Value> ps) const;
 
 	};
 }

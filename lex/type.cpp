@@ -31,20 +31,20 @@ namespace lex
         return strVector[node.idx];
     }
 
-    void check_paras(StdFunction function, asts_t idx, const YYLTYPE *loc, bool is_input = false)
+    void check_paras(const StdFunction *function, asts_t idx, const YYLTYPE *loc, bool is_input = false)
     {
-        auto &paras = function.paras;
+        auto &paras = function->paras;
         if (idx < 0)
         {
-            if (!paras.empty() && function.min != 0)
+            if (!paras.empty() && function->min != 0)
             {
                 throw SemanticError("invalid number of parameters", loc);
             }
             return;
         }
         vector<ast_t> &args = astsV[idx];
-        if (function.min == -1 && paras.size() != args.size()
-            || function.min != -1 && paras.size() < args.size())
+        if (function->min == -1 && paras.size() != args.size()
+            || function->min != -1 && paras.size() < args.size())
         {
             throw SemanticError("invalid number of parameters", loc);
         }
@@ -67,9 +67,9 @@ namespace lex
         switch (source)
         {
         case VSource::StdFunction: {
-            StdFunction &function = funcTable[name];
+            const StdFunction *function = funcTable.at(name);
             check_paras(function, func.right, loc, is_input);
-            return function.result;
+            return function->result;
                                    }
         case VSource::Input: {
             if (is_input)throw SemanticError("input cannot contain input", loc);

@@ -6,6 +6,7 @@ using namespace std;
 
 #include "exec_visitor.h"
 #include "operator.h"
+#include "table.h"
 
 namespace lex{
     Executor::Executor(const SetUpEnviroment & sue) :sue_(sue)
@@ -16,6 +17,38 @@ namespace lex{
     Executor::~Executor()
     {
         if (rte_)delete rte_;
+    }
+
+    vector<Value> Executor::exec_paras(asts_t idx)
+    {
+        vector<Value> r;
+        if (idx < 0)
+        {
+            return r;
+        }
+        vector<ast_t> &args = astsV[idx];
+        for (size_t i = 0; i < args.size(); i++)
+        {
+            r.push_back(value(args[i]));
+        }
+        return r;
+    }
+
+    Value Executor::exec_func(ast_t idx)
+    {
+        ast &func = astV[idx];
+        string name = get_var(func.left);
+        VSource source = find_name(name);
+        switch (source)
+        {
+        case VSource::StdFunction: {
+            const StdFunction *function = funcTable.at(name);
+            vector<Value> args = exec_paras(func.right);
+            return function->call(0, args);
+                                   }
+        default:
+            throw RuntimeException();
+        }
     }
 
     Value Executor::value(ast_t idx)
@@ -66,7 +99,7 @@ namespace lex{
         case NodeType::CB:
             return boost::apply_visitor(ca_visitor(), value(n.right), value(n.left));
         case NodeType::FUNC:
-            //return check_func(idx);
+            return exec_func(idx);
         case NodeType::VAR:
             return rte_->GetVar(n.idx);
         default:

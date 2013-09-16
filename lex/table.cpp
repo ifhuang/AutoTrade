@@ -9,15 +9,16 @@ using namespace std;
 
 #include "functions.h"
 
+namespace{
+    const Func::SNumToStr s_numtostr;
+}
+
 namespace lex{
-    unordered_map<string, StdFunction> funcTable;
+    unordered_map<string, const StdFunction *> const funcTable = {
+        { "numtostr", &s_numtostr },
+    };
     unordered_map<string, Input> inputTable;
     unordered_map<string, Variable> varTable;
-
-    void init_func_table()
-    {
-        funcTable["average"] = Func::Average();
-    }
 
     VSource find_name(string name)
     {
@@ -33,16 +34,6 @@ namespace lex{
         var.position = postion;
         var.type = type;
         varTable[name] = var;
-    }
-
-    struct stmt_visitor : public boost::static_visitor<int>
-    {
-    };
-
-
-    Value StdFunction::call(int bar, vector<ast_t> ps)
-    {
-        return double(0);
     }
 
 }  // namespace lex
