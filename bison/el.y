@@ -232,6 +232,7 @@ assignment: name asm exp //%prec ASM
       asm_stmt as;
       as.var = $1;
       as.type = $2;
+      as.type_loc = @2;
       as.exp = $3;
       $$ = stmtV.put(as);
     }

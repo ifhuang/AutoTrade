@@ -109,9 +109,9 @@ void applyBar(ast *node, int bar)
     }
 }
 
-void printTree(ast* node)
+const YYLTYPE * GetLocation(ast_t idx)
 {
-    printf("%d", node->type);
+    return &astV[idx].loc;
 }
 
 void astpre()

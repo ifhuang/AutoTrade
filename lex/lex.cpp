@@ -10,7 +10,6 @@ int main()
 {
     FILE *f = fopen("in.txt", "r");
     int g = elparse(f);
-    printf(" %d\n", g);
     fclose(f);
     if (g)
     {
@@ -24,6 +23,7 @@ int main()
     }
     catch (SemanticError e)
     {
+        printf("(%s): error: ", location_print(e.loc_).c_str());
         printf("%s\n", e.what());
         return 0;
     }

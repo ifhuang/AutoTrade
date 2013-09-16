@@ -68,6 +68,7 @@ struct asm_stmt
 {
 	ast_t var;
 	int type;
+    YYLTYPE type_loc;
 	ast_t exp;
 };
 

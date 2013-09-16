@@ -16,16 +16,16 @@ namespace{
         case VType::NUMERIC:
             break;
         case VType::TEXT:
-            if (as.type != kEQ && as.type != kADD)throw InvalidTypeOperation();
+            if (as.type != kEQ && as.type != kADD)throw InvalidTypeOperation(&as.type_loc);
             break;
         case VType::TF:
-            if (as.type != kEQ)throw InvalidTypeOperation();
+            if (as.type != kEQ)throw InvalidTypeOperation(&as.type_loc);
             break;
         }
         VType rightType = get_type(as.exp);
         if (variable.type != rightType)
         {
-            throw TypesNotCompatible();
+            throw TypesNotCompatible(&as.type_loc);
         }
         ast &var = astV[as.var];
         var.idx = variable.position;
@@ -34,23 +34,23 @@ namespace{
     int check_n_m(ast &print)
     {
         if (print.mid == -1)return 0;
-        if (get_type(print.mid) != VType::NUMERIC)throw SemanticError("n must be numeric");
+        if (get_type(print.mid) != VType::NUMERIC)throw SemanticError("n must be numeric", GetLocation(print.mid));
         if (print.right == -1)return 1;
-        if (get_type(print.right) != VType::NUMERIC)throw SemanticError("m must be numeric");
+        if (get_type(print.right) != VType::NUMERIC)throw SemanticError("m must be numeric", GetLocation(print.right));
         return 2;
     }
 }
 
 void check_visitor::operator()(if_stmt & is) const
 {
-    if (get_type(is.con) != VType::TF)throw LogicalExpressionExpected();
+    if (get_type(is.con) != VType::TF)throw LogicalExpressionExpected(GetLocation(is.con));
     check(is.then);
     check(is.els);
 }
 
 void check_visitor::operator()(once_stmt & os) const
 {
-    if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected();
+    if (~os.con && get_type(os.con) != VType::TF)throw LogicalExpressionExpected(GetLocation(os.con));
     check(os.stmt);
     os.con_position = enviroment.ReserveSpace(kAstTrue);
 }
@@ -61,23 +61,23 @@ void check_visitor::operator()(for_stmt & fs) const
     VSource source = find_name(name);
     if (source != VSource::Variable)
     {
-        throw SemanticError("array or varable expected");
+        throw SemanticError("array or varable expected", GetLocation(fs.var));
     }
     Variable var = varTable[name];
     if (var.type != VType::NUMERIC)
     {
-        throw TypesNotCompatible();
+        throw InvalidTypeOperation(GetLocation(fs.var));
     }
     VType ft = get_type(fs.from);
-    if (ft == VType::TEXT)throw TypesNotCompatible();
+    if (ft == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.from));
     VType tt = get_type(fs.to);
-    if (tt == VType::TEXT)throw TypesNotCompatible();
+    if (tt == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.to));
     check(fs.block);
 }
 
 void check_visitor::operator()(while_stmt & ws) const
 {
-    if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected();
+    if (get_type(ws.con) != VType::TF)throw LogicalExpressionExpected(GetLocation(ws.con));
     check_stmts(ws.stmts);
 }
 
@@ -106,7 +106,7 @@ void check_visitor::operator()(asm_stmt & as) const
         check_asm_variable(name, as);
         break;
     default:
-        throw SemanticError("array or varable expected");
+        throw SemanticError("array or varable expected", GetLocation(as.var));
     }
 }
 
@@ -124,7 +124,7 @@ void check_visitor::operator()(var_stmt & vs) const
         VSource source = find_name(name);
         if (source != VSource::Undefined)
         {
-            throw SemanticError("this word has already been defined");
+            throw SemanticError("this word has already been defined", GetLocation(var.left));
         }
         VType type = get_type(var.right);
         int position = enviroment.ReserveSpace(var.right);
@@ -147,7 +147,7 @@ void check_visitor::operator()(print_stmt & ps) const
                 break;
             case VType::TF:
             case VType::TEXT:
-                if (nm == 2)throw SemanticError("m cannot apply to this type");
+                if (nm == 2)throw SemanticError("m cannot apply to this type", GetLocation(print.right));
                 break;
             default:
                 throw SemanticError();

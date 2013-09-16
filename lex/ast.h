@@ -85,6 +85,7 @@ int newtf(YYLTYPE loc, bool bv);
 int newcmp(YYLTYPE loc, int fn, ast_t lhs, ast_t rhs);
 int newprint(YYLTYPE loc, ast_t exp, ast_t n = -1, ast_t m = -1);
 int newcase(YYLTYPE loc, ast_t left, ast_t right, int type);
+const YYLTYPE * GetLocation(ast_t idx);
 
 void astpre();
 void astpost();

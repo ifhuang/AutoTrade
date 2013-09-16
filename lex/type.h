@@ -42,19 +42,22 @@ namespace lex{
     {
     public:
         SemanticError() {}
-        SemanticError(const char * const & message) : exception(message) {}
+        SemanticError(const char * const & message, const YYLTYPE * const loc)
+            : exception(message), loc_(loc) {}
+
+        const YYLTYPE * const loc_ = nullptr;
     };
 
     struct InvalidTypeOperation : SemanticError{
-        InvalidTypeOperation() : SemanticError("invalid type operation") {}
+        InvalidTypeOperation(const YYLTYPE * const loc) : SemanticError("invalid type operation", loc) {}
     };
 
     struct LogicalExpressionExpected : SemanticError{
-        LogicalExpressionExpected() : SemanticError("logical expression expected") {}
+        LogicalExpressionExpected(const YYLTYPE * const loc) : SemanticError("logical expression expected", loc) {}
     };
 
     struct TypesNotCompatible : SemanticError{
-        TypesNotCompatible() : SemanticError("types not compatible") {}
+        TypesNotCompatible(const YYLTYPE * const loc) : SemanticError("types not compatible", loc) {}
     };
 
     extern int kAstTrue;
