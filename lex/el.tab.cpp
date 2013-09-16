@@ -1988,7 +1988,7 @@ yyreduce:
 
   case 32:
 #line 98 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::VARDEC, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::VARDEC, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
 #line 1993 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2012,7 +2012,7 @@ yyreduce:
 
   case 36:
 #line 109 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::ARRDEC, (yyvsp[-6].fn), (yyvsp[-1].fn), (yyvsp[-4].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::ARRDEC, (yyvsp[-6].fn), (yyvsp[-1].fn), (yyvsp[-4].fn)); }
 #line 2017 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2139,7 +2139,7 @@ yyreduce:
 
   case 60:
 #line 176 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::SECTION, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::SECTION, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2144 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2169,19 +2169,19 @@ yyreduce:
 
   case 65:
 #line 186 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcase((yyvsp[0].fn), -1, 0); }
+    { (yyval.fn) = newcase((yyloc), (yyvsp[0].fn), -1, 0); }
 #line 2174 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 187 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcase((yyvsp[-2].fn), (yyvsp[0].fn), 1); }
+    { (yyval.fn) = newcase((yyloc), (yyvsp[-2].fn), (yyvsp[0].fn), 1); }
 #line 2180 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 188 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcase((yyvsp[-2].fn), (yyvsp[0].fn), 2); }
+    { (yyval.fn) = newcase((yyloc), (yyvsp[-2].fn), (yyvsp[0].fn), 2); }
 #line 2186 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2319,73 +2319,73 @@ yyreduce:
 
   case 90:
 #line 244 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::MUL, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::MUL, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2324 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
 #line 245 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::DIV, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::DIV, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2330 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
 #line 246 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::ADD, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::ADD, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2336 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
 #line 247 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::SUB, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::SUB, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2342 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
 #line 248 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::AND, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::AND, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2348 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
 #line 249 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::OR,  (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::OR,  (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2354 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
 #line 250 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::NOT, (yyvsp[0].fn), -1); }
+    { (yyval.fn) = newast((yyloc), NodeType::NOT, (yyvsp[0].fn), -1); }
 #line 2360 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
 #line 251 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcmp(0,  (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newcmp((yyloc), 0,  (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2366 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
 #line 252 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcmp((yyvsp[-1].fn), (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newcmp((yyloc), (yyvsp[-1].fn), (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2372 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
 #line 253 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcmp(6, (yyvsp[-3].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newcmp((yyloc), 6, (yyvsp[-3].fn), (yyvsp[0].fn)); }
 #line 2378 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
 #line 254 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newcmp(7, (yyvsp[-3].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newcmp((yyloc), 7, (yyvsp[-3].fn), (yyvsp[0].fn)); }
 #line 2384 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
 #line 255 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::UMINUS, (yyvsp[0].fn), -1); }
+    { (yyval.fn) = newast((yyloc), NodeType::UMINUS, (yyvsp[0].fn), -1); }
 #line 2390 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2403,43 +2403,43 @@ yyreduce:
 
   case 104:
 #line 258 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::BAR, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::BAR, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
 #line 2408 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
 #line 263 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::MUL, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::MUL, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2414 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
 #line 264 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::DIV, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::DIV, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2420 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 109:
 #line 265 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::ADD, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::ADD, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2426 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 110:
 #line 266 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::SUB, (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::SUB, (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2432 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
 #line 267 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::UMINUS, (yyvsp[0].fn), -1); }
+    { (yyval.fn) = newast((yyloc), NodeType::UMINUS, (yyvsp[0].fn), -1); }
 #line 2438 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 112:
 #line 268 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::UPLUS, (yyvsp[0].fn), -1); }
+    { (yyval.fn) = newast((yyloc), NodeType::UPLUS, (yyvsp[0].fn), -1); }
 #line 2444 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2451,31 +2451,31 @@ yyreduce:
 
   case 115:
 #line 273 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newname((yyvsp[0].fn)); }
+    { (yyval.fn) = newname((yyloc), (yyvsp[0].fn)); }
 #line 2456 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 116:
 #line 274 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newname(0); }
+    { (yyval.fn) = newname((yyloc), 0); }
 #line 2462 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 117:
 #line 277 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::FUNC, (yyvsp[0].fn), -2); }
+    { (yyval.fn) = newast((yyloc), NodeType::FUNC, (yyvsp[0].fn), -2); }
 #line 2468 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 118:
 #line 278 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::FUNC, (yyvsp[-2].fn), -1); }
+    { (yyval.fn) = newast((yyloc), NodeType::FUNC, (yyvsp[-2].fn), -1); }
 #line 2474 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 119:
 #line 279 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newast(NodeType::FUNC, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
+    { (yyval.fn) = newast((yyloc), NodeType::FUNC, (yyvsp[-3].fn), (yyvsp[-1].fn)); }
 #line 2480 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2493,25 +2493,25 @@ yyreduce:
 
   case 123:
 #line 287 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newtf(true); }
+    { (yyval.fn) = newtf((yyloc), true); }
 #line 2498 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 124:
 #line 288 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newtf(false); }
+    { (yyval.fn) = newtf((yyloc), false); }
 #line 2504 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 126:
 #line 292 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newdouble((yyvsp[0].fn)); }
+    { (yyval.fn) = newdouble((yyloc), (yyvsp[0].fn)); }
 #line 2510 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 127:
 #line 294 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newtext((yyvsp[0].fn)); }
+    { (yyval.fn) = newtext((yyloc), (yyvsp[0].fn)); }
 #line 2516 "el.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2581,19 +2581,19 @@ yyreduce:
 
   case 138:
 #line 319 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newprint((yyvsp[0].fn)); }
+    { (yyval.fn) = newprint((yyloc), (yyvsp[0].fn)); }
 #line 2586 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 139:
 #line 320 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newprint((yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newprint((yyloc), (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2592 "el.tab.c" /* yacc.c:1646  */
     break;
 
   case 140:
 #line 321 "el.y" /* yacc.c:1646  */
-    { (yyval.fn) = newprint((yyvsp[-4].fn), (yyvsp[-2].fn), (yyvsp[0].fn)); }
+    { (yyval.fn) = newprint((yyloc), (yyvsp[-4].fn), (yyvsp[-2].fn), (yyvsp[0].fn)); }
 #line 2598 "el.tab.c" /* yacc.c:1646  */
     break;
 

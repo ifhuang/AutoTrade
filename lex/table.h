@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "ast.h"
+#include "execution.h"
 #include "type.h"
 
 namespace lex{
@@ -25,7 +26,7 @@ namespace lex{
         VType result;
         std::vector<VType> paras;
         int min = -1;
-        virtual ast call(int bar, std::vector<ast_t> ps);
+        virtual Value call(int bar, std::vector<ast_t> ps);
 
         StdFunction() {}
         StdFunction(VType result, std::vector<VType> paras) :result(result), paras(paras) {}

@@ -95,8 +95,8 @@ variable_list: variable                   { $$ = astsV.createI($1); }
              | variable_list ',' variable { $$ = astsV.putI($1, $3); }
              ;
 
-variable: name '(' exp ')'     { $$ = newast(NodeType::VARDEC, $1, $3); }
-  //      | IBP name '(' exp ')' { $$ = newast(NodeType::IBPVARDEC, $2, $4); }
+variable: name '(' exp ')'     { $$ = newast(@$, NodeType::VARDEC, $1, $3); }
+  //      | IBP name '(' exp ')' { $$ = newast(@$, NodeType::IBPVARDEC, $2, $4); }
         ;
 
 arrays: ARRAYS ':' array_list ';' { $$ = new_var(1, $3); } ;
@@ -106,7 +106,7 @@ array_list: array                { $$ = astsV.createI($1); }
           ;
 
 array: name LSB dimension_list RSB '(' exp ')'
-       { $$ = newast(NodeType::ARRDEC, $1, $6, $3); }
+       { $$ = newast(@$, NodeType::ARRDEC, $1, $6, $3); }
  //    | IBP name LSB dimension_list RSB '(' exp ')'
      ;
 
@@ -173,7 +173,7 @@ section_list: section              { $$ = astsV.createI($1); }
             | section_list section { $$ = astsV.putI($1, $2); }
             ;
 
-section: case_option ':' stmt_list { $$ = newast(NodeType::SECTION, $1, $3); }
+section: case_option ':' stmt_list { $$ = newast(@$, NodeType::SECTION, $1, $3); }
 
 case_option: DEFAULT        { $$ = -1; }
            | CASE case_list { $$ = $2; }
@@ -183,9 +183,9 @@ case_list: case               { $$ = astsV.createI($1); }
          | case_list ',' case { $$ = astsV.putI($1, $3); }
          ;
 
-case: exp            { $$ = newcase($1, -1, 0); }
-    | exp TO exp     { $$ = newcase($1, $3, 1); }
-    | exp DOWNTO exp { $$ = newcase($1, $3, 2); }
+case: exp            { $$ = newcase(@$, $1, -1, 0); }
+    | exp TO exp     { $$ = newcase(@$, $1, $3, 1); }
+    | exp DOWNTO exp { $$ = newcase(@$, $1, $3, 2); }
     ;
 
 order_stmt: order_verb order_name order_amount order_time order_action
@@ -241,42 +241,42 @@ asm: '=' { $$ = 0; }
    | ASM
    ;
 
-exp: exp MUL exp { $$ = newast(NodeType::MUL, $1, $3); }
-   | exp DIV exp { $$ = newast(NodeType::DIV, $1, $3); }
-   | exp ADD exp { $$ = newast(NodeType::ADD, $1, $3); }
-   | exp SUB exp { $$ = newast(NodeType::SUB, $1, $3); }
-   | exp AND exp { $$ = newast(NodeType::AND, $1, $3); }
-   | exp OR exp  { $$ = newast(NodeType::OR,  $1, $3); }
-   | NOT exp     { $$ = newast(NodeType::NOT, $2, -1); }
-   | exp '=' exp { $$ = newcmp(0,  $1, $3); }
-   | exp CMP exp { $$ = newcmp($2, $1, $3); }
-   | exp CROSS ABOVE exp { $$ = newcmp(6, $1, $4); }
-   | exp CROSS BELOW exp { $$ = newcmp(7, $1, $4); }
-   | SUB exp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
+exp: exp MUL exp { $$ = newast(@$, NodeType::MUL, $1, $3); }
+   | exp DIV exp { $$ = newast(@$, NodeType::DIV, $1, $3); }
+   | exp ADD exp { $$ = newast(@$, NodeType::ADD, $1, $3); }
+   | exp SUB exp { $$ = newast(@$, NodeType::SUB, $1, $3); }
+   | exp AND exp { $$ = newast(@$, NodeType::AND, $1, $3); }
+   | exp OR exp  { $$ = newast(@$, NodeType::OR,  $1, $3); }
+   | NOT exp     { $$ = newast(@$, NodeType::NOT, $2, -1); }
+   | exp '=' exp { $$ = newcmp(@$, 0,  $1, $3); }
+   | exp CMP exp { $$ = newcmp(@$, $2, $1, $3); }
+   | exp CROSS ABOVE exp { $$ = newcmp(@$, 6, $1, $4); }
+   | exp CROSS BELOW exp { $$ = newcmp(@$, 7, $1, $4); }
+   | SUB exp %prec UNARY { $$ = newast(@$, NodeType::UMINUS, $2, -1); }
    | ADD exp %prec UNARY { $$ = $2; }
    | '(' exp ')' { $$ = $2; }
-   | exp LSB exp RSB { $$ = newast(NodeType::BAR, $1, $3); }
+   | exp LSB exp RSB { $$ = newast(@$, NodeType::BAR, $1, $3); }
    | literal
    | name_call
    ;
 
-nexp: nexp MUL nexp { $$ = newast(NodeType::MUL, $1, $3); }
-    | nexp DIV nexp { $$ = newast(NodeType::DIV, $1, $3); }
-    | nexp ADD nexp { $$ = newast(NodeType::ADD, $1, $3); }
-    | nexp SUB nexp { $$ = newast(NodeType::SUB, $1, $3); }
-    | SUB nexp %prec UNARY { $$ = newast(NodeType::UMINUS, $2, -1); }
-    | ADD nexp %prec UNARY { $$ = newast(NodeType::UPLUS, $2, -1); }
+nexp: nexp MUL nexp { $$ = newast(@$, NodeType::MUL, $1, $3); }
+    | nexp DIV nexp { $$ = newast(@$, NodeType::DIV, $1, $3); }
+    | nexp ADD nexp { $$ = newast(@$, NodeType::ADD, $1, $3); }
+    | nexp SUB nexp { $$ = newast(@$, NodeType::SUB, $1, $3); }
+    | SUB nexp %prec UNARY { $$ = newast(@$, NodeType::UMINUS, $2, -1); }
+    | ADD nexp %prec UNARY { $$ = newast(@$, NodeType::UPLUS, $2, -1); }
     | '(' nexp ')'  { $$ = $2; }
     | number
     ;
 
-name: NAME  { $$ = newname($1); }
-    | CLOSE { $$ = newname(0); }
+name: NAME  { $$ = newname(@$, $1); }
+    | CLOSE { $$ = newname(@$, 0); }
     ;
 
-name_call: name { $$ = newast(NodeType::FUNC, $1, -2); }
-      |    name '(' ')' { $$ = newast(NodeType::FUNC, $1, -1); }
-      |    name '(' argu_list ')' { $$ = newast(NodeType::FUNC, $1, $3); }
+name_call: name { $$ = newast(@$, NodeType::FUNC, $1, -2); }
+      |    name '(' ')' { $$ = newast(@$, NodeType::FUNC, $1, -1); }
+      |    name '(' argu_list ')' { $$ = newast(@$, NodeType::FUNC, $1, $3); }
       ;
 
 argu_list: exp { $$ = astsV.createI($1); }
@@ -284,14 +284,14 @@ argu_list: exp { $$ = astsV.createI($1); }
       ;
 
 literal: number
-      |  TRUE   { $$ = newtf(true); }
-      |  FALSE  { $$ = newtf(false); }
+      |  TRUE   { $$ = newtf(@$, true); }
+      |  FALSE  { $$ = newtf(@$, false); }
       |  text
       ;
 
-number: NUMBER { $$ = newdouble($1); } ;
+number: NUMBER { $$ = newdouble(@$, $1); } ;
 
-text: TEXT { $$ = newtext($1); } ;
+text: TEXT { $$ = newtext(@$, $1); } ;
 
 block: BBEGIN stmt_list BEND
      {
@@ -316,9 +316,9 @@ print_list: print_element                { $$ = astsV.createI($1); }
           | print_list ',' print_element { $$ = astsV.putI($1, $3); }
           ;
 
-print_element: exp                 { $$ = newprint($1); }
-             | exp ':' exp         { $$ = newprint($1, $3); }
-             | exp ':' exp ':' exp { $$ = newprint($1, $3, $5); }
+print_element: exp                 { $$ = newprint(@$, $1); }
+             | exp ':' exp         { $$ = newprint(@$, $1, $3); }
+             | exp ':' exp ':' exp { $$ = newprint(@$, $1, $3, $5); }
              ;
 %%
 

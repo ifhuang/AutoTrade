@@ -40,9 +40,9 @@ namespace lex{
     };
 
 
-    ast StdFunction::call(int bar, vector<ast_t> ps)
+    Value StdFunction::call(int bar, vector<ast_t> ps)
     {
-        return ast(NodeType::VOID);
+        return double(0);
     }
 
 }  // namespace lex

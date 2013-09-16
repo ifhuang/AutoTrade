@@ -1,7 +1,6 @@
    /* -*-mode: flex-mode-*- */
 %{
 #include <stdarg.h>
-#include <sstream>
 #include "el.tab.h"
 #include "lex.h"
 

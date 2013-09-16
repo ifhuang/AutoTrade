@@ -6,7 +6,7 @@ using namespace lex;
 namespace Func
 {
 
-    ast Average::call(int bar, vector<ast_t> ps)
+    lex::Value Average::call(int bar, vector<ast_t> ps)
     {
         throw std::exception("The method or operation is not implemented.");
     }

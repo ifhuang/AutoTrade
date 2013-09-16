@@ -1,5 +1,5 @@
-#ifndef TREE_H
-# define TREE_H
+#ifndef TREE_H_
+#define TREE_H_
 
 #include <vector>
 #include <boost/variant.hpp>
@@ -109,4 +109,4 @@ void pre();
 void post();
 int elparse(FILE *f);
 
-#endif
+#endif  // TREE_H_

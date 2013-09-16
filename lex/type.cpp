@@ -217,7 +217,7 @@ namespace lex
 
     void init()
     {
-        kAstTrue = newtf(true);
+        kAstTrue = newtf(kDefaultLocation, true);
     }
 
     void type_check()

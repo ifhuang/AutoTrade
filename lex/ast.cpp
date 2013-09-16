@@ -29,63 +29,63 @@ int find(const char *cs, int length)
     return find(s);
 }
 
-int newast(NodeType type, ast_t left, ast_t right, ast_t mid)
+int newast(YYLTYPE loc, NodeType type, ast_t left, ast_t right, ast_t mid)
 {
-    ast node(type);
+    ast node(type, loc);
     node.left = left;
     node.right = right;
     node.mid = mid;
     return astV.put(node);
 }
 
-int newname(int idx)
+int newname(YYLTYPE loc, int idx)
 {
-    ast node(NodeType::VAR);
+    ast node(NodeType::VAR, loc);
     node.idx = idx;
     return astV.put(node);
 }
 
-int newdouble(int idx)
+int newdouble(YYLTYPE loc, int idx)
 {
-    ast node(NodeType::NUMERIC);
+    ast node(NodeType::NUMERIC, loc);
     node.idx = idx;
     return astV.put(node);
 }
 
-int newtext(int idx)
+int newtext(YYLTYPE loc, int idx)
 {
-    ast node(NodeType::TEXT);
+    ast node(NodeType::TEXT, loc);
     node.idx = idx;
     return astV.put(node);
 }
 
-int newtf(bool bv)
+int newtf(YYLTYPE loc, bool bv)
 {
-    ast node(NodeType::TF);
+    ast node(NodeType::TF, loc);
     node.bv = bv;
     return astV.put(node);
 }
 
-int newcmp(int fn, int lhs, int rhs)
+int newcmp(YYLTYPE loc, int fn, int lhs, int rhs)
 {
-    ast node(NodeType(100 + fn));
+    ast node(NodeType(100 + fn), loc);
     node.left = lhs;
     node.right = rhs;
     return astV.put(node);
 }
 
-int newprint(ast_t exp, ast_t n, ast_t m)
+int newprint(YYLTYPE loc, ast_t exp, ast_t n, ast_t m)
 {
-    ast node(NodeType::PRINT);
+    ast node(NodeType::PRINT, loc);
     node.left = exp;
     node.mid = n;
     node.right = m;
     return astV.put(node);
 }
 
-int newcase(ast_t left, ast_t right, int type)
+int newcase(YYLTYPE loc, ast_t left, ast_t right, int type)
 {
-    ast node(NodeType::CASE);
+    ast node(NodeType::CASE, loc);
     node.left = left;
     node.right = right;
     node.mid = type;

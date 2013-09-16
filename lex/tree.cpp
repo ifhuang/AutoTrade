@@ -3,8 +3,6 @@
 #include <stdio.h>
 using namespace std;
 
-#include "el.tab.h"
-
 stmts_t root;
 
 VV<stmt> VVN(stmtV);

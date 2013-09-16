@@ -2,7 +2,7 @@
 # define FUNCTIONS_H
 
 #include <vector>
-
+#include "execution.h"
 #include "table.h"
 
 namespace Func
@@ -12,7 +12,7 @@ namespace Func
 	{
 		Average();
 
-		virtual ast call(int bar, std::vector<ast_t> ps);
+		virtual lex::Value call(int bar, std::vector<ast_t> ps);
 
 	};
 }
