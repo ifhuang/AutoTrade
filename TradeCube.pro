@@ -15,11 +15,31 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     swingtradedialog.cpp \
-    combotradedialog.cpp
+    combotradedialog.cpp \
+    TC/ComboTrader.cpp \
+    TC/Dispatcher.cpp \
+    TC/SPTrader.cpp \
+    TC/SwingTrader.cpp \
+    TC/TradeUnit.cpp
 
 HEADERS  += mainwindow.h \
     swingtradedialog.h \
-    combotradedialog.h
+    combotradedialog.h \
+    TC/Bar.h \
+    TC/ComboOrder.h \
+    TC/ComboTrader.h \
+    TC/Dispatcher.h \
+    TC/LogHandler.h \
+    TC/OrderItem.h \
+    TC/Position.h \
+    TC/PriceItem.h \
+    TC/QuoteItem.h \
+    TC/SPTrader.h \
+    TC/Strategy.h \
+    TC/SwingTrader.h \
+    TC/TradeCube.h \
+    TC/TradeItem.h \
+    TC/TradeUnit.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \

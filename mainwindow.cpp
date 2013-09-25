@@ -11,6 +11,7 @@
 #include <QMessageBox>
 
 #include <iostream>
+#include <list>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +66,35 @@ MainWindow::MainWindow(QWidget *parent) :
     swing_counter = 0;
     combo_counter = 0;
 
+    swingPositionsModel = new QStandardItemModel;
+    swingPositionsModel->setColumnCount(6);
+    swingPositionsModel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
+    swingPositionsModel->setHeaderData(1, Qt::Horizontal, QString("Date"));
+    swingPositionsModel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
+    swingPositionsModel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
+    swingPositionsModel->setHeaderData(4, Qt::Horizontal, QString("Price"));
+    swingPositionsModel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    ui->treeView->setModel(swingPositionsModel);
+
+    swingWorkingOrdersModel = new QStandardItemModel;
+    swingWorkingOrdersModel->setColumnCount(6);
+    swingWorkingOrdersModel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
+    swingWorkingOrdersModel->setHeaderData(1, Qt::Horizontal, QString("Date"));
+    swingWorkingOrdersModel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
+    swingWorkingOrdersModel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
+    swingWorkingOrdersModel->setHeaderData(4, Qt::Horizontal, QString("Price"));
+    swingWorkingOrdersModel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    ui->tableView->setModel(swingWorkingOrdersModel);
+
+    swingOrderHistoryModel = new QStandardItemModel;
+    swingOrderHistoryModel->setColumnCount(6);
+    swingOrderHistoryModel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
+    swingOrderHistoryModel->setHeaderData(1, Qt::Horizontal, QString("Date"));
+    swingOrderHistoryModel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
+    swingOrderHistoryModel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
+    swingOrderHistoryModel->setHeaderData(4, Qt::Horizontal, QString("Price"));
+    swingOrderHistoryModel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    ui->tableView_2->setModel(swingOrderHistoryModel);
 }
 
 MainWindow::~MainWindow()
@@ -120,6 +150,9 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     double mdi_tab = 0.8;
     ui->mdiArea->resize(centralSize.width(), centralSize.height() * mdi_tab);
     ui->tabWidget_2->setGeometry(0, centralSize.height() * mdi_tab, centralSize.width(), centralSize.height());
+    ui->treeView->setGeometry(0, 0, centralSize.width() - 30, centralSize.height() * (1 - mdi_tab) - 30);
+    ui->tableView->setGeometry(0, 0, centralSize.width() - 30, centralSize.height() * (1 - mdi_tab) - 30);
+    ui->tableView_2->setGeometry(0, 0, centralSize.width() - 30, centralSize.height() * (1 - mdi_tab) - 30);
     ui->mdiArea_2->resize(centralSize.width(), centralSize.height() * mdi_tab);
     ui->tabWidget_3->setGeometry(0, centralSize.height() * mdi_tab, centralSize.width(), centralSize.height());
 }
@@ -150,4 +183,143 @@ void MainWindow::activate_combo()
 void MainWindow::update_swing_contract(QString contract)
 {
     selCon->setCurrentText(contract);
+}
+
+void MainWindow::displaySwingAddPositions(Position *position)
+{
+    QStandardItem *data = new QStandardItem(QString(position->getQuoteId().c_str()));
+
+    list<TradeItem *> tradeList = position->getTradeList();
+    for(list<TradeItem *>::const_iterator it = tradeList.begin(); it != tradeList.end(); ++it)
+    {
+        TradeItem *ti = (TradeItem *)*it;
+        QStandardItem* item1 = new QStandardItem;
+        QStandardItem* item2 = new QStandardItem(QString("%1").arg(ti->getTradeTime()));
+        QStandardItem* item3 = new QStandardItem(QString("%1").arg(ti->getOrderType()));
+        QStandardItem* item4 = new QStandardItem(QString("%1").arg(ti->getBuySell()));
+        QStandardItem* item5 = new QStandardItem(QString("%1").arg(ti->getTradePrice()));
+        QStandardItem* item6 = new QStandardItem(QString("%1").arg(ti->getQty()));
+        QList<QStandardItem *> child;
+        child << item1 << item2 << item3 << item4 << item5 << item6;
+        data->appendRow(child);
+    }
+    swingPositionsModel->insertRow(0, data);
+}
+
+void MainWindow::displaySwingUpdatePositions(Position *position)
+{
+    swingPositionsModel->removeRow(0);
+    displaySwingAddPositions(position);
+}
+
+void MainWindow::add_swing_positions()
+{
+    Position position;
+    position.setQuoteId("EUR/USD");
+    for(int i=0; i<5; i++)
+    {
+        TradeItem ti;
+        ti.setTradeTime(20130925);
+        ti.setOrderType('M');
+        ti.setBuySell('B');
+        ti.setTradePrice(1.31415);
+        ti.setQty(10);
+        position.getTradeList().push_back(&ti);
+
+    }
+    displaySwingAddPositions(&position);
+}
+
+void MainWindow::update_swing_positions()
+{
+    Position position;
+    position.setQuoteId("DJIA");
+    for(int i=0; i<3; i++)
+    {
+        TradeItem ti;
+        ti.setTradeTime(20130924);
+        ti.setOrderType('L');
+        ti.setBuySell('S');
+        ti.setTradePrice(18888.5657);
+        ti.setQty(200);
+        position.getTradeList().push_back(&ti);
+
+    }
+    displaySwingUpdatePositions(&position);
+}
+
+void MainWindow::displaySwingAddWorkingOrders(OrderItem *orderItem)
+{
+    QStandardItem* item1 = new QStandardItem(QString(orderItem->getQuoteId().c_str()));
+    QStandardItem* item2 = new QStandardItem;
+    QStandardItem* item3 = new QStandardItem(QString("%1").arg(orderItem->getOrderType()));
+    QStandardItem* item4 = new QStandardItem(QString("%1").arg(orderItem->getBuySell()));
+    QStandardItem* item5 = new QStandardItem(QString("%1").arg(orderItem->getSubmitPrice()));
+    QStandardItem* item6 = new QStandardItem(QString("%1").arg(orderItem->getQty()));
+    QList<QStandardItem *> data;
+    data << item1 << item2 << item3 << item4 << item5 << item6;
+    swingWorkingOrdersModel->insertRow(0, data);
+}
+
+void MainWindow::displaySwingUpdateWorkingOrders(OrderItem *orderItem)
+{
+    swingWorkingOrdersModel->removeRow(0);
+    displaySwingAddWorkingOrders(orderItem);
+}
+
+void MainWindow::displaySwingRemoveWorkingOrders()
+{
+    swingWorkingOrdersModel->removeRow(0);
+}
+
+void MainWindow::add_swing_working_orders()
+{
+    OrderItem oi;
+    oi.setQuoteId("EUR/USD");
+    oi.setOrderType(1);
+    oi.setBuySell('B');
+    oi.setSubmitPrice(1.31415);
+    oi.setQty(10);
+    displaySwingAddWorkingOrders(&oi);
+}
+
+void MainWindow::update_swing_working_orders()
+{
+    OrderItem oi;
+    oi.setQuoteId("DJIA");
+    oi.setOrderType(2);
+    oi.setBuySell('S');
+    oi.setSubmitPrice(18888.589);
+    oi.setQty(200);
+    displaySwingUpdateWorkingOrders(&oi);
+}
+
+void MainWindow::remove_swing_working_orders()
+{
+    displaySwingRemoveWorkingOrders();
+}
+
+void MainWindow::displaySwingAddOrderHistory(TradeItem *tradeItem)
+{
+    QStandardItem* item1 = new QStandardItem(QString(tradeItem->getQuoteId().c_str()));
+    QStandardItem* item2 = new QStandardItem(QString("%1").arg(tradeItem->getTradeTime()));
+    QStandardItem* item3 = new QStandardItem(QString("%1").arg(tradeItem->getOrderType()));
+    QStandardItem* item4 = new QStandardItem(QString("%1").arg(tradeItem->getBuySell()));
+    QStandardItem* item5 = new QStandardItem(QString("%1").arg(tradeItem->getTradePrice()));
+    QStandardItem* item6 = new QStandardItem(QString("%1").arg(tradeItem->getQty()));
+    QList<QStandardItem *> data;
+    data << item1 << item2 << item3 << item4 << item5 << item6;
+    swingOrderHistoryModel->insertRow(0, data);
+}
+
+void MainWindow::add_swing_order_history()
+{
+    TradeItem ti;
+    ti.setQuoteId("DJIA");
+    ti.setTradeTime(20130924);
+    ti.setOrderType('L');
+    ti.setBuySell('S');
+    ti.setTradePrice(18888.5657);
+    ti.setQty(200);
+    displaySwingAddOrderHistory(&ti);
 }

@@ -82,6 +82,8 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, QWidget *parent) :
     connect(swingRight_insstr, SIGNAL(triggered()), this, SLOT(insert_strategy()));
     connect(swingRight_setstr, SIGNAL(triggered()), this, SLOT(set_strategy()));
     connect(swingRight_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
+
+    connect(swingRight_setwin, SIGNAL(triggered()), this, SLOT(set_window_test()));
 }
 
 SwingTradeDialog::~SwingTradeDialog()
@@ -170,4 +172,36 @@ void SwingTradeDialog::remove_strategy()
     swingRight_insstr->setEnabled(true);
     swingRight_setstr->setEnabled(false);
     swingRight_remstr->setEnabled(false);
+}
+
+void SwingTradeDialog::displayPriceItem(PriceItem* priceItem)
+{
+    ui->pushButton_ba->setText(QString("Buy Ask\n%1").arg(priceItem->askPrice1));
+    ui->pushButton_bb->setText(QString("Buy Bid\n%1").arg(priceItem->bidPrice1));
+    ui->pushButton_sb->setText(QString("Sell Bid\n%1").arg(priceItem->bidPrice1));
+    ui->pushButton_sa->setText(QString("Sell Ask\n%1").arg(priceItem->askPrice1));
+}
+
+void SwingTradeDialog::displayPosition(double position)
+{
+    ui->label_position->setText(QString("%1").arg(position));
+}
+
+void SwingTradeDialog::displayProfit(double profit)
+{
+    ui->label_profit->setText(QString("%1").arg(profit));
+}
+
+void SwingTradeDialog::set_window_test()
+{
+    PriceItem p;
+    p.askPrice1 = qrand() % 100000;
+    p.bidPrice1 = qrand() % 100000;
+    p.askQty1 = qrand() % 10;
+    p.bidQty1 = qrand() % 10;
+    displayPriceItem(&p);
+    double position = qrand() % 100000;
+    double profit = qrand() % 10;
+    displayPosition(position);
+    displayProfit(profit);
 }

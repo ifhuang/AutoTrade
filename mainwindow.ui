@@ -65,22 +65,61 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Positions</string>
        </attribute>
+       <widget class="QTreeView" name="treeView">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>705</width>
+          <height>116</height>
+         </rect>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
         <string>Working Orders</string>
        </attribute>
+       <widget class="QTableView" name="tableView">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>705</width>
+          <height>116</height>
+         </rect>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
         <string>Order History</string>
        </attribute>
+       <widget class="QTableView" name="tableView_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>705</width>
+          <height>116</height>
+         </rect>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_6">
        <attribute name="title">
@@ -199,7 +238,12 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionView1"/>
+    <addaction name="actionAdd_Swing_Positions"/>
+    <addaction name="actionUpdate_Swing_Positions"/>
+    <addaction name="actionAdd_Swing_Working_Orders"/>
+    <addaction name="actionUpdate_Swing_Working_Orders"/>
+    <addaction name="actionRemove_Swing_Working_Orders"/>
+    <addaction name="actionAdd_Swing_Order_History"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -241,9 +285,9 @@
     <string>&amp;Insert Swing Trader</string>
    </property>
   </action>
-  <action name="actionView1">
+  <action name="actionAdd_Swing_Positions">
    <property name="text">
-    <string>view1</string>
+    <string>Add Swing Positions</string>
    </property>
   </action>
   <action name="actionWindow1">
@@ -259,6 +303,31 @@
   <action name="action_Insert_Combo_Trader">
    <property name="text">
     <string>&amp;Insert Combo Trader</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Swing_Positions">
+   <property name="text">
+    <string>Update Swing Positions</string>
+   </property>
+  </action>
+  <action name="actionAdd_Swing_Working_Orders">
+   <property name="text">
+    <string>Add Swing Working Orders</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Swing_Working_Orders">
+   <property name="text">
+    <string>Update Swing Working Orders</string>
+   </property>
+  </action>
+  <action name="actionRemove_Swing_Working_Orders">
+   <property name="text">
+    <string>Remove Swing Working Orders</string>
+   </property>
+  </action>
+  <action name="actionAdd_Swing_Order_History">
+   <property name="text">
+    <string>Add Swing Order History</string>
    </property>
   </action>
  </widget>
@@ -363,6 +432,102 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAdd_Swing_Positions</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_swing_positions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUpdate_Swing_Positions</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_swing_positions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAdd_Swing_Working_Orders</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_swing_working_orders()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRemove_Swing_Working_Orders</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>remove_swing_working_orders()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUpdate_Swing_Working_Orders</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_swing_working_orders()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAdd_Swing_Order_History</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_swing_order_history()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>new_swing_trade()</slot>
@@ -370,5 +535,11 @@
   <slot>about()</slot>
   <slot>activate_swing()</slot>
   <slot>activate_combo()</slot>
+  <slot>add_swing_positions()</slot>
+  <slot>update_swing_positions()</slot>
+  <slot>add_swing_working_orders()</slot>
+  <slot>update_swing_working_orders()</slot>
+  <slot>remove_swing_working_orders()</slot>
+  <slot>add_swing_order_history()</slot>
  </slots>
 </ui>

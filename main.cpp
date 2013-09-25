@@ -4,6 +4,8 @@
 
 #include <windows.h>
 
+const char *PROGRAM_NAME="TradeCube";
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

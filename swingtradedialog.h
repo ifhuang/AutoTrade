@@ -9,6 +9,8 @@
 #include <QComboBox>
 #include <QCloseEvent>
 
+#include "TC/PriceItem.h"
+
 namespace Ui {
 class SwingTradeDialog;
 }
@@ -21,6 +23,10 @@ public:
     explicit SwingTradeDialog(QString &contract, QWidget *parent = 0);
     ~SwingTradeDialog();
     QString getSwingContract();
+
+    void displayPriceItem(PriceItem* priceItem);
+    void displayPosition(double position);
+    void displayProfit(double profit);
 
 private:
     Ui::SwingTradeDialog *ui;
@@ -59,6 +65,8 @@ private slots:
     void insert_strategy();
     void set_strategy();
     void remove_strategy();
+
+    void set_window_test();
 };
 
 #endif // SWINGTRADEDIALOG_H
