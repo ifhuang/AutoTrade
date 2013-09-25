@@ -6,7 +6,6 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStandardItemModel>
-
 #include "TC/Position.h"
 #include "TC/OrderItem.h"
 #include "TC/TradeItem.h"
@@ -23,26 +22,43 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    // display interface for add/update positions tab in swing trade tab
     void displaySwingAddPositions(Position *position);
     void displaySwingUpdatePositions(Position *position);
+
+    // display interface for add/update/remove working orders tab in swing trade tab
     void displaySwingAddWorkingOrders(OrderItem *orderItem);
     void displaySwingUpdateWorkingOrders(OrderItem *orderItem);
     void displaySwingRemoveWorkingOrders();
+
+    // display interface for add order history tab in swing trade tab
     void displaySwingAddOrderHistory(TradeItem *orderItem);
 
 private slots:    
-    void new_swing_trade();    
+
+    // insert swing/combo trade dialog
+    void new_swing_trade();
     void new_combo_trade();
+
     void about();
+
+    // update menu using active swing trade dialog in mdi area
     void activate_swing();
     void activate_combo();
+
+    // update menu add/modify/remove contract of swing trade dialog
     void update_swing_contract(QString contract);
 
+    // test for display interface for add/update positions tab in swing trade tab
     void add_swing_positions();
     void update_swing_positions();
+
+    // test for display interface for add/update/remove working orders tab in swing trade tab
     void add_swing_working_orders();
     void update_swing_working_orders();
     void remove_swing_working_orders();
+
+    // test for display interface for add order history tab in swing trade tab
     void add_swing_order_history();
 
 private:
@@ -55,13 +71,18 @@ private:
     QPushButton *buy;
     QPushButton *sell;
 
+    // counter for swing/combo trade dialog
     int swing_counter;
     int combo_counter;
 
+    // tree model for positions tab in swing trade tab
     QStandardItemModel *swingPositionsModel;
+
+    // table model for working orders / order history tab in swing trade tab
     QStandardItemModel *swingWorkingOrdersModel;
     QStandardItemModel *swingOrderHistoryModel;
 
+    // resize components when resize mainwindow
     void resizeEvent(QResizeEvent* event);
 
 };

@@ -17,7 +17,7 @@
    <iconset resource="tradecube.qrc">
     <normaloff>:/images/64-64.ico</normaloff>:/images/64-64.ico</iconset>
   </property>
-  <widget class="QPushButton" name="pushButton_4">
+  <widget class="QPushButton" name="pushButton_bm">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -30,7 +30,7 @@
     <string>Buy Market</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_5">
+  <widget class="QPushButton" name="pushButton_sm">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -43,7 +43,7 @@
     <string>Sell Market</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="label_position">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -62,7 +62,7 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QSpinBox" name="spinBox">
+  <widget class="QSpinBox" name="spinBox_qty">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -72,7 +72,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox">
+  <widget class="QGroupBox" name="groupBox_cc1">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -84,7 +84,7 @@
    <property name="title">
     <string>Contract Code 1</string>
    </property>
-   <widget class="QPushButton" name="pushButton_6">
+   <widget class="QPushButton" name="pushButton_cc1_bm">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -98,7 +98,7 @@
 12423/1</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="pushButton_cc1_sm">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -112,7 +112,7 @@
 12426/2</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_cc1_under">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -131,7 +131,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_cc1_position">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -150,7 +150,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="label_cc1_profit">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -170,7 +170,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2">
+  <widget class="QGroupBox" name="groupBox_cc2">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -182,7 +182,7 @@
    <property name="title">
     <string>Contract Code 2</string>
    </property>
-   <widget class="QLabel" name="label_5">
+   <widget class="QLabel" name="label_cc2_under">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -201,7 +201,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="label_cc2_position">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -220,7 +220,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="label_cc2_profit">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -239,7 +239,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_10">
+   <widget class="QPushButton" name="pushButton_cc2_bm">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -253,7 +253,7 @@
 12423/1</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_8">
+   <widget class="QPushButton" name="pushButton_cc2_sm">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -268,7 +268,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="label_profit">
    <property name="geometry">
     <rect>
      <x>130</x>

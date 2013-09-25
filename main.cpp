@@ -1,10 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QSplashScreen>
-
 #include <windows.h>
 
-const char *PROGRAM_NAME="TradeCube";
+const char *PROGRAM_NAME = "TradeCube";
 
 int main(int argc, char *argv[])
 {

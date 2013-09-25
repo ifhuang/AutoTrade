@@ -91,7 +91,7 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QSpinBox" name="spinBox">
+  <widget class="QSpinBox" name="spinBox_qty">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -101,7 +101,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_2">
+  <widget class="QCheckBox" name="checkBox_sl">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -114,7 +114,7 @@
     <string>Stop Loss</string>
    </property>
   </widget>
-  <widget class="QDoubleSpinBox" name="doubleSpinBox">
+  <widget class="QDoubleSpinBox" name="doubleSpinBox_sl">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -124,7 +124,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+  <widget class="QDoubleSpinBox" name="doubleSpinBox_pt">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -134,7 +134,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_3">
+  <widget class="QCheckBox" name="checkBox_pt">
    <property name="geometry">
     <rect>
      <x>20</x>

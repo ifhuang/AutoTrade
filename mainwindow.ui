@@ -45,7 +45,7 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tab_swing">
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
@@ -55,7 +55,7 @@
      <attribute name="title">
       <string>Swing Trade</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_2">
+     <widget class="QTabWidget" name="tabWidget_swing">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -65,13 +65,13 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Positions</string>
        </attribute>
-       <widget class="QTreeView" name="treeView">
+       <widget class="QTreeView" name="swingPositionsView">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -89,7 +89,7 @@
        <attribute name="title">
         <string>Working Orders</string>
        </attribute>
-       <widget class="QTableView" name="tableView">
+       <widget class="QTableView" name="swingWorkingOrdersView">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -107,7 +107,7 @@
        <attribute name="title">
         <string>Order History</string>
        </attribute>
-       <widget class="QTableView" name="tableView_2">
+       <widget class="QTableView" name="swingOrderHistoryView">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -127,7 +127,7 @@
        </attribute>
       </widget>
      </widget>
-     <widget class="QMdiArea" name="mdiArea">
+     <widget class="QMdiArea" name="mdiArea_swing">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -150,7 +150,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="tab_combo">
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
@@ -160,7 +160,7 @@
      <attribute name="title">
       <string>Combo Trade</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_3">
+     <widget class="QTabWidget" name="tabWidget_combo">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -193,7 +193,7 @@
        </attribute>
       </widget>
      </widget>
-     <widget class="QMdiArea" name="mdiArea_2">
+     <widget class="QMdiArea" name="mdiArea_combo">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -401,7 +401,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>mdiArea</sender>
+   <sender>mdiArea_swing</sender>
    <signal>subWindowActivated(QMdiSubWindow*)</signal>
    <receiver>MainWindow</receiver>
    <slot>activate_swing()</slot>
@@ -417,7 +417,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>mdiArea_2</sender>
+   <sender>mdiArea_combo</sender>
    <signal>subWindowActivated(QMdiSubWindow*)</signal>
    <receiver>MainWindow</receiver>
    <slot>activate_combo()</slot>

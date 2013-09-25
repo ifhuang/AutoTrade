@@ -8,7 +8,6 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QCloseEvent>
-
 #include "TC/PriceItem.h"
 
 namespace Ui {
@@ -24,6 +23,7 @@ public:
     ~SwingTradeDialog();
     QString getSwingContract();
 
+    // display interface for price/position/profit
     void displayPriceItem(PriceItem* priceItem);
     void displayPosition(double position);
     void displayProfit(double profit);
@@ -31,18 +31,18 @@ public:
 private:
     Ui::SwingTradeDialog *ui;
     QToolBar *toolBar;
-    QMenu *cb1_menu;
+    QMenu *pb2_menu;
     QMenu *swingRight;
     QPushButton *pb1;
-    QLabel *label1;
-    QPushButton *cb1;
-    QComboBox *cb2;
+    QLabel *label_strategy;
     QPushButton *pb2;
+    QComboBox *cb;
     QPushButton *pb3;
-    QAction *cb1_menu_open;
-    QAction *cb1_menu_attr;
-    QAction *cb1_menu_auto;
-    QAction *cb1_menu_warn;
+    QPushButton *pb4;
+    QAction *pb2_menu_open;
+    QAction *pb2_menu_attr;
+    QAction *pb2_menu_auto;
+    QAction *pb2_menu_warn;
     QAction *swingRight_setwin;
     QAction *swingRight_insstr;
     QAction *swingRight_setstr;
@@ -54,18 +54,25 @@ private:
     QString swing_contract;
 
 signals:
+    // emit by add/modify/remove contract
     void update_contract(QString contract);
 
 private slots:
+    // right popup menu in swing trade dialog
     void on_tab_customContextMenuRequested();
-    void on_trigger_cb1();
+
+    // popup menu for strategy
+    void on_trigger_pb2();
+
     void add_contract();
     void modify_contract();
     void remove_contract();
+
     void insert_strategy();
     void set_strategy();
     void remove_strategy();
 
+    // test for display interface for price/position/profit
     void set_window_test();
 };
 

@@ -9,40 +9,38 @@ ComboTradeDialog::ComboTradeDialog(QWidget *parent) :
     ui->setupUi(this);
 
     toolBar = new QToolBar(this);
-
     QSize pbSize(20, 20);
-
     pb1 = new QPushButton("1");
     pb1->setFixedSize(pbSize);
     toolBar->addWidget(pb1);
 
-    label1 = new QLabel("Strategy Name");
-    toolBar->addWidget(label1);
+    label_strategy = new QLabel("Strategy Name");
+    toolBar->addWidget(label_strategy);
 
-    cb1 = new QPushButton("2");
-    cb1->setFixedSize(pbSize);
-    cb1_menu = new QMenu;
-    cb1_menu_open = cb1_menu->addAction(tr("Open/Close Strategy"));
-    cb1_menu->addSeparator();
-    cb1_menu_attr = cb1_menu->addAction(tr("Attribute"));
-    cb1_menu_auto = cb1_menu->addAction(tr("Auto Trade"));
-    cb1_menu_warn = cb1_menu->addAction(tr("Warn"));
-    toolBar->addWidget(cb1);
-
-    label2 = new QLabel("                     ");
-    toolBar->addWidget(label2);
-
-    pb2 = new QPushButton("3");
+    pb2 = new QPushButton("2");
     pb2->setFixedSize(pbSize);
+    pb2_menu = new QMenu;
+    pb2_menu_open = pb2_menu->addAction(tr("Open/Close Strategy"));
+    pb2_menu->addSeparator();
+    pb2_menu_attr = pb2_menu->addAction(tr("Attribute"));
+    pb2_menu_auto = pb2_menu->addAction(tr("Auto Trade"));
+    pb2_menu_warn = pb2_menu->addAction(tr("Warn"));
     toolBar->addWidget(pb2);
 
-    pb3 = new QPushButton("4");
+    label_blank = new QLabel("                     ");
+    toolBar->addWidget(label_blank);
+
+    pb3 = new QPushButton("3");
     pb3->setFixedSize(pbSize);
     toolBar->addWidget(pb3);
 
-    pb4 = new QPushButton("5");
+    pb4 = new QPushButton("4");
     pb4->setFixedSize(pbSize);
     toolBar->addWidget(pb4);
+
+    pb5 = new QPushButton("5");
+    pb5->setFixedSize(pbSize);
+    toolBar->addWidget(pb5);
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     comboRight = new QMenu;
@@ -56,13 +54,34 @@ ComboTradeDialog::ComboTradeDialog(QWidget *parent) :
     comboRight_modcon = comboRight->addAction(tr("Modify Contract"));
     comboRight_remcon = comboRight->addAction(tr("Remove Contract"));
 
-    connect(cb1, SIGNAL(clicked()), this, SLOT(on_trigger_cb1()));
+    connect(pb2, SIGNAL(clicked()), this, SLOT(on_trigger_pb2()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tab_customContextMenuRequested_combo()));
 }
 
 ComboTradeDialog::~ComboTradeDialog()
 {
     delete ui;
+    delete toolBar;
+    delete pb2_menu;
+    delete comboRight;
+    delete pb1;
+    delete label_strategy;
+    delete pb2;
+    delete label_blank;
+    delete pb3;
+    delete pb4;
+    delete pb5;
+    delete pb2_menu_open;
+    delete pb2_menu_attr;
+    delete pb2_menu_auto;
+    delete pb2_menu_warn;
+    delete comboRight_setwin;
+    delete comboRight_insstr;
+    delete comboRight_setstr;
+    delete comboRight_remstr;
+    delete comboRight_addcon;
+    delete comboRight_modcon;
+    delete comboRight_remcon;
 }
 
 void ComboTradeDialog::on_tab_customContextMenuRequested_combo()
@@ -70,7 +89,7 @@ void ComboTradeDialog::on_tab_customContextMenuRequested_combo()
     comboRight->exec(QCursor::pos());
 }
 
-void ComboTradeDialog::on_trigger_cb1()
+void ComboTradeDialog::on_trigger_pb2()
 {
-    cb1_menu->exec(QCursor::pos());
+    pb2_menu->exec(QCursor::pos());
 }

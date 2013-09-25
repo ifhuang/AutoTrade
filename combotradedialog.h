@@ -21,25 +21,28 @@ public:
     ~ComboTradeDialog();
 
 private slots:
+    // right popup menu in combo trade dialog
     void on_tab_customContextMenuRequested_combo();
-    void on_trigger_cb1();
+
+    // popup menu for strategy
+    void on_trigger_pb2();
 
 private:
     Ui::ComboTradeDialog *ui;
     QToolBar *toolBar;
-    QMenu *cb1_menu;
+    QMenu *pb2_menu;
     QMenu *comboRight;
     QPushButton *pb1;
-    QLabel *label1;
-    QPushButton *cb1;
-    QLabel *label2;
+    QLabel *label_strategy;
     QPushButton *pb2;
+    QLabel *label_blank;
     QPushButton *pb3;
     QPushButton *pb4;
-    QAction *cb1_menu_open;
-    QAction *cb1_menu_attr;
-    QAction *cb1_menu_auto;
-    QAction *cb1_menu_warn;
+    QPushButton *pb5;
+    QAction *pb2_menu_open;
+    QAction *pb2_menu_attr;
+    QAction *pb2_menu_auto;
+    QAction *pb2_menu_warn;
     QAction *comboRight_setwin;
     QAction *comboRight_insstr;
     QAction *comboRight_setstr;
