@@ -84,26 +84,6 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, QWidget *parent) :
 SwingTradeDialog::~SwingTradeDialog()
 {
     delete ui;
-    delete toolBar;
-    delete pb2_menu;
-    delete swingRight;
-    delete pb1;
-    delete label_strategy;
-    delete pb2;
-    delete cb;
-    delete pb3;
-    delete pb4;
-    delete pb2_menu_open;
-    delete pb2_menu_attr;
-    delete pb2_menu_auto;
-    delete pb2_menu_warn;
-    delete swingRight_setwin;
-    delete swingRight_insstr;
-    delete swingRight_setstr;
-    delete swingRight_remstr;
-    delete swingRight_addcon;
-    delete swingRight_modcon;
-    delete swingRight_remcon;
 }
 
 void SwingTradeDialog::on_trigger_pb2()

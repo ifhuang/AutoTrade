@@ -61,27 +61,6 @@ ComboTradeDialog::ComboTradeDialog(QWidget *parent) :
 ComboTradeDialog::~ComboTradeDialog()
 {
     delete ui;
-    delete toolBar;
-    delete pb2_menu;
-    delete comboRight;
-    delete pb1;
-    delete label_strategy;
-    delete pb2;
-    delete label_blank;
-    delete pb3;
-    delete pb4;
-    delete pb5;
-    delete pb2_menu_open;
-    delete pb2_menu_attr;
-    delete pb2_menu_auto;
-    delete pb2_menu_warn;
-    delete comboRight_setwin;
-    delete comboRight_insstr;
-    delete comboRight_setstr;
-    delete comboRight_remstr;
-    delete comboRight_addcon;
-    delete comboRight_modcon;
-    delete comboRight_remcon;
 }
 
 void ComboTradeDialog::on_tab_customContextMenuRequested_combo()
