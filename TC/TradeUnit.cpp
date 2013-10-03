@@ -1,11 +1,4 @@
-#include "QuoteItem.h"
-#include "PriceItem.h"
-#include "TradeItem.h"
-#include "OrderItem.h"
-#include "Position.h"
 #include "TradeUnit.h"
-#include <time.h>
-#include <tchar.h>
 
 OrderItem* TradeUnit::getOrder(long orderRefId)
 {
@@ -154,13 +147,15 @@ TradeUnit::TradeUnit(QuoteItem* quote)
 	tradefp = NULL;
 	price = NULL;
 
-
 	// added by xie
 	barPeriod = 30; // unit=second
 	maxRefBarNum = 2;
 	tickPrice = NULL;
 	barStartTime = 0;//time(0); 
 	timeDiff = 0;
+	stepTickNum = -1;
+	stepMoney = -1;
+	stepQty = 0;
 }
 
 int TradeUnit::savePrice()
@@ -182,6 +177,9 @@ TradeUnit::TradeUnit()
 	tradefp = NULL;
 	price = NULL;
 	barStartTime = 0;//time(0); 
+	stepTickNum = -1;
+	stepMoney = -1;
+	stepQty = 0;
 }
 
 int TradeUnit::addOrder(OrderItem* order)

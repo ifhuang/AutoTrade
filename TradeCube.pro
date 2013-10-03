@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     TC/Dispatcher.cpp \
     TC/SPTrader.cpp \
     TC/SwingTrader.cpp \
-    TC/TradeUnit.cpp
+    TC/TradeUnit.cpp \
+    TC/DispatcherFactory.cpp \
+    TC/Strategy.cpp
 
 HEADERS  += mainwindow.h \
     swingtradedialog.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     TC/SwingTrader.h \
     TC/TradeCube.h \
     TC/TradeItem.h \
-    TC/TradeUnit.h
+    TC/TradeUnit.h \
+    TC/DispatcherFactory.h \
+    TC/PlatformInfo.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \

@@ -9,6 +9,8 @@
 #include "TC/Position.h"
 #include "TC/OrderItem.h"
 #include "TC/TradeItem.h"
+#include "TC/Dispatcher.h"
+#include "TC/PlatformInfo.h"
 
 namespace Ui {
 class MainWindow;
@@ -61,6 +63,8 @@ private slots:
     // test for display interface for add order history tab in swing trade tab
     void add_swing_order_history();
 
+    void connect_dispatcher();
+
 private:
     Ui::MainWindow *ui;    
     QComboBox *selCon;
@@ -81,6 +85,9 @@ private:
     // table model for working orders / order history tab in swing trade tab
     QStandardItemModel *swingWorkingOrdersModel;
     QStandardItemModel *swingOrderHistoryModel;
+
+    PlatformInfo platformInfo;
+    Dispatcher* disp;
 
     // resize components when resize mainwindow
     void resizeEvent(QResizeEvent* event);

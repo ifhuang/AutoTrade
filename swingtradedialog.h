@@ -9,17 +9,21 @@
 #include <QComboBox>
 #include <QCloseEvent>
 #include "TC/PriceItem.h"
+#include "TC/SwingTrader.h"
+#include "TC/Dispatcher.h"
 
 namespace Ui {
 class SwingTradeDialog;
 }
+
+class SwingTrader;
 
 class SwingTradeDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SwingTradeDialog(QString &contract, QWidget *parent = 0);
+    explicit SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent = 0);
     ~SwingTradeDialog();
     QString getSwingContract();
 
@@ -53,6 +57,10 @@ private:
 
     QString swing_contract;
 
+    SwingTrader *swingTrader;
+    DWORD tbtid;
+    Dispatcher *disp;
+
 signals:
     // emit by add/modify/remove contract
     void update_contract(QString contract);
@@ -72,8 +80,6 @@ private slots:
     void set_strategy();
     void remove_strategy();
 
-    // test for display interface for price/position/profit
-    void set_window_test();
 };
 
 #endif // SWINGTRADEDIALOG_H

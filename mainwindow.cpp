@@ -7,6 +7,7 @@
 #include <QSize>
 #include <QMessageBox>
 #include <list>
+#include "TC/DispatcherFactory.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -90,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) :
     swingOrderHistoryModel->setHeaderData(4, Qt::Horizontal, QString("Price"));
     swingOrderHistoryModel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
     ui->swingOrderHistoryView->setModel(swingOrderHistoryModel);
+
 }
 
 MainWindow::~MainWindow()
@@ -109,8 +111,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::new_swing_trade()
 {
-    QString contractName = QString("Contract%1").arg(swing_counter);
-    SwingTradeDialog *swingTradeDialog = new SwingTradeDialog(contractName);
+    QString contractName = QString("Exchange-Contract-%1").arg(swing_counter);
+    SwingTradeDialog *swingTradeDialog = new SwingTradeDialog(contractName, swing_counter, disp);
     swingTradeDialog->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(swingTradeDialog, SIGNAL(update_contract(QString)), this, SLOT(update_swing_contract(QString)));
@@ -119,8 +121,7 @@ void MainWindow::new_swing_trade()
     qMdiSubWindow->setAttribute(Qt::WA_DeleteOnClose);
     qMdiSubWindow->setFixedSize(265, 220);
     qMdiSubWindow->setWindowFlags(qMdiSubWindow->windowFlags()& ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint);
-    QString swingTitle = QString("Contract%1-K-Exchange").arg(swing_counter);
-    qMdiSubWindow->setWindowTitle(swingTitle);
+    qMdiSubWindow->setWindowTitle(contractName);
     qMdiSubWindow->show();
 
     swing_counter++;
@@ -311,4 +312,16 @@ void MainWindow::add_swing_order_history()
     tradeItem->setTradePrice(qrand() % 10000);
     tradeItem->setQty(qrand() % 1000);
     displaySwingAddOrderHistory(tradeItem);
+}
+
+void MainWindow::connect_dispatcher()
+{
+    platformInfo.platformName = SPTRADER;
+    platformInfo.server = "127.0.0.1";
+    platformInfo.accountNo = "DEMO258";
+    platformInfo.password = "12341234";
+    platformInfo.orderPort = 8092;
+    platformInfo.pricePort = 8089;
+    platformInfo.tickPort = 8090;
+    disp = DispatcherFactory::createDispatcher(platformInfo);
 }
