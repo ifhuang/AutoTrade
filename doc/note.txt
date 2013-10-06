@@ -1,0 +1,5 @@
+1. When market is closed, no price data could be received. But actually I receive "all price = 0" in PriceItem.
+
+2. When I run the program after totally rebuild, log folder fail to create and program down.
+
+3. 
