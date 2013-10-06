@@ -45,7 +45,8 @@ private:
 	SOCKET orderSocket, priceSocket, tickSocket;
 	HANDLE hOrderThread, hPriceThread, hCheckConnectionThread, hTickerThread;
 	DWORD orderThreadId, priceThreadId, checkConnectionThreadId, tickerThreadId;
-	HANDLE quoteEvent, doneTradeEvent, curOrderEvent, positionEvent;
+	HANDLE quoteEvent, doneTradeEvent, curOrderEvent;
+	map<string, HANDLE> positionEvents;
 	int timerInterval; // seconds
 	int currentTime;
 

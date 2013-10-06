@@ -6,7 +6,7 @@
 SPTrader::SPTrader(PlatformInfo& platformInfo):Dispatcher(platformInfo)
 {
 	hOrderThread = hPriceThread = hCheckConnectionThread = hTickerThread = INVALID_HANDLE_VALUE;
-	quoteEvent = doneTradeEvent = curOrderEvent = positionEvent = NULL;
+	quoteEvent = doneTradeEvent = curOrderEvent = NULL;
 	timerInterval = 3;
 	login();
 	startOrderThread();
@@ -315,6 +315,7 @@ int SPTrader::addQuote(QuoteItem *pQuoteItem)
 	}
 	WaitForSingleObject(quoteEvent,INFINITE);
 	CloseHandle(quoteEvent);
+	LogHandler::getLogHandler().log("Quote is added:" + quoteId);
 	return SUCCESS;
 }
 
@@ -361,11 +362,10 @@ int SPTrader::confirmTradeInfo(int tradeRecordNo)
 int SPTrader::confirmPriceInfo(string quoteId)
 {
 	string priceRep = "";
-	priceRep = "4102,3,"+quoteId+"\r\n";				
-	//cout<<pricereply<<endl;
+	priceRep = "4102,3,"+quoteId+",0\r\n";				
 	if(send(priceSocket,priceRep.c_str(),priceRep.length(),0)<0)
 	{
-		cout<<"Send price reply error, please check the connection to server!"<<endl;
+		LogHandler::getLogHandler().alert(3, "Price request", "Send price reply error, please check the connection to server!");
 		return -1;
 	}
 	return 0;
@@ -688,6 +688,7 @@ int SPTrader::deleteQuote(QuoteItem *pQuoteItem)
 	}
 	WaitForSingleObject(quoteEvent,INFINITE);
 	CloseHandle(quoteEvent);
+	LogHandler::getLogHandler().log("Quote is deleted:" + quoteId);
 	return 0;
 }
 
@@ -721,73 +722,78 @@ map<int, OrderItem*>& SPTrader::getCurrentOrders()
 
 void SPTrader::getPosition(Position& position)
 {
-	this->position = position;
-	positionEvent = CreateEvent(NULL,FALSE,FALSE,L"LOAD_POSITION");
-	string msg = "9901,0," + platformInfo.accountNo + "," + position.getQuoteId().c_str() + "\r\n";  
+	string quoteID = position.getQuoteId();
+	this->positions[quoteID] = position;
+	WCHAR wsz[64]; 
+	swprintf(wsz, L"%S", quoteID.c_str()); 
+	positionEvents[quoteID] = CreateEvent(NULL,FALSE,FALSE, wsz);
+	//LogHandler::getLogHandler().log("create position event(" + quoteID + ")");
+
+	string msg = "9901,0," + platformInfo.accountNo + "," + quoteID.c_str() + "\r\n";  
+	//LogHandler::getLogHandler().log(msg);
 	if(send(orderSocket, msg.c_str(),msg.length(),0)<0) {
 		LogHandler::getLogHandler().alert(3, "Load position", "Load position failed!");
 		return;
 	}
-	WaitForSingleObject(positionEvent,INFINITE);
-	CloseHandle(positionEvent);
-	positionEvent = NULL;
-	position = this->position;
+
+	WaitForSingleObject(positionEvents[quoteID],INFINITE);
+	//LogHandler::getLogHandler().log("release position event(" + quoteID + ")");
+	CloseHandle(positionEvents[quoteID]);
+	positionEvents[quoteID] = NULL;
+	position = this->positions[quoteID];
 }
 
 void SPTrader::processPrice()
 {
 	char buff[300]="";	
 	int pkglen = 0;
-	// Get price update continually via a loop
 	string rmd = "", priceStr="";
 	while(true)
 	{
+		if(connectStatus != true){
+			continue;
+		}
 		pkglen = recv(priceSocket,buff,sizeof(buff),0);
 		if (pkglen < 0){
 			cout<<"receive price data failed, exit£¡"<<endl;
-			break;
+			continue;
 		}
-		else
+		buff[pkglen] = 0;
+		//if price is correctly received, then reply to server  a 4102 message
+		int start = 0;
+		priceStr="";
+		string tmp(buff);
+		while(true)
 		{
-			
-			//if price is correctly received, then reply to server  a 4102 message
-			int start = 0;
-			priceStr="";
-			string tmp(buff);
-			//LogHandler::getLogHandler().log(tmp);
-			while(true)
-			{
-				int end = tmp.find("\r\n",start);
-				if(end == string::npos){
-					rmd = tmp.substr(start,pkglen-start);				
-					break;
-				}
-				priceStr = tmp.substr(start,end-start);
-				
-				if(start == 0)
-					priceStr = rmd+priceStr;
-				//cout<<priceStr<<endl;
-				
-				if(priceStr.find("4107,3",0)!=string::npos && quoteEvent!=NULL)
-				{
-					cout<<"Quote is added"<<endl;
-					SetEvent(quoteEvent);
-				}
-				else if(priceStr.find("4108,3",0)!=string::npos &&  quoteEvent!=NULL)
-				{
-					cout<<"Quote is deleted"<<endl;
-					SetEvent(quoteEvent);
-				}
-				else if(priceStr.find("4102,0",0) != string::npos)
-				{
-					PriceItem* pi = str2PriceItem(priceStr);	
-					//LogHandler::getLogHandler().log(priceStr);
-					//pi->log();
-					confirmPriceInfo(pi->quoteId);
-					forwardPrice(pi);
-				}
-				start = end +2;
+			int end = tmp.find("\r\n",start);
+			if(end == string::npos){
+				rmd = tmp.substr(start,pkglen-start);				
+				break;
 			}
+			priceStr = tmp.substr(start,end-start);
+				
+			if(start == 0)
+				priceStr = rmd+priceStr;
+				
+			if(priceStr.find("4107,3",0)!=string::npos && quoteEvent!=NULL)
+			{
+				//LogHandler::getLogHandler().log("Quote is added");
+				SetEvent(quoteEvent);
+			}
+			else if(priceStr.find("4108,3",0)!=string::npos &&  quoteEvent!=NULL)
+			{
+				//LogHandler::getLogHandler().log("Quote is deleted");
+				SetEvent(quoteEvent);
+			}
+			else if(priceStr.find("4102,0",0) != string::npos)
+			{
+				PriceItem* pi = str2PriceItem(priceStr);	
+				//LogHandler::getLogHandler().log(priceStr);
+				//pi->log();
+				confirmPriceInfo(pi->quoteId);
+				forwardPrice(pi);
+			}
+			start = end +2;
 		}
 	}
 }
@@ -886,11 +892,14 @@ void SPTrader::processOrder()
 				}
 			}
 			else if(orderStr.find("9901,3",0) != string::npos) {
+				//LogHandler::getLogHandler().log(orderStr);
 				Position* pos = str2Position(orderStr);
-				if (pos->getQuoteId() == position.getQuoteId() && pos->accountNo == position.accountNo) {
-					this->position = *pos;
+				string quoteID = pos->getQuoteId();
+				if (positionEvents.count(quoteID) > 0
+						&& positionEvents[quoteID] != NULL) {
+					this->positions[quoteID] = *pos;
 					delete pos;
-					SetEvent(positionEvent);
+					SetEvent(positionEvents[quoteID]);
 				}
 			}
 			start = end +2;
@@ -919,7 +928,7 @@ void SPTrader::processTickerMessage()
 				pstr = strtok(NULL, ",");
 				if (pstr == NULL) continue;
 				if (retCode == 0) {
-					LogHandler::getLogHandler().log(string(pstr) + " ticker request sucessfully!");
+					//LogHandler::getLogHandler().log(string(pstr) + " ticker request sucessfully!");
 				} else {
 					// todo: resend
 					//this->addQuote(pstr);

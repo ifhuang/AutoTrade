@@ -32,35 +32,6 @@ public:
     void displayPosition(double position);
     void displayProfit(double profit);
 
-private:
-    Ui::SwingTradeDialog *ui;
-    QToolBar *toolBar;
-    QMenu *pb2_menu;
-    QMenu *swingRight;
-    QPushButton *pb1;
-    QLabel *label_strategy;
-    QPushButton *pb2;
-    QComboBox *cb;
-    QPushButton *pb3;
-    QPushButton *pb4;
-    QAction *pb2_menu_open;
-    QAction *pb2_menu_attr;
-    QAction *pb2_menu_auto;
-    QAction *pb2_menu_warn;
-    QAction *swingRight_setwin;
-    QAction *swingRight_insstr;
-    QAction *swingRight_setstr;
-    QAction *swingRight_remstr;
-    QAction *swingRight_addcon;
-    QAction *swingRight_modcon;
-    QAction *swingRight_remcon;
-
-    QString swing_contract;
-
-    SwingTrader *swingTrader;
-    DWORD tbtid;
-    Dispatcher *disp;
-
 signals:
     // emit by add/modify/remove contract
     void update_contract(QString contract);
@@ -80,6 +51,34 @@ private slots:
     void set_strategy();
     void remove_strategy();
 
+private:
+    Ui::SwingTradeDialog *ui;
+    QToolBar *toolbar;
+    QMenu *pb2_menu;
+    QMenu *swingright;
+    QPushButton *pb1;
+    QLabel *label_strategy;
+    QPushButton *pb2;
+    QComboBox *cb;
+    QPushButton *pb3;
+    QPushButton *pb4;
+    QAction *pb2_menu_open;
+    QAction *pb2_menu_attr;
+    QAction *pb2_menu_auto;
+    QAction *pb2_menu_warn;
+    QAction *swingright_setwin;
+    QAction *swingright_insstr;
+    QAction *swingright_setstr;
+    QAction *swingright_remstr;
+    QAction *swingright_addcon;
+    QAction *swingright_modcon;
+    QAction *swingright_remcon;
+
+    QString swing_contract;
+
+    SwingTrader *swingtrader;
+    DWORD tbtid;
+    Dispatcher *disp;
 };
 
 #endif // SWINGTRADEDIALOG_H

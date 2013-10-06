@@ -26,6 +26,7 @@ public:
 	void log() {
 		stringstream str;
 		str << "Position:accountNo(" << accountNo << ") "
+			<< "quoteID(" << quoteId << ") "
 			<< "preqty(" << preqty << ") "
 			<< "preavg(" << preavg << ") "
 			<< "longqty(" << longqty << ") "

@@ -11,15 +11,15 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *d
 
     swing_contract = contract;
 
-    toolBar = new QToolBar(this);
+    toolbar = new QToolBar(this);
     QSize pbSize(20, 20);
     pb1 = new QPushButton("1");
     pb1->setFixedSize(pbSize);
-    toolBar->addWidget(pb1);
+    toolbar->addWidget(pb1);
 
     label_strategy = new QLabel("Strategy Name");
     label_strategy->setFixedWidth(90);
-    toolBar->addWidget(label_strategy);
+    toolbar->addWidget(label_strategy);
 
     pb2 = new QPushButton("2");
     pb2->setFixedSize(pbSize);
@@ -29,7 +29,7 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *d
     pb2_menu_attr = pb2_menu->addAction(tr("Attribute"));
     pb2_menu_auto = pb2_menu->addAction(tr("Auto Trade"));
     pb2_menu_warn = pb2_menu->addAction(tr("Warn"));
-    toolBar->addWidget(pb2);
+    toolbar->addWidget(pb2);
 
     cb = new QComboBox;
     cb->insertItem(0, tr("Tick"));
@@ -44,45 +44,45 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *d
     cb->insertItem(9, tr("1 Week"));
     cb->insertItem(10, tr("1 Month"));
     cb->insertItem(11, tr("Customize"));
-    toolBar->addWidget(cb);
+    toolbar->addWidget(cb);
 
     pb3 = new QPushButton("3");
     pb3->setFixedSize(pbSize);
-    toolBar->addWidget(pb3);
+    toolbar->addWidget(pb3);
 
     pb4 = new QPushButton("4");
     pb4->setFixedSize(pbSize);
-    toolBar->addWidget(pb4);
+    toolbar->addWidget(pb4);
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-    swingRight = new QMenu;
-    swingRight_setwin = swingRight->addAction(tr("Set Window"));
-    swingRight->addSeparator();
-    swingRight_insstr = swingRight->addAction(tr("Insert Strategy"));
-    swingRight_setstr = swingRight->addAction(tr("Set Strategy"));
-    swingRight_setstr->setEnabled(false);
-    swingRight_remstr = swingRight->addAction(tr("Remove Strategy"));
-    swingRight_remstr->setEnabled(false);
-    swingRight->addSeparator();
-    swingRight_addcon = swingRight->addAction(tr("Add Contract"));
-    swingRight_modcon = swingRight->addAction(tr("Modify Contract"));
-    swingRight_modcon->setEnabled(false);
-    swingRight_remcon = swingRight->addAction(tr("Remove Contract"));
-    swingRight_remcon->setEnabled(false);
+    swingright = new QMenu;
+    swingright_setwin = swingright->addAction(tr("Set Window"));
+    swingright->addSeparator();
+    swingright_insstr = swingright->addAction(tr("Insert Strategy"));
+    swingright_setstr = swingright->addAction(tr("Set Strategy"));
+    swingright_setstr->setEnabled(false);
+    swingright_remstr = swingright->addAction(tr("Remove Strategy"));
+    swingright_remstr->setEnabled(false);
+    swingright->addSeparator();
+    swingright_addcon = swingright->addAction(tr("Add Contract"));
+    swingright_modcon = swingright->addAction(tr("Modify Contract"));
+    swingright_modcon->setEnabled(false);
+    swingright_remcon = swingright->addAction(tr("Remove Contract"));
+    swingright_remcon->setEnabled(false);
 
     connect(pb2, SIGNAL(clicked()), this, SLOT(on_trigger_pb2()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tab_customContextMenuRequested()));
-    connect(swingRight_addcon, SIGNAL(triggered()), this, SLOT(add_contract()));
-    connect(swingRight_modcon, SIGNAL(triggered()), this, SLOT(modify_contract()));
-    connect(swingRight_remcon, SIGNAL(triggered()), this, SLOT(remove_contract()));
-    connect(swingRight_insstr, SIGNAL(triggered()), this, SLOT(insert_strategy()));
-    connect(swingRight_setstr, SIGNAL(triggered()), this, SLOT(set_strategy()));
-    connect(swingRight_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
+    connect(swingright_addcon, SIGNAL(triggered()), this, SLOT(add_contract()));
+    connect(swingright_modcon, SIGNAL(triggered()), this, SLOT(modify_contract()));
+    connect(swingright_remcon, SIGNAL(triggered()), this, SLOT(remove_contract()));
+    connect(swingright_insstr, SIGNAL(triggered()), this, SLOT(insert_strategy()));
+    connect(swingright_setstr, SIGNAL(triggered()), this, SLOT(set_strategy()));
+    connect(swingright_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
 
-    swingTrader = new SwingTrader(tradeId, this);
-    swingTrader->setIntraBarTrading(true);
-    swingTrader->setDispatcher(disp);
-    tbtid = swingTrader->startTraderThread();
+    swingtrader = new SwingTrader(tradeId, this);
+    swingtrader->setIntraBarTrading(true);
+    swingtrader->setDispatcher(disp);
+    tbtid = swingtrader->startTraderThread();
     this->disp = disp;
 }
 
@@ -98,7 +98,7 @@ void SwingTradeDialog::on_trigger_pb2()
 
 void SwingTradeDialog::on_tab_customContextMenuRequested()
 {
-    swingRight->exec(QCursor::pos());
+    swingright->exec(QCursor::pos());
 }
 
 void SwingTradeDialog::add_contract()
@@ -115,16 +115,18 @@ void SwingTradeDialog::add_contract()
         quoteItem->setMinContractQty(1);
         quoteItem->setPriceScale(1);
         TradeUnit* tradeUnit = new TradeUnit(quoteItem);
-        swingTrader->setTradeUnit(tradeUnit);
+        swingtrader->setTradeUnit(tradeUnit);
         this->disp->addPriceThreadId(quoteItem->getTradePlatform(), quoteItem->getQuoteId(),tbtid);
-        this->disp->addOrderThreadId(swingTrader->getTraderId(), tbtid);
-        swingTrader->turnOnStrategy();
+        this->disp->addOrderThreadId(swingtrader->getTraderId(), tbtid);
+
+        // simply turn on strategy when add contract
+        swingtrader->turnOnStrategy();
 
         swing_contract = text;
         setWindowTitle(swing_contract);
-        swingRight_addcon->setEnabled(false);
-        swingRight_modcon->setEnabled(true);
-        swingRight_remcon->setEnabled(true);
+        swingright_addcon->setEnabled(false);
+        swingright_modcon->setEnabled(true);
+        swingright_remcon->setEnabled(true);
         emit update_contract(swing_contract);
     }
 }
@@ -140,19 +142,34 @@ void SwingTradeDialog::modify_contract()
     QString text = QInputDialog::getText(NULL, tr("Modify Contract"), tr("Contract:"), QLineEdit::Normal, swing_contract, &ok);
     if (ok && !text.isEmpty())
     {
+        QStringList list = text.split("-");
+        QuoteItem* quoteItem = new QuoteItem;
+        quoteItem->setTradePlatform(SPTRADER);
+        quoteItem->setQuoteId(list[1].toStdString());
+        quoteItem->setExchange(list[0].toStdString());
+        quoteItem->setMinContractQty(1);
+        quoteItem->setPriceScale(1);
+        TradeUnit* tradeUnit = new TradeUnit(quoteItem);
+        swingtrader->setTradeUnit(tradeUnit);
+        this->disp->addPriceThreadId(quoteItem->getTradePlatform(), quoteItem->getQuoteId(),tbtid);
+        this->disp->addOrderThreadId(swingtrader->getTraderId(), tbtid);
+
+        // simply turn on strategy when modify contract
+        swingtrader->turnOnStrategy();
+
         swing_contract = text;
-        setWindowTitle(swing_contract + "-K-Exchange");
+        setWindowTitle(swing_contract);
         emit update_contract(swing_contract);
     }
 }
 
 void SwingTradeDialog::remove_contract()
 {
-    swing_contract = QString("Contract");
-    setWindowTitle(swing_contract + "-K-Exchange");
-    swingRight_addcon->setEnabled(true);
-    swingRight_modcon->setEnabled(false);
-    swingRight_remcon->setEnabled(false);
+    swing_contract = QString("Exchange-Contract");
+    setWindowTitle(swing_contract);
+    swingright_addcon->setEnabled(true);
+    swingright_modcon->setEnabled(false);
+    swingright_remcon->setEnabled(false);
     emit update_contract(swing_contract);
 }
 
@@ -163,9 +180,9 @@ void SwingTradeDialog::insert_strategy()
     if (ok && !text.isEmpty())
     {
         label_strategy->setText(text);
-        swingRight_insstr->setEnabled(false);
-        swingRight_setstr->setEnabled(true);
-        swingRight_remstr->setEnabled(true);
+        swingright_insstr->setEnabled(false);
+        swingright_setstr->setEnabled(true);
+        swingright_remstr->setEnabled(true);
     }
 }
 
@@ -182,9 +199,9 @@ void SwingTradeDialog::set_strategy()
 void SwingTradeDialog::remove_strategy()
 {
     label_strategy->setText("Strategy");
-    swingRight_insstr->setEnabled(true);
-    swingRight_setstr->setEnabled(false);
-    swingRight_remstr->setEnabled(false);
+    swingright_insstr->setEnabled(true);
+    swingright_setstr->setEnabled(false);
+    swingright_remstr->setEnabled(false);
 }
 
 void SwingTradeDialog::displayPriceItem(PriceItem* priceItem)

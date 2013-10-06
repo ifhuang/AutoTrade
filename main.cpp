@@ -1,24 +1,24 @@
 #include "mainwindow.h"
+#include <windows.h>
 #include <QApplication>
 #include <QSplashScreen>
-#include <windows.h>
 
 const char *PROGRAM_NAME = "TradeCube";
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":images/welcome.jpg"));
     splash->show();
     Sleep(750);
 
-    MainWindow w;
-    w.show();
+    MainWindow mainwindow;
+    mainwindow.show();
 
-    splash->finish(&w);
+    splash->finish(&mainwindow);
     delete splash;
 
-    return a.exec();
+    return app.exec();
 }

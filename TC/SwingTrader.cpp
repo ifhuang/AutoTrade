@@ -202,6 +202,7 @@ void SwingTrader::signal() {
 		it->second->log();
 	}*/
 	closeAllPositions();
+	//LogHandler::getLogHandler().log("signal:" + tradeUnit->getQuoteId());
 }
 
 int SwingTrader::deleteOrder(long orderRefId)

@@ -50,7 +50,7 @@ protected:
 	map<int, OrderItem*> currentOrders;
 	int doneTradeCount;
 	int currentOrderCount;
-	Position position;
+	map<string, Position> positions;
 	PlatformInfo& platformInfo;
 private:
 	list<quoteId_threadId*> priceThreadIdQueue;

@@ -29,9 +29,9 @@ private slots:
 
 private:
     Ui::ComboTradeDialog *ui;
-    QToolBar *toolBar;
+    QToolBar *toolbar;
     QMenu *pb2_menu;
-    QMenu *comboRight;
+    QMenu *comboright;
     QPushButton *pb1;
     QLabel *label_strategy;
     QPushButton *pb2;
@@ -43,13 +43,13 @@ private:
     QAction *pb2_menu_attr;
     QAction *pb2_menu_auto;
     QAction *pb2_menu_warn;
-    QAction *comboRight_setwin;
-    QAction *comboRight_insstr;
-    QAction *comboRight_setstr;
-    QAction *comboRight_remstr;
-    QAction *comboRight_addcon;
-    QAction *comboRight_modcon;
-    QAction *comboRight_remcon;
+    QAction *comboright_setwin;
+    QAction *comboright_insstr;
+    QAction *comboright_setstr;
+    QAction *comboright_remstr;
+    QAction *comboright_addcon;
+    QAction *comboright_modcon;
+    QAction *comboright_remcon;
 };
 
 #endif // COMBOTRADEDIALOG_H

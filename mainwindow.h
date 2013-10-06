@@ -67,8 +67,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;    
-    QComboBox *selCon;
-    QComboBox *orderType;
+    QComboBox *selcon;
+    QComboBox *ordertype;
     QLineEdit *qty;
     QLineEdit *price;
     QComboBox *valid;
@@ -80,13 +80,13 @@ private:
     int combo_counter;
 
     // tree model for positions tab in swing trade tab
-    QStandardItemModel *swingPositionsModel;
+    QStandardItemModel *swingpositionsmodel;
 
     // table model for working orders / order history tab in swing trade tab
-    QStandardItemModel *swingWorkingOrdersModel;
-    QStandardItemModel *swingOrderHistoryModel;
+    QStandardItemModel *swingworkingordersmodel;
+    QStandardItemModel *swingorderhistorymodel;
 
-    PlatformInfo platformInfo;
+    PlatformInfo platforminfo;
     Dispatcher* disp;
 
     // resize components when resize mainwindow
