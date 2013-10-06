@@ -23,10 +23,10 @@ void testComboTrader()
 
 	ComboTrader* cmb_trader =  new ComboTrader(traderId++);
 
-	// Ó¦¸ÃÔÚÆô¶¯Ïß³ÌÇ°ÉèÖÃ
+	// åº”è¯¥åœ¨å¯åŠ¨çº¿ç¨‹å‰è®¾ç½®
 	cmb_trader->setIntraBarTrading(true);
 	cmb_trader->setDispatcher(disp);
-	DWORD tbtid = cmb_trader->startTraderThread();  // ½»Ò×Ïß³ÌÆô¶¯£¬µÈ´ýÏûÏ¢
+	DWORD tbtid = cmb_trader->startTraderThread();  // äº¤æ˜“çº¿ç¨‹å¯åŠ¨ï¼Œç­‰å¾…æ¶ˆæ¯
 
 	QuoteItem* qi1 = new QuoteItem();
 	qi1->setTradePlatform(SPTRADER);
@@ -36,7 +36,7 @@ void testComboTrader()
 	qi1->setPriceScale(1);	
 	TradeUnit* tu1 = new TradeUnit(qi1);
 
-	// ÔÚÕâÀï»áÌí¼ÓÆ·ÖÖ£¬½ø¶ø¿ªÆô¼Û¸ñÏß³ÌºÍ¶©µ¥Ïß³Ì
+	// åœ¨è¿™é‡Œä¼šæ·»åŠ å“ç§ï¼Œè¿›è€Œå¼€å¯ä»·æ ¼çº¿ç¨‹å’Œè®¢å•çº¿ç¨‹
 	cmb_trader->addTradeUnit(tu1);
 
 	disp->addPriceThreadId(qi1->getTradePlatform(), qi1->getQuoteId(),tbtid);
@@ -63,7 +63,7 @@ void testComboTrader()
 	char buysell[2]={'B', 'S'};
 	int rankId[2]={1,2};
 
-	// ÔÚÕâÀï´´½¨orderunit 
+	// åœ¨è¿™é‡Œåˆ›å»ºorderunit 
 	cmb_trader->createOrderTemplate(2,quoteNO,qty,buysell,rankId);
 
 	//cmb_trader->setSpread(2700);
@@ -90,10 +90,10 @@ void testSwingTrader()
 
 	SwingTrader* swingTrader =  new SwingTrader(traderId++);
 
-	// Ó¦¸ÃÔÚÆô¶¯Ïß³ÌÇ°ÉèÖÃ
+	// åº”è¯¥åœ¨å¯åŠ¨çº¿ç¨‹å‰è®¾ç½®
 	swingTrader->setIntraBarTrading(true);
 	swingTrader->setDispatcher(disp);
-	DWORD tbtid = swingTrader->startTraderThread();  // ½»Ò×Ïß³ÌÆô¶¯£¬µÈ´ýÏûÏ¢
+	DWORD tbtid = swingTrader->startTraderThread();  // äº¤æ˜“çº¿ç¨‹å¯åŠ¨ï¼Œç­‰å¾…æ¶ˆæ¯
 
 	QuoteItem* qi1 = new QuoteItem();
 	qi1->setTradePlatform(SPTRADER);
@@ -103,7 +103,7 @@ void testSwingTrader()
 	qi1->setPriceScale(1);	
 	TradeUnit* tu1 = new TradeUnit(qi1);
 
-	// ÔÚÕâÀï»áÌí¼ÓÆ·ÖÖ£¬½ø¶ø¿ªÆô¼Û¸ñÏß³ÌºÍ¶©µ¥Ïß³Ì
+	// åœ¨è¿™é‡Œä¼šæ·»åŠ å“ç§ï¼Œè¿›è€Œå¼€å¯ä»·æ ¼çº¿ç¨‹å’Œè®¢å•çº¿ç¨‹
 	swingTrader->setTradeUnit(tu1);
 
 	disp->addPriceThreadId(qi1->getTradePlatform(), qi1->getQuoteId(),tbtid);

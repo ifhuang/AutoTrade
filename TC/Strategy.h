@@ -100,9 +100,9 @@ protected:
 	map<int, int> doneTradeIDs;
 private:
 	void process();
-	// 这是由服务器触发价格的处理函数，这个有些平台可能没有
+	// 杩欐槸鐢辨湇鍔″櫒瑙﹀彂浠锋牸鐨勫鐞嗗嚱鏁帮紝杩欎釜鏈変簺骞冲彴鍙兘娌℃湁
 	virtual void processTickPrice(MSG& msg) {};
-	// 这是定时器更新k线的处理函数
+	// 杩欐槸瀹氭椂鍣ㄦ洿鏂発绾跨殑澶勭悊鍑芥暟
 	virtual void updateBars() = 0;
 	virtual void processOrderAccepted(MSG& msg) = 0;
 	virtual void processTradeDone(MSG& msg) = 0; 
@@ -110,7 +110,7 @@ private:
 	virtual void executeStrategy() = 0;
 	virtual bool isBarsEnough() = 0;
 
-	/** 策略执行函数 */
+	/** 绛栫暐鎵ц鍑芥暟 */
 	virtual void signal() = 0;
 
 	HANDLE hTraderThread;

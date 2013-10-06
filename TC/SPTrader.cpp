@@ -2,7 +2,7 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
-// changed by xie, ·Çµ¥Àı»¯
+// changed by xie, éå•ä¾‹åŒ–
 SPTrader::SPTrader(PlatformInfo& platformInfo):Dispatcher(platformInfo)
 {
 	hOrderThread = hPriceThread = hCheckConnectionThread = hTickerThread = INVALID_HANDLE_VALUE;
@@ -38,7 +38,7 @@ int SPTrader::login()
 	wVersionRequested = MAKEWORD( 2, 0 );	
 	err = WSAStartup( wVersionRequested, &wsaData );
 	if ( err != 0 ) 	{
-		cout<<"Socket2.0  initialization failed£¬Exit!";
+		cout<<"Socket2.0  initialization failedï¼ŒExit!";
 		return err;
 	}
 	if ( LOBYTE( wsaData.wVersion ) != 2 ||	HIBYTE( wsaData.wVersion ) != 0 ){
@@ -48,7 +48,7 @@ int SPTrader::login()
 //create the sokcet
 	orderSocket = socket(AF_INET,SOCK_STREAM,0);
 	if (orderSocket == INVALID_SOCKET ) {
-		cout<<"Socket creation failed£¬Exit!";
+		cout<<"Socket creation failedï¼ŒExit!";
 		return -1;
 	}
 	//define the address of SPTrader
@@ -83,7 +83,7 @@ int SPTrader::login()
 		number++;
 		pkglen = recv(orderSocket,buf,sizeof(buf),0);
 		if (pkglen < 0){
-			cout<<"Server Socket closed, Exit£¡"<<endl;
+			cout<<"Server Socket closed, Exitï¼"<<endl;
 			break;
 		}
 		else if(strstr(buf,"3101")>=0 && strstr(buf,"OK")>0){
@@ -151,7 +151,7 @@ DWORD WINAPI SPTrader::priceThreadAdapter(LPVOID lpParam)
 }
 
 /** 
-  *¼ì²éÓë·şÎñÆ÷µÄÁ¬½ÓÇé¿ö by xie
+  *æ£€æŸ¥ä¸æœåŠ¡å™¨çš„è¿æ¥æƒ…å†µ by xie
   */
 DWORD WINAPI SPTrader::checkConnectionThreadAdapter(LPVOID lpParam)
 {
@@ -203,7 +203,7 @@ DWORD WINAPI SPTrader::checkConnectionThreadAdapter(LPVOID lpParam)
 					}
 				}
 				if (!spoi->getConnectStatus()) {
-					// Ê§È¥Á¬½Ó 
+					// å¤±å»è¿æ¥ 
 					LogHandler::getLogHandler().alert(3, "Lost Connection!", "Lost Connection!");
 					spoi->loseConnection();
 				}
@@ -307,7 +307,7 @@ int SPTrader::addQuote(QuoteItem *pQuoteItem)
 	}
 	// added by xie
 	quotemsg =  "5107,0,"+quoteId+"\r\n";		  // 5107 msg is to request the price 
-	// ÕâÀïÎªÊ²Ã´socket »á»¹ÊÇ0ÄØ£¿Ïß³ÌÓ¦¸ÃÔç¾ÍÆô¶¯ÁË
+	// è¿™é‡Œä¸ºä»€ä¹ˆsocket ä¼šè¿˜æ˜¯0å‘¢ï¼Ÿçº¿ç¨‹åº”è¯¥æ—©å°±å¯åŠ¨äº†
 	if(send(tickSocket,quotemsg.c_str(),quotemsg.length(),0)<0)
 	{
 		LogHandler::getLogHandler().alert(3, "Add quote", "Request tick price failed for new quote!");
@@ -755,7 +755,7 @@ void SPTrader::processPrice()
 		}
 		pkglen = recv(priceSocket,buff,sizeof(buff),0);
 		if (pkglen < 0){
-			cout<<"receive price data failed, exit£¡"<<endl;
+			cout<<"receive price data failed, exitï¼"<<endl;
 			continue;
 		}
 		buff[pkglen] = 0;
@@ -834,17 +834,17 @@ void SPTrader::processOrder()
 			if(orderStr.find("3103,3",0)!=string::npos) {
 				OrderItem* po = str2OrderItem(orderStr);
 						
-				// ½ÓÊÕ¶©µ¥ORDER_ACCEPT_MSG
+				// æ¥æ”¶è®¢å•ORDER_ACCEPT_MSG
 				returnOrder(po);
 			}
 			else if(orderStr.find("3109,0",0) != string::npos) {
 				TradeItem* ti = str2TradeItem(orderStr);
 				confirmTradeInfo(ti->getTradeNo());
 				//ti->log();
-				// ¶©µ¥Íê³ÉTRADE_DONE_MSG
+				// è®¢å•å®ŒæˆTRADE_DONE_MSG
 				returnTrade(ti);
 
-				// added by xie, ÄÚ´æÎÊÌâ£¬ ÔÚÄÄÀïÊÍ·ÅÒÔºóÒªµ÷ºÃ
+				// added by xie, å†…å­˜é—®é¢˜ï¼Œ åœ¨å“ªé‡Œé‡Šæ”¾ä»¥åè¦è°ƒå¥½
 				doneTrades[ti->getOrderNo()] = ti;
 				if (doneTrades.size() == doneTradeCount) {
 					SetEvent(doneTradeEvent);
@@ -855,7 +855,7 @@ void SPTrader::processOrder()
 				char linkStateReply[256] = {0};
 				strncpy(linkStateReply, orderStr.c_str(), 256);
 
-				// ·¢ËÍ·µ»ØĞÅÏ¢µ½Á¬½Ó×´Ì¬¼ì²âÏß³Ì
+				// å‘é€è¿”å›ä¿¡æ¯åˆ°è¿æ¥çŠ¶æ€æ£€æµ‹çº¿ç¨‹
 				PostThreadMessage(checkConnectionThreadId, LINK_STATE_MSG, 0, (LPARAM)linkStateReply);
 			}
 			else if(orderStr.find("3181,3",0) != string::npos){

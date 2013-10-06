@@ -4,7 +4,7 @@
 #include "TradeCube.h"
 #include "Dispatcher.h" 
 
-// ÖØ¹¹sptraderºÍdispatcherµÄ¹ØÏµ
+// é‡æ„sptraderå’Œdispatcherçš„å…³ç³»
 class SPTrader : public Dispatcher
 {
 public:

@@ -5,7 +5,7 @@ long Strategy::createOrder(char buysell, char openclose, double submitPrice, dou
 	return 0;
 }
 
-// ·Ö½â¶©µ¥
+// åˆ†è§£è®¢å•
 int Strategy::decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi)
 {
 	if(poi->getOrderType() == MKT)
@@ -17,7 +17,7 @@ int Strategy::decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi)
 		LogHandler::getLogHandler().log("Order decomposed by default");
 		//poi->log();
 		prc->log();
-		// ·Ö½â³É×îĞ¡µ¥Î»³É½»
+		// åˆ†è§£æˆæœ€å°å•ä½æˆäº¤
 		for(int i = minqty; i <=poi->getQty(); i+=minqty)
 		{
 			OrderItem* oiu = new OrderItem(*poi);
@@ -93,7 +93,7 @@ int Strategy::decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi)
 		stepTickNum = tradeUnit->getStepTickNum();
 	} else if (tradeUnit->getStepMoney() > 0) {
 
-		// ÕâĞ©ÖµÊÇÊ²Ã´£¿ bigPointValue ºÃÏñ»¹Ã»Éè
+		// è¿™äº›å€¼æ˜¯ä»€ä¹ˆï¼Ÿ bigPointValue å¥½åƒè¿˜æ²¡è®¾
 		stepTickNum = tradeUnit->getStepMoney() / (tradeUnit->getQuote()->getBigPointValue() * tradeUnit->getQuote()->getPriceScale());
 	} else {
 		LogHandler::getLogHandler().alert(1, "Order decomposition", "Order decomposition failed, step not set!");
@@ -163,7 +163,7 @@ void Strategy::turnOnStrategy()
 {
 	setAutoTrading(true);
 
-	//ÕâÀïÒªÏÈ¼ì²éÊÇ·ñÒÑ¾­½ÓÊÕ»òÕß¶ÁÀúÊ·Êı¾İÎÄ¼şÖĞ¶ÁÈ¡ÁË×ã¹»µÄÊı¾İ£¬Èç¹ûÊı¾İ²»×ã£¬Ôò²»ÄÜ¿ªÆô²ßÂÔ½»Ò×
+	//è¿™é‡Œè¦å…ˆæ£€æŸ¥æ˜¯å¦å·²ç»æ¥æ”¶æˆ–è€…è¯»å†å²æ•°æ®æ–‡ä»¶ä¸­è¯»å–äº†è¶³å¤Ÿçš„æ•°æ®ï¼Œå¦‚æœæ•°æ®ä¸è¶³ï¼Œåˆ™ä¸èƒ½å¼€å¯ç­–ç•¥äº¤æ˜“
 	// added by xie
 	if(!getIntraBarTrading()) {		
 		if (!isBarsEnough()) {
@@ -177,10 +177,10 @@ void Strategy::turnOnStrategy()
 // added by xie
 void Strategy::process()
 {
-	// Æô¶¯¶¨Ê±Æ÷£¬¶¨Ê±¸üĞÂkÏß£¬Ôİ¶¨Îª1ÃëÖÓ¸üĞÂÒ»´Î
+	// å¯åŠ¨å®šæ—¶å™¨ï¼Œå®šæ—¶æ›´æ–°kçº¿ï¼Œæš‚å®šä¸º1ç§’é’Ÿæ›´æ–°ä¸€æ¬¡
 	int updateBarTimeID = SetTimer(NULL, UPDATE_BAR_TIMER_ID, 1000, NULL);
 	MSG msg;
-	// ÕâÀï¸ÄÒ»ÏÂ£¬ÒÔ±ã»ñÈ¡WM_TIMER by xie
+	// è¿™é‡Œæ”¹ä¸€ä¸‹ï¼Œä»¥ä¾¿è·å–WM_TIMER by xie
 	while(GetMessage(&msg, NULL, 0, 0)) {
 		switch(msg.message) {
 			case ORDER_ACCEPT_MSG: processOrderAccepted(msg); break;
@@ -189,7 +189,7 @@ void Strategy::process()
 			case TICK_PRICE: processTickPrice(msg); break;
 			case LOSE_CONN_MSG: turnOffStrategy(); LogHandler::getLogHandler().log("strategy is off"); break;
 			case WM_TIMER:
-				// ¸üĞÂkÏß£¬µ«ÊÇÓÃ¼ÆÊıÆ÷¿ÉÄÜ»á´í¹ı×î¸ß¼ÛºÍ×îµÍ¼Û¡£by xie
+				// æ›´æ–°kçº¿ï¼Œä½†æ˜¯ç”¨è®¡æ•°å™¨å¯èƒ½ä¼šé”™è¿‡æœ€é«˜ä»·å’Œæœ€ä½ä»·ã€‚by xie
 				if (msg.wParam  == updateBarTimeID) {
 					updateBars();
 				}

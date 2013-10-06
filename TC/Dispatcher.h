@@ -36,11 +36,11 @@ public:
 	void forwardPrice(PriceItem* pPriceItem);
 	void forwardTickPrice(PriceItem* pPriceItem);
 	PlatformInfo& getPlatformInfo() const { return platformInfo;}
-	/** »ñÈ¡ËùÓĞÒÑ¾­³É½»µÄ¶¨µ¥ */
+	/** è·å–æ‰€æœ‰å·²ç»æˆäº¤çš„å®šå• */
 	virtual map<int, TradeItem*>& getDoneTrades() = 0;
-	/** »ñÈ¡µ±Ç°ËùÓĞÎ´³É½»µÄ¶¨µ¥ */
+	/** è·å–å½“å‰æ‰€æœ‰æœªæˆäº¤çš„å®šå• */
 	virtual map<int, OrderItem*>& getCurrentOrders() = 0;
-	/** »ñÈ¡Ö¸¶¨Æ·ÖÖµÄ²ÖÎ»£¬µ÷ÓÃÖ®Ç°£¬position±ØĞëÉèÖÃºÃÓÃ»§ÃûAccountNoºÍÆ·ÖÖÃûquoteID */
+	/** è·å–æŒ‡å®šå“ç§çš„ä»“ä½ï¼Œè°ƒç”¨ä¹‹å‰ï¼Œpositionå¿…é¡»è®¾ç½®å¥½ç”¨æˆ·åAccountNoå’Œå“ç§åquoteID */
 	virtual void getPosition(Position& position) = 0;
 
 protected:

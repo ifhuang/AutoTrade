@@ -51,7 +51,7 @@ void TradeUnit::updatePrice(PriceItem* priceItem)
 		time_t t = time(0); 
 		strftime( currentTime, sizeof(currentTime), "%Y-%m-%d %H:%M:%S",localtime(&t)); 
 		*/
-		// ÕâÀï¸Ä³ÉÊ±¼ä´Á·½±ãkÏßÊı¾İµÄ¼ÆËã
+		// è¿™é‡Œæ”¹æˆæ—¶é—´æˆ³æ–¹ä¾¿kçº¿æ•°æ®çš„è®¡ç®—
 		time_t t = time(0);
 		fprintf(pricefp,"%ld\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n", (long)t,
 					price->lastPrice1,price->lastPrice2,price->lastPrice3,price->lastPrice4,price->lastPrice5,
@@ -71,9 +71,9 @@ void TradeUnit::updateTickPrice(PriceItem* pi) {
 	}
 	this->tickPrice = pi;
 
-	// ÓĞÊı¾İÀ´µÄÊ±ºòÊÇÒ»¶¨Òª¸üĞÂbarµÄ, added by xie
+	// æœ‰æ•°æ®æ¥çš„æ—¶å€™æ˜¯ä¸€å®šè¦æ›´æ–°barçš„, added by xie
 	time_t current = time(0);
-	// ¸üĞÂ·şÎñÆ÷Ê±¼äºÍ±¾µØÊ±¼äµÄ²î±ğ
+	// æ›´æ–°æœåŠ¡å™¨æ—¶é—´å’Œæœ¬åœ°æ—¶é—´çš„å·®åˆ«
 	timeDiff = current - pi->currentTime;
 	cout << "time diff:" << timeDiff << endl;
 	updateBars();
@@ -268,17 +268,17 @@ void TradeUnit::updateBars()
 
 	//priceItem->log();
 
-	// ¼ÆËãµÃµ½·şÎñÆ÷Ê±¼ä
+	// è®¡ç®—å¾—åˆ°æœåŠ¡å™¨æ—¶é—´
 	time_t current = time(0) - timeDiff; 
 	Bar* currentBar = NULL;
 	double lastPrice = tickPrice->lastPrice1;
 	if (current > barStartTime + barPeriod || bars.empty()) {
 		if (!bars.empty()) {
-			// ÕâÀï±êÖ¾×ÅÉÏÒ»¸ùkÏßµÄ½áÊø
+			// è¿™é‡Œæ ‡å¿—ç€ä¸Šä¸€æ ¹kçº¿çš„ç»“æŸ
 			currentBar = bars[bars.size() - 1];
 			currentBar->log();
 		}
-		// ĞÂÒ»¸ùkÏßµÄµ®Éú 
+		// æ–°ä¸€æ ¹kçº¿çš„è¯ç”Ÿ 
 		barStartTime = current;
 		currentBar = new Bar(lastPrice, lastPrice, lastPrice, lastPrice, barPeriod);
 		bars.push_back(currentBar);
@@ -288,7 +288,7 @@ void TradeUnit::updateBars()
 		LogHandler::getLogHandler().log("bar start time init:" + string(buff));
 
 		if (bars.size() > maxRefBarNum) {
-			// Èç¹ûÌí¼Óºó³¬³ö×î´óµÄrefbarnumÁË¡£½«×îÀÏµÄÒ»¸ùkÏßÉ¾³ı
+			// å¦‚æœæ·»åŠ åè¶…å‡ºæœ€å¤§çš„refbarnumäº†ã€‚å°†æœ€è€çš„ä¸€æ ¹kçº¿åˆ é™¤
 			bars.erase(bars.begin());
 		}
 	} else {

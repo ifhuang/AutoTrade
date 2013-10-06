@@ -84,7 +84,7 @@ void Dispatcher::forwardPrice(PriceItem* pPriceItem)
 		if((*iter)->quoteId == quoteId && (*iter)->tradePlatform==tradePlatform) {
 			PostThreadMessage((*iter)->threadId,PRICE_MSG,0,(LPARAM)pPriceItem);
 
-			// ÔÚUIÉÏ¸üÐÂ¼Û¸ñÊý¾Ý
+			// åœ¨UIä¸Šæ›´æ–°ä»·æ ¼æ•°æ®
 			if (UIThreadID > 0) {
 				PostThreadMessage(UIThreadID,PRICE_MSG,0,(LPARAM)pPriceItem);
 			}

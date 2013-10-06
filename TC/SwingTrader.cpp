@@ -26,7 +26,7 @@ void SwingTrader::updateBars() {
 void SwingTrader::processOrderAccepted(MSG& msg) {
 	OrderItem* new_oi = (OrderItem*)msg.lParam;
 	OrderItem* ori_oi = tradeUnit->getOrder(new_oi->getOrderRefId());
-	// ÎªÊ²Ã´ÊÇÔÚ¶ÓÁÐÖÐ²éÕÒ£¿
+	// ä¸ºä»€ä¹ˆæ˜¯åœ¨é˜Ÿåˆ—ä¸­æŸ¥æ‰¾ï¼Ÿ
 	if(ori_oi != NULL)
 	{
 		ori_oi->setOrderNo(new_oi->getOrderNo());
@@ -359,7 +359,7 @@ void SwingTrader::deleteStrategyOrder()
 	{
 		OrderItem* oi = iter->second;
 		/* if order's counter is not equal to strategy's counter, indicating this order is not update at the last round execute */
-		// ? ²»Àí½âÕâ¸öcounterµÄ¾ßÌåº¬Òå
+		// ? ä¸ç†è§£è¿™ä¸ªcounterçš„å…·ä½“å«ä¹‰
 		if(oi->getOrderType() != MKT && oi->getCounter() != getCounter()) 
 		{
 			deleteOrder(oi->getOrderRefId());
@@ -418,7 +418,7 @@ SwingTrader::~SwingTrader()
 {
 }
 
-// ×·¼Û
+// è¿½ä»·
 void SwingTrader::triggerWaitingOrder()
 {
 	map<long,OrderItem*>::iterator iter;
@@ -494,7 +494,7 @@ void SwingTrader::executeStrategy()
 	MSG msg;
 	while(GetMessage(&msg,NULL,0, 0)) {
 		
-		// ÔÚÕâÀï¿ØÖÆ²ßÂÔµÄÖ´ÐÐÓë·ñ
+		// åœ¨è¿™é‡ŒæŽ§åˆ¶ç­–ç•¥çš„æ‰§è¡Œä¸Žå¦
 		if (!getAutoTrading()) {
 			LogHandler::getLogHandler().alert(3, "Strategy", "Strategy is tentatively stopped!");
 			continue;
@@ -502,7 +502,7 @@ void SwingTrader::executeStrategy()
 
 		switch(msg.message) {
 
-			// ¼Û¸ñ¸üÐÂ kÏßÄÚ½»Ò×
+			// ä»·æ ¼æ›´æ–° kçº¿å†…äº¤æ˜“
 			case PRICE_MSG:
 				if(getIntraBarTrading()) {
 					addCounter();
@@ -525,7 +525,7 @@ bool SwingTrader::isBarsEnough()
 	return tradeUnit->isBarsEnough();
 }
 
-// Æ½²Ö
+// å¹³ä»“
 void SwingTrader::closeAllPositions()
 {
 	Position pos;

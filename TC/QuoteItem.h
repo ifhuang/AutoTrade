@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std; 
 
-// Ʒ��
+// 品种
 class QuoteItem
 {
 public:

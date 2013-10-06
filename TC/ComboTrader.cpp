@@ -23,7 +23,7 @@ void ComboTrader::processTickPrice(MSG& msg) {
 }
 
 void ComboTrader::updateBars() {
-	// ¸üĞÂkÏß£¬µ«ÊÇÓÃ¼ÆÊıÆ÷¿ÉÄÜ»á´í¹ı×î¸ß¼ÛºÍ×îµÍ¼Û¡£by xie
+	// æ›´æ–°kçº¿ï¼Œä½†æ˜¯ç”¨è®¡æ•°å™¨å¯èƒ½ä¼šé”™è¿‡æœ€é«˜ä»·å’Œæœ€ä½ä»·ã€‚by xie
 	for (list<TradeUnit*>::iterator it = tradeUnitList.begin(); it != tradeUnitList.end(); it++) {
 		(*it)->updateBars();
 		//LogHandler::getLogHandler().log("timer update bar(" + (*it)->getQuote()->getQuoteId() + ")");
@@ -93,7 +93,7 @@ void ComboTrader::processTradeDone(MSG& msg) {
 						else
 						{
 							parent_oi->addTradedQty(ti->getQty());	
-							// ¶©µ¥·Ö½â
+							// è®¢å•åˆ†è§£
 							if(parent_oi->getTradedQty() == parent_oi->getQty()) // all child orders are traded, then update combo position
 							{
 								if(pco->getOrderRank() != NO_RANK)
@@ -122,7 +122,7 @@ void ComboTrader::processTradeDone(MSG& msg) {
 						}
 					}	
 
-					// ËùÓĞÆ·ÖÖ¶¼³É½»Ê± ×éºÏ²ÖÎ»¼ÆËã
+					// æ‰€æœ‰å“ç§éƒ½æˆäº¤æ—¶ ç»„åˆä»“ä½è®¡ç®—
 					if(pco->isAllOrderTraded())
 					{
 						ComboPosition* cmb_pos = getComboPosition(0);
@@ -579,7 +579,7 @@ double ComboTrader::bidprice(int quoteNo)
 }
 
 
-// ×·¼Û
+// è¿½ä»·
 void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
 {
 	PriceItem* pi = tradeUnit->getPrice();
@@ -591,10 +591,10 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
 		{
 			OrderItem* oi = iter->second;
 
-			// ¶©µ¥Èç¹û»¹Ã»±»½ÓÊÕ
+			// è®¢å•å¦‚æœè¿˜æ²¡è¢«æ¥æ”¶
 			if (oi->getOrderNo() == 0) continue;
 
-			// ¶©µ¥Èç¹ûÒÑ¾­³É½»ÁË
+			// è®¢å•å¦‚æœå·²ç»æˆäº¤äº†
 			if (oi->getStatus() == ALLTRADED) continue;
 
 			if(!dispatcher->isSupport(oi->getOrderType()))
@@ -651,7 +651,7 @@ void ComboTrader::executeStrategy()
 	MSG msg;
 	while(GetMessage(&msg,NULL,WM_USER+4, WM_USER+6))
 	{
-		// ÔÚÕâÀï¿ØÖÆ²ßÂÔµÄÖ´ĞĞÓë·ñ
+		// åœ¨è¿™é‡Œæ§åˆ¶ç­–ç•¥çš„æ‰§è¡Œä¸å¦
 		if (!getAutoTrading()) {
 			LogHandler::getLogHandler().alert(3, "Strategy", "Strategy is tentatively stopped!");
 			continue;
@@ -659,10 +659,10 @@ void ComboTrader::executeStrategy()
 		//LogHandler::getLogHandler().log("Strategy executed!");
 		switch(msg.message)
 		{
-			// Ä³Ò»¸öÆ·ÖÖ³É½»Ö®ºó
+			// æŸä¸€ä¸ªå“ç§æˆäº¤ä¹‹å
 		case ORDER_UNIT_TRADED:
 			{
-				// ³É½»ÏÂÒ»¸ö
+				// æˆäº¤ä¸‹ä¸€ä¸ª
 				OrderItem* oi = (OrderItem*)msg.lParam;
 				ComboOrder* pco = comboOrderTable[oi->getComboRefId()];
 				if(pco->getOrderRank() != NO_RANK)
@@ -673,11 +673,11 @@ void ComboTrader::executeStrategy()
 					cout<<"error: in NO_RANK order model but ORDER_UNIT_TRADED message is received"<<endl;
 				break;
 			}
-			// ¼Û¸ñ¸üĞÂ kÏßÄÚ½»Ò×
+			// ä»·æ ¼æ›´æ–° kçº¿å†…äº¤æ˜“
 		case PRICE_MSG:
 			{			
 
-				// ÆäÊµÕâÀïÒ²ÅĞ¶ÏÁËÊÇ·ñÊÇ×Ô¶¯½»Ò×
+				// å…¶å®è¿™é‡Œä¹Ÿåˆ¤æ–­äº†æ˜¯å¦æ˜¯è‡ªåŠ¨äº¤æ˜“
 				//cout<<"Signal Thread: PRICE_MSG"<<endl;
 				if(getIntraBarTrading())
 				{
@@ -688,7 +688,7 @@ void ComboTrader::executeStrategy()
 				}
 				break;
 			}
-			// ¶¨Ê±Æ÷
+			// å®šæ—¶å™¨
 		case STRATEGY_MSG:
 			{
 				if(!getIntraBarTrading())
@@ -725,7 +725,7 @@ int ComboTrader::createOrderTemplate(int num, int quoteNo[], double qty[], char 
 		orderTemplate.push_back(ou);
 	}
 
-	// ÕâÀïÊÇ°´ÕÕrank id ½øĞĞÅÅĞòÁË¡£ËùÒÔÍ¨¹ıÕâ¸öÀ´È·¶¨ÏÈºóË³Ğò¡£
+	// è¿™é‡Œæ˜¯æŒ‰ç…§rank id è¿›è¡Œæ’åºäº†ã€‚æ‰€ä»¥é€šè¿‡è¿™ä¸ªæ¥ç¡®å®šå…ˆåé¡ºåºã€‚
 	orderTemplate.sort();
 	return 0;
 }
@@ -740,7 +740,7 @@ int ComboTrader::submitComboOrder(ComboOrder* pco)
 	int orderRank = pco->getOrderRank();
 	list<OrderUnit*>* order_template = pco->getOrderTemplate();
 
-	// ÕâÑùËäÈ»ÊÇÓĞË³Ğò£¬µ«ÊÇ²»ÄÜ±£Ö¤ÔÚ·şÎñÆ÷ÉÏ¾ÍÊÇ°´ÕÕÕâ¸ö·¢³ö¶©µ¥µÄË³Ğò°É
+	// è¿™æ ·è™½ç„¶æ˜¯æœ‰é¡ºåºï¼Œä½†æ˜¯ä¸èƒ½ä¿è¯åœ¨æœåŠ¡å™¨ä¸Šå°±æ˜¯æŒ‰ç…§è¿™ä¸ªå‘å‡ºè®¢å•çš„é¡ºåºå§
 	if(orderRank != NO_RANK)
 	{		
 		if(orderRank==ORDINAL_RANK)
@@ -991,12 +991,12 @@ int ComboTrader::buytocover(long& comboRefId,  double qty, int orderType, int va
 	return SUCCESS;
 }
 
-	//²âÊÔ²ßÂÔ
+	//æµ‹è¯•ç­–ç•¥
 void ComboTrader::signal()
 {
 	long& sellshort_RefId=ss_orderId, &buy_RefId=buy_orderId, &sell_RefId=sell_orderId, &btc_RefId=btc_orderId;
 	//cout<<"price differece = "<<price(2)-4*price(1)<<endl;
-	//×ö¶àÓëÆ½²Ö
+	//åšå¤šä¸å¹³ä»“
 	int testQty = 3;
 	if(price(2)-4*price(1)>2480 && comboposition(0)==0) {
 		buy(buy_RefId,  testQty, MKT, DAY, 50, NO_RANK, STRATEGY_SUBMITTER);
@@ -1005,7 +1005,7 @@ void ComboTrader::signal()
 		sell(sell_RefId,  testQty, MKT, DAY, 50, NO_RANK, STRATEGY_SUBMITTER);	
 	}
 
-	//×ö¿ÕÓëÆ½²Ö
+	//åšç©ºä¸å¹³ä»“
 	if(price(2)-4*price(1)<2475 && comboposition(0)==0) {
 		sellshort(sellshort_RefId, testQty, MKT, DAY, 50, NO_RANK, STRATEGY_SUBMITTER);
 	}
