@@ -1,9 +1,9 @@
 #include "SwingTrader.h"
 
 
-SwingTrader::SwingTrader(int traderId, SwingTradeDialog* swingTradeDialog):Strategy(traderId)
+SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog):Strategy(traderId)
 {
-	this->swingTradeDialog = swingTradeDialog;
+	this->iSwingTradeDialog = iSwingTradeDialog;
 	tradeUnit = NULL;
 	testOrderID = 0;
 }
@@ -174,7 +174,7 @@ void SwingTrader::processPrice(MSG& msg) {
 	} else {
 		LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
 	}
-	swingTradeDialog->displayPriceItem(pi);
+	iSwingTradeDialog->displayPriceItem(pi);
 }
 
 void SwingTrader::signal() {

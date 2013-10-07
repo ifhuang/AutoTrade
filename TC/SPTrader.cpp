@@ -83,7 +83,7 @@ int SPTrader::login()
 		number++;
 		pkglen = recv(orderSocket,buf,sizeof(buf),0);
 		if (pkglen < 0){
-			cout<<"Server Socket closed, Exit！"<<endl;
+            cout<<"Server Socket closed, Exit!"<<endl;
 			break;
 		}
 		else if(strstr(buf,"3101")>=0 && strstr(buf,"OK")>0){
@@ -755,7 +755,7 @@ void SPTrader::processPrice()
 		}
 		pkglen = recv(priceSocket,buff,sizeof(buff),0);
 		if (pkglen < 0){
-			cout<<"receive price data failed, exit！"<<endl;
+            cout<<"receive price data failed, exit!"<<endl;
 			continue;
 		}
 		buff[pkglen] = 0;
