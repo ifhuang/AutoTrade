@@ -60,6 +60,9 @@
     <ClCompile Include="exec_visitor_print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lex_runner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">
@@ -105,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="executor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lex_runner_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lex_runner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
