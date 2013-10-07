@@ -1,6 +1,7 @@
 #ifndef SWINGTRADEDIALOG_H
 #define SWINGTRADEDIALOG_H
 
+#include "iswingtradedialog.h"
 #include <QDialog>
 #include <QToolBar>
 #include <QMenu>
@@ -11,7 +12,6 @@
 #include "../TC/PriceItem.h"
 #include "../TC/SwingTrader.h"
 #include "../TC/Dispatcher.h"
-#include "iswingtradedialog.h"
 
 namespace Ui {
 class SwingTradeDialog;
@@ -51,6 +51,8 @@ private slots:
     void insert_strategy();
     void set_strategy();
     void remove_strategy();
+
+    void on_click_buyask();
 
 private:
     Ui::SwingTradeDialog *ui;

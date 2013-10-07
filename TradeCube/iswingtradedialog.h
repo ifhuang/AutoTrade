@@ -6,7 +6,6 @@ class PriceItem;
 class ISwingTradeDialog
 {
 public:
-    ISwingTradeDialog(){}
     virtual ~ISwingTradeDialog(){}
     virtual void displayPriceItem(PriceItem* priceItem) = 0;
     virtual void displayPosition(double position) = 0;

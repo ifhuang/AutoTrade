@@ -44,7 +44,8 @@ HEADERS  += mainwindow.h \
     ../TC/TradeUnit.h \
     ../TC/DispatcherFactory.h \
     ../TC/PlatformInfo.h \
-    iswingtradedialog.h
+    iswingtradedialog.h \
+    imainwindow.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \

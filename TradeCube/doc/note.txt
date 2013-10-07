@@ -2,4 +2,5 @@
 
 2. When I run the program after totally rebuild, log folder fail to create and program down.
 
-3. 
+3. When I create order, where to get the submitprice?
+

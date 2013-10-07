@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "imainwindow.h"
 #include <QMainWindow>
 #include <QComboBox>
 #include <QLineEdit>
@@ -16,7 +17,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public IMainWindow
 {
     Q_OBJECT
 
@@ -29,7 +30,7 @@ public:
     void displaySwingUpdatePositions(Position *position);
 
     // display interface for add/update/remove working orders tab in swing trade tab
-    void displaySwingAddWorkingOrders(OrderItem *orderItem);
+    virtual void displaySwingAddWorkingOrders(OrderItem *orderItem) override;
     void displaySwingUpdateWorkingOrders(OrderItem *orderItem);
     void displaySwingRemoveWorkingOrders();
 

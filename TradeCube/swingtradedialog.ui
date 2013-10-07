@@ -171,5 +171,25 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_ba</sender>
+   <signal>clicked()</signal>
+   <receiver>SwingTradeDialog</receiver>
+   <slot>on_click_buyask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_click_buyask()</slot>
+ </slots>
 </ui>

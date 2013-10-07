@@ -221,3 +221,8 @@ void SwingTradeDialog::displayProfit(double profit)
 {
     ui->label_profit->setText(QString("%1").arg(profit));
 }
+
+void SwingTradeDialog::on_click_buyask()
+{
+    //swingtrader->createOrder();
+}
