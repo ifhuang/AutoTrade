@@ -7,7 +7,7 @@
 #include <QSize>
 #include <QMessageBox>
 #include <list>
-#include "TC/DispatcherFactory.h"
+#include "../TC/DispatcherFactory.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

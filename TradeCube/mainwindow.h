@@ -6,11 +6,11 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStandardItemModel>
-#include "TC/Position.h"
-#include "TC/OrderItem.h"
-#include "TC/TradeItem.h"
-#include "TC/Dispatcher.h"
-#include "TC/PlatformInfo.h"
+#include "../TC/Position.h"
+#include "../TC/OrderItem.h"
+#include "../TC/TradeItem.h"
+#include "../TC/Dispatcher.h"
+#include "../TC/PlatformInfo.h"
 
 namespace Ui {
 class MainWindow;

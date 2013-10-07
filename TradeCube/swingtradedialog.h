@@ -8,9 +8,10 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QCloseEvent>
-#include "TC/PriceItem.h"
-#include "TC/SwingTrader.h"
-#include "TC/Dispatcher.h"
+#include "../TC/PriceItem.h"
+#include "../TC/SwingTrader.h"
+#include "../TC/Dispatcher.h"
+#include "iswingtradedialog.h"
 
 namespace Ui {
 class SwingTradeDialog;
@@ -18,19 +19,19 @@ class SwingTradeDialog;
 
 class SwingTrader;
 
-class SwingTradeDialog : public QDialog
+class SwingTradeDialog : public QDialog, public ISwingTradeDialog
 {
     Q_OBJECT
 
 public:
     explicit SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent = 0);
-    ~SwingTradeDialog();
+    virtual ~SwingTradeDialog();
     QString getSwingContract();
 
     // display interface for price/position/profit
-    void displayPriceItem(PriceItem* priceItem);
-    void displayPosition(double position);
-    void displayProfit(double profit);
+    virtual void displayPriceItem(PriceItem* priceItem) override;
+    virtual void displayPosition(double position) override;
+    virtual void displayProfit(double profit) override;
 
 signals:
     // emit by add/modify/remove contract
