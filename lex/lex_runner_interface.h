@@ -6,7 +6,7 @@ class LexRunnerInterface
 public:
     virtual void Load() = 0;
     virtual void Run() = 0;
-    virtual ~LexRunnerInterface() = 0;
+    virtual ~LexRunnerInterface() {};
 };
 
 

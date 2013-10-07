@@ -1,4 +1,4 @@
-#include "Dispatcher.h"
+﻿#include "Dispatcher.h"
 #include "SPTrader.h"
 #include "ComboTrader.h"
 #include "SwingTrader.h"

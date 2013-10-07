@@ -1,4 +1,4 @@
-#ifndef __DISPATCHER__
+﻿#ifndef __DISPATCHER__
 #define __DISPATCHER__
 #include <iostream>
 #include <string>    

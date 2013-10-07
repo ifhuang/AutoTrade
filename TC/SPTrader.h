@@ -1,4 +1,4 @@
-#ifndef __SPTRADER__
+﻿#ifndef __SPTRADER__
 #define __SPTRADER__
 #include <list>
 #include "TradeCube.h"

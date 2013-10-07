@@ -3,7 +3,7 @@
 
 #include "lex_runner_interface.h"
 
-class LexRunner :public LexRunnerInterface
+class LexRunner : public LexRunnerInterface
 {
 public:
     virtual void Load() override;
