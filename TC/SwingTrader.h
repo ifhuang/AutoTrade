@@ -10,14 +10,14 @@
 #include "Strategy.h"
 #include "TradeUnit.h"
 #include "Dispatcher.h"
-#include "../swingtradedialog.h"
+#include "../TradeCube/iswingtradedialog.h"
 
-class SwingTradeDialog;
+class ISwingTradeDialog;
 
 class SwingTrader: public Strategy
 {
 public:
-    SwingTrader(int traderId, SwingTradeDialog* swingTradeDialog);
+    SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog);
 	virtual ~SwingTrader();
 	int setTradeUnit(TradeUnit* tradeUnit);
 	int deleteTradeUnit();
@@ -51,6 +51,6 @@ private:
 	//test
 	long testOrderID;
 
-	SwingTradeDialog *swingTradeDialog;
+	ISwingTradeDialog *iSwingTradeDialog;
 };
 #endif
