@@ -18,28 +18,5 @@
     <ClCompile Include="lex_show.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lex\el.tab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lex\lex.yy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lex\tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lex\ast.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\lex\el.tab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lex\tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lex\ast.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

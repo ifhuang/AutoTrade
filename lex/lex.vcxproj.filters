@@ -30,9 +30,6 @@
     <ClCompile Include="el.tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,6 +58,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lex_runner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,5 +119,16 @@
     <ClInclude Include="lex_runner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lex.sql">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

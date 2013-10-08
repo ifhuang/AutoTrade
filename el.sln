@@ -12,6 +12,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lex_show", "lex_show\lex_sh
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TC", "TC\TC.vcxproj", "{07408764-8F8C-435A-A4E8-EA91ECA4E72C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lex_test", "lex_test\lex_test.vcxproj", "{8A216D39-51EA-4E5F-AC18-AE04D1A19F1B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{145349D7-B049-47B8-B38B-89854EE3A566} = {145349D7-B049-47B8-B38B-89854EE3A566}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lex_main", "lex_main\lex_main.vcxproj", "{9A347855-C0CD-4D3D-8E36-0DBAE92354CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -30,6 +37,14 @@ Global
 		{07408764-8F8C-435A-A4E8-EA91ECA4E72C}.Debug|Win32.Build.0 = Debug|Win32
 		{07408764-8F8C-435A-A4E8-EA91ECA4E72C}.Release|Win32.ActiveCfg = Release|Win32
 		{07408764-8F8C-435A-A4E8-EA91ECA4E72C}.Release|Win32.Build.0 = Release|Win32
+		{8A216D39-51EA-4E5F-AC18-AE04D1A19F1B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8A216D39-51EA-4E5F-AC18-AE04D1A19F1B}.Debug|Win32.Build.0 = Debug|Win32
+		{8A216D39-51EA-4E5F-AC18-AE04D1A19F1B}.Release|Win32.ActiveCfg = Release|Win32
+		{8A216D39-51EA-4E5F-AC18-AE04D1A19F1B}.Release|Win32.Build.0 = Release|Win32
+		{9A347855-C0CD-4D3D-8E36-0DBAE92354CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9A347855-C0CD-4D3D-8E36-0DBAE92354CA}.Debug|Win32.Build.0 = Debug|Win32
+		{9A347855-C0CD-4D3D-8E36-0DBAE92354CA}.Release|Win32.ActiveCfg = Release|Win32
+		{9A347855-C0CD-4D3D-8E36-0DBAE92354CA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

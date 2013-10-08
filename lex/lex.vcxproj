@@ -16,17 +16,17 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -57,6 +57,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\boost-trunk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,17 +68,18 @@
   <ItemGroup>
     <ClCompile Include="ast.cpp" />
     <ClCompile Include="check_visitor.cpp" />
+    <ClCompile Include="data.cpp" />
     <ClCompile Include="el.tab.cpp" />
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="executor.cpp" />
     <ClCompile Include="exec_visitor.cpp" />
     <ClCompile Include="exec_visitor_print.cpp" />
     <ClCompile Include="functions.cpp" />
-    <ClCompile Include="lex.cpp" />
     <ClCompile Include="lex.yy.cpp" />
     <ClCompile Include="lex_runner.cpp" />
     <ClCompile Include="operator.cpp" />
     <ClCompile Include="run_time_environment.cpp" />
+    <ClCompile Include="sqlite3.c" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="type.cpp" />
@@ -85,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="ast.h" />
     <ClInclude Include="check_visitor.h" />
+    <ClInclude Include="data.h" />
     <ClInclude Include="el.tab.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="executor.h" />
@@ -96,10 +99,14 @@
     <ClInclude Include="lex_runner_interface.h" />
     <ClInclude Include="operator.h" />
     <ClInclude Include="run_time_environment.h" />
+    <ClInclude Include="sqlite3.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="type.h" />
     <ClInclude Include="vv.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lex.sql" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
