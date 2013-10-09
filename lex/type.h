@@ -31,10 +31,10 @@ namespace lex{
         int ReserveSpace(ast_t exp, int size = 1);
 
         std::vector<Input> inputs;
-
-        int num_variables = 0;
         std::vector<Initialize> initialize_list;
     private:
+        int num_variables = 0;
+
         DISALLOW_COPY_AND_ASSIGN(SetUpEnviroment);
     };
 

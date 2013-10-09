@@ -103,6 +103,7 @@
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="type.h" />
+    <ClInclude Include="type_serialization.h" />
     <ClInclude Include="vv.h" />
   </ItemGroup>
   <ItemGroup>

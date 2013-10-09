@@ -29,5 +29,8 @@
     <ClCompile Include="sqlite_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="serialization_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
