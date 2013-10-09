@@ -1,5 +1,6 @@
 #include "SwingTrader.h"
 
+#define UI_DEBUG
 
 SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog):Strategy(traderId)
 {
@@ -174,7 +175,11 @@ void SwingTrader::processPrice(MSG& msg) {
 	} else {
 		LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
 	}
+
+#ifdef UI_DEBUG
 	iSwingTradeDialog->displayPriceItem(pi);
+#endif
+
 }
 
 void SwingTrader::signal() {
@@ -543,4 +548,9 @@ void SwingTrader::closeAllPositions()
 	}else {
 		buytocover(testOrderID, price, -pos.netqty, MKT, DAY, STRATEGY_SUBMITTER);
 	}
+}
+
+TradeUnit* SwingTrader::getTradeUnit()
+{
+    return tradeUnit;
 }

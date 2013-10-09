@@ -20,6 +20,7 @@ public:
     SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog);
     virtual ~SwingTrader();
     int setTradeUnit(TradeUnit* tradeUnit);
+    TradeUnit* getTradeUnit();
     int deleteTradeUnit();
     void closeAllPositions();
     void deleteStrategyOrder();

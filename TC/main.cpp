@@ -88,7 +88,7 @@ void testSwingTrader()
 
 	Dispatcher* disp = DispatcherFactory::createDispatcher(platformInfo);
 
-	SwingTrader* swingTrader =  new SwingTrader(traderId++);
+    SwingTrader* swingTrader =  new SwingTrader(traderId++, NULL);
 
 	// 应该在启动线程前设置
 	swingTrader->setIntraBarTrading(true);
