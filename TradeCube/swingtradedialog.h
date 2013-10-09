@@ -79,9 +79,9 @@ private:
 
     QString swing_contract;
 
-    SwingTrader *swingtrader;
+    SwingTrader* swingtrader;
     DWORD tbtid;
-    Dispatcher *disp;
+    Dispatcher* disp;
 };
 
 #endif // SWINGTRADEDIALOG_H

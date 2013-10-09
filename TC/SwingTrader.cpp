@@ -2,9 +2,10 @@
 
 #define UI_DEBUG
 
-SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog):Strategy(traderId)
+SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog, IMainWindow* iMainWindow):Strategy(traderId)
 {
 	this->iSwingTradeDialog = iSwingTradeDialog;
+    this->iMainWindow = iMainWindow;
 	tradeUnit = NULL;
 	testOrderID = 0;
 }
@@ -302,6 +303,10 @@ long SwingTrader::createOrder(char buysell, char openclose, double submitPrice, 
 			tradeUnit->addOrder(oi);
 		}
 	}	
+
+#ifdef UI_DEBUG
+    iMainWindow->displaySwingAddWorkingOrders(oi);
+#endif
 
 	return oi->getOrderRefId();
 }

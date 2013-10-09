@@ -112,7 +112,7 @@ MainWindow::~MainWindow()
 void MainWindow::new_swing_trade()
 {
     QString contractName = QString("Exchange-Contract-%1").arg(swing_counter);
-    SwingTradeDialog *swingTradeDialog = new SwingTradeDialog(contractName, swing_counter, disp);
+    SwingTradeDialog *swingTradeDialog = new SwingTradeDialog(contractName, swing_counter, disp, this);
     swingTradeDialog->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(swingTradeDialog, SIGNAL(update_contract(QString)), this, SLOT(update_swing_contract(QString)));

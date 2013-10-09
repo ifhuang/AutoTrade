@@ -2,6 +2,7 @@
 #include "ui_swingtradedialog.h"
 #include <QSize>
 #include <QInputDialog>
+#include "mainwindow.h"
 
 SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent) :
     QDialog(parent),
@@ -79,7 +80,7 @@ SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *d
     connect(swingright_setstr, SIGNAL(triggered()), this, SLOT(set_strategy()));
     connect(swingright_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
 
-    swingtrader = new SwingTrader(tradeId, this);
+    swingtrader = new SwingTrader(tradeId, this, qobject_cast<MainWindow *>(parent));
     swingtrader->setIntraBarTrading(true);
     swingtrader->setDispatcher(disp);
     tbtid = swingtrader->startTraderThread();
@@ -224,5 +225,5 @@ void SwingTradeDialog::displayProfit(double profit)
 
 void SwingTradeDialog::on_click_buyask()
 {
-    //swingtrader->createOrder();
+    swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, 1, MKT, DAY, SPTRADER);
 }

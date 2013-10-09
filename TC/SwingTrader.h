@@ -11,22 +11,26 @@
 #include "TradeUnit.h"
 #include "Dispatcher.h"
 #include "../TradeCube/iswingtradedialog.h"
+#include "../TradeCube/imainwindow.h"
 
 class ISwingTradeDialog;
+class IMainWindow;
 
 class SwingTrader : public Strategy
 {
 public:
-    SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog);
+    SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog, IMainWindow* iMainWindow);
     virtual ~SwingTrader();
     int setTradeUnit(TradeUnit* tradeUnit);
     TradeUnit* getTradeUnit();
     int deleteTradeUnit();
     void closeAllPositions();
     void deleteStrategyOrder();
+
+    long createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter);
+
 protected:
     void triggerWaitingOrder();
-    long createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter);
     int deleteOrder(long orderRefId);
     long updateOrder(long orderRefId, char buysell, char openclose, double submitPrice, double qty, int validType);
     bool double_divide(double divisor, double dividend);
@@ -52,6 +56,7 @@ private:
     //test
     long testOrderID;
 
-    ISwingTradeDialog *iSwingTradeDialog;
+    ISwingTradeDialog* iSwingTradeDialog;
+    IMainWindow* iMainWindow;
 };
 #endif
