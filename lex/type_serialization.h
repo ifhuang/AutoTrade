@@ -1,13 +1,16 @@
 #ifndef LEX_TYPE_SERIALIZATION_H_
 #define LEX_TYPE_SERIALIZATION_H_
 
-#include "type.h"
-
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+
+#include "type.h"
 
 namespace boost {
     namespace serialization {
+
+        using namespace lex;
 
         template<class Archive>
         void serialize(Archive & ar, SetUpEnviroment & sue, const unsigned int version)
