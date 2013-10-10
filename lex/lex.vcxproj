@@ -94,6 +94,8 @@
     <ClInclude Include="exec_visitor.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="interface\lex_interface.h" />
+    <ClInclude Include="interface\tc_bar_interface.h" />
     <ClInclude Include="lex.h" />
     <ClInclude Include="lex_runner.h" />
     <ClInclude Include="lex_runner_interface.h" />

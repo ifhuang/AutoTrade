@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\interface">
+      <UniqueIdentifier>{2e36ba82-e494-420d-a72d-39f5c9264055}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="table.cpp">
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="type_serialization.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\tc_bar_interface.h">
+      <Filter>Header Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\lex_interface.h">
+      <Filter>Header Files\interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
