@@ -1,4 +1,4 @@
-#include "SwingTrader.h"
+﻿#include "SwingTrader.h"
 
 #define UI_DEBUG
 
