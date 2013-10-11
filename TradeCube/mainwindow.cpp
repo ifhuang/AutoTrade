@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <list>
 #include "../TC/DispatcherFactory.h"
+#include "logindialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -316,12 +317,10 @@ void MainWindow::add_swing_order_history()
 
 void MainWindow::connect_dispatcher()
 {
-    platforminfo.platformName = SPTRADER;
-    platforminfo.server = "127.0.0.1";
-    platforminfo.accountNo = "DEMO257";
-    platforminfo.password = "12344321";
-    platforminfo.orderPort = 8092;
-    platforminfo.pricePort = 8089;
-    platforminfo.tickPort = 8090;
-    disp = DispatcherFactory::createDispatcher(platforminfo);
+    LogInDialog *logindialog = new LogInDialog(&platforminfo);
+    logindialog->setAttribute(Qt::WA_DeleteOnClose);
+    if(logindialog->exec() == LogInDialog::Accepted)
+    {
+        disp = DispatcherFactory::createDispatcher(platforminfo);
+    }
 }
