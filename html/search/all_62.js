@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['buy',['Buy',['../class_t_c_bar_interface.html#acb54759784c8add23e4a59d0db2ac433',1,'TCBarInterface']]]
+  ['buy',['Buy',['../class_t_c_bar_interface.html#ab983a94e4b38470bbc16406a2070a9f0',1,'TCBarInterface']]]
 ];

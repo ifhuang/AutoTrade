@@ -96,26 +96,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_t_c_bar_interface.html">TCBarInterface</a>() {}</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_c_bar_interface.html#acb54759784c8add23e4a59d0db2ac433">Buy</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, std::string entry_label) = 0;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_c_bar_interface.html#ab983a94e4b38470bbc16406a2070a9f0">Buy</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>) = 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_c_bar_interface.html#a1c90a8bda968443bea2c01b995a0472d">Sell</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>) = 0;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_t_c_bar_interface.html#abb0eecf3daa1938e9db3448d364c8ec6">Sell</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, std::string exit_label) = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Open(<span class="keywordtype">int</span> bar) = 0;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Close(<span class="keywordtype">int</span> bar) = 0;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> High(<span class="keywordtype">int</span> bar) = 0;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Low(<span class="keywordtype">int</span> bar) = 0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif  // LEX_INTERFACE_TC_BAR_INTERFACE_H_</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Open(<span class="keywordtype">int</span> bar) = 0;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Close(<span class="keywordtype">int</span> bar) = 0;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> High(<span class="keywordtype">int</span> bar) = 0;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Low(<span class="keywordtype">int</span> bar) = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif  // LEX_INTERFACE_TC_BAR_INTERFACE_H_</span></div>
 <div class="ttc" id="class_t_c_bar_interface_html"><div class="ttname"><a href="class_t_c_bar_interface.html">TCBarInterface</a></div><div class="ttdoc">A tc bar interface, lex will call tc by this </div><div class="ttdef"><b>Definition:</b> tc_bar_interface.h:9</div></div>
-<div class="ttc" id="class_t_c_bar_interface_html_abb0eecf3daa1938e9db3448d364c8ec6"><div class="ttname"><a href="class_t_c_bar_interface.html#abb0eecf3daa1938e9db3448d364c8ec6">TCBarInterface::Sell</a></div><div class="ttdeci">virtual void Sell(int id, std::string exit_label)=0</div><div class="ttdoc">Completely or partially exits one or all of the long entries as specified by the parameters. </div></div>
-<div class="ttc" id="class_t_c_bar_interface_html_acb54759784c8add23e4a59d0db2ac433"><div class="ttname"><a href="class_t_c_bar_interface.html#acb54759784c8add23e4a59d0db2ac433">TCBarInterface::Buy</a></div><div class="ttdeci">virtual void Buy(int id, std::string entry_label)=0</div><div class="ttdoc">Enters a long position as specified by the parameters. </div></div>
+<div class="ttc" id="class_t_c_bar_interface_html_a1c90a8bda968443bea2c01b995a0472d"><div class="ttname"><a href="class_t_c_bar_interface.html#a1c90a8bda968443bea2c01b995a0472d">TCBarInterface::Sell</a></div><div class="ttdeci">virtual void Sell(int id)=0</div><div class="ttdoc">Completely or partially exits one or all of the long entries as specified by the parameters. </div></div>
+<div class="ttc" id="class_t_c_bar_interface_html_ab983a94e4b38470bbc16406a2070a9f0"><div class="ttname"><a href="class_t_c_bar_interface.html#ab983a94e4b38470bbc16406a2070a9f0">TCBarInterface::Buy</a></div><div class="ttdeci">virtual void Buy(int id)=0</div><div class="ttdoc">Enters a long position as specified by the parameters. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 11 2013 01:49:03 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 11 2013 12:36:32 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

@@ -20,9 +20,8 @@ public:
     /// </remarks>
     ///
     /// <param name="id">           The identifier. </param>
-    /// <param name="entry_label">  EntryLabel. </param>
 
-    virtual void Buy(int id, std::string entry_label) = 0;
+    virtual void Buy(int id) = 0;
 
     /// <summary>
     ///     Completely or partially exits one or all of the long entries as specified by the
@@ -37,9 +36,8 @@ public:
     /// </remarks>
     ///
     /// <param name="id">           The identifier. </param>
-    /// <param name="exit_label">   ExitLabel. </param>
 
-    virtual void Sell(int id, std::string exit_label) = 0;
+    virtual void Sell(int id) = 0;
 
     virtual void Open(int bar) = 0;
     virtual void Close(int bar) = 0;
