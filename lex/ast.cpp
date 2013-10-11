@@ -6,8 +6,11 @@
 #include "vv.h"
 using namespace std;
 
-unordered_map<string, int> strTable;
-int strTableSize;
+namespace{
+    int strTableSize;
+    unordered_map<string, int> strTable;
+}
+
 vector<string> strVector;
 string errorMessage;
 
@@ -109,7 +112,7 @@ void applyBar(ast *node, int bar)
     }
 }
 
-const YYLTYPE * GetLocation(ast_t idx)
+const YYLTYPE* GetLocation(ast_t idx)
 {
     return &astV[idx].loc;
 }

@@ -211,10 +211,10 @@ namespace lex
                 throw SemanticError("this word has already been defined", loc);
             }
             VType type = get_type(input.right, true);
-            Input in;
-            in.name = name;
-            in.type = type;
-            in.exp = input.right;
+            Input in{ name, type, input.right };
+            //in.name = name;
+            //in.type = type;
+            //in.exp = input.right;
             inputTable[name] = in;
             enviroment.inputs.push_back(in);
         }
@@ -223,6 +223,11 @@ namespace lex
     void init()
     {
         kAstTrue = newtf(kDefaultLocation, true);
+    }
+
+    void storage()
+    {
+        Program p = { enviroment, strVector, astV, astsV, stmtV, stmtsV };
     }
 
     void type_check()

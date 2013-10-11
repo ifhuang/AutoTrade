@@ -24,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -55,7 +55,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -83,6 +83,7 @@
     <ClInclude Include="TradeUnit.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bar.cpp" />
     <ClCompile Include="ComboTrader.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="DispatcherFactory.cpp" />

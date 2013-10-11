@@ -17,4 +17,16 @@ namespace lex{
         sqlite3_exec(db, "insert into a values ('1',1)", nullptr, 0, &error_message);
     }
 
+    void Data::InsertStudy()
+    {
+        if (!insert_study_stmt_)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
 }

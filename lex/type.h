@@ -16,8 +16,8 @@ namespace lex{
     {
         std::string name;
         VType type;
-        std::string exp_string;
         ast_t exp;
+        std::string exp_string;
     };
 
     struct Initialize{
@@ -36,6 +36,15 @@ namespace lex{
         int num_variables = 0;
 
         DISALLOW_COPY_AND_ASSIGN(SetUpEnviroment);
+    };
+
+    struct Program{
+        const SetUpEnviroment &sue;
+        const std::vector<std::string> &strVector;
+        const VV<ast> &astV;
+        const VV<std::vector<stmt_t>> &astsV;
+        const VV<stmt> &stmtV;
+        const VV<std::vector<ast_t>> &stmtsV;
     };
 
     class SemanticError : public std::exception

@@ -92,5 +92,8 @@
     <ClCompile Include="TradeUnit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,14 +13,14 @@ namespace boost {
         using namespace lex;
 
         template<class Archive>
-        void serialize(Archive & ar, SetUpEnviroment & sue, const unsigned int version)
+        void serialize(Archive &ar, SetUpEnviroment &sue, const unsigned int version)
         {
             ar & sue.inputs;
             ar & sue.initialize_list;
         }
 
         template<class Archive>
-        void serialize(Archive & ar, Input & i, const unsigned int version)
+        void serialize(Archive &ar, Input &i, const unsigned int version)
         {
             ar & i.exp;
             ar & i.exp_string;
@@ -29,11 +29,23 @@ namespace boost {
         }
 
         template<class Archive>
-        void serialize(Archive & ar, Initialize & i, const unsigned int version)
+        void serialize(Archive &ar, Initialize &i, const unsigned int version)
         {
             ar & i.exp;
             ar & i.size;
         }
+
+        template<class Archive>
+        void serialize(Archive &ar, Program &p, const unsigned int version)
+        {
+            ar & p.sue;
+            ar & p.strVector;
+            ar & p.astV;
+            ar & p.astsV;
+            ar & p.stmtV;
+            ar & p.stmtsV;
+        }
+
 
     } // namespace serialization
 } // namespace boost

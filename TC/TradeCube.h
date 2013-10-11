@@ -90,7 +90,7 @@ enum LinkID {
 #include <iostream>
 #include <string> 
 #include <windows.h>
-#include<sstream>
+#include <sstream>
 #include <time.h>
 
 using namespace std; 

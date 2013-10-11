@@ -91,16 +91,10 @@ QuoteItem* TradeUnit::getQuote()
 
 Position* TradeUnit::getPosition(int pos_ago)
 {
-	Position* pos = NULL;
-	//if(positionQueue.size()-1>=pos_ago)
-	if(positionQueue.size()>=pos_ago+1)
-	{
-		list<Position*>::iterator iter = positionQueue.begin();
-		for(int i = 0; i<pos_ago; i++)
-			iter++;
-		pos = *iter;
-	}
-	return pos;
+    Position* pos = NULL;
+    if (positionQueue.size() > pos_ago)
+        return positionQueue.at(positionQueue.size() - 1 - pos_ago);
+    return pos;
 }
 
 TradeItem* TradeUnit::getTrade(int tradeNo)
@@ -136,7 +130,7 @@ int TradeUnit::addTrade(TradeItem* tradeRecord)
 
 int TradeUnit::addPosition(Position* position)
 {
-	positionQueue.push_front(position);
+	positionQueue.push_back(position);
 	return 0;
 }
 
