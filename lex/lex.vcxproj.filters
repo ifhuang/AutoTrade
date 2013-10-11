@@ -16,6 +16,12 @@
     <Filter Include="Header Files\interface">
       <UniqueIdentifier>{2e36ba82-e494-420d-a72d-39f5c9264055}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\data">
+      <UniqueIdentifier>{6316263f-bce1-47ad-86d5-9b227950b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{701143c7-a66f-47e4-9253-64a5848ff595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="table.cpp">
@@ -63,11 +69,14 @@
     <ClCompile Include="lex_runner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="data.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="data\type_serialization.cpp">
+      <Filter>Source Files\data</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite3.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="data\sqlite3.c">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\data.cpp">
+      <Filter>Source Files\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,25 +131,31 @@
     <ClInclude Include="lex_runner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sqlite3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="type_serialization.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="interface\tc_bar_interface.h">
       <Filter>Header Files\interface</Filter>
     </ClInclude>
     <ClInclude Include="interface\lex_interface.h">
       <Filter>Header Files\interface</Filter>
     </ClInclude>
+    <ClInclude Include="data\type_serialization.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\tree_serialization.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\sqlite3.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\ast_serialization.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\data.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lex.sql">
-      <Filter>Source Files</Filter>
+    <None Include="data\lex.sql">
+      <Filter>Source Files\data</Filter>
     </None>
   </ItemGroup>
 </Project>

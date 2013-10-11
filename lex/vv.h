@@ -1,17 +1,21 @@
-#ifndef VV_H
-# define VV_H
+#ifndef LEX_VV_H_
+#define LEX_VV_H_
 
+#include <string>
 #include <vector>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
+#include "global.h"
 
 #define VVN(x) x(#x)
 
 template <typename T>
-struct VV
+class VV
 {
-	std::vector<T> v;
-	const char *n;
-
-	VV(const char *n) :n(n){}
+public:
+	VV(const std::string &n) :n_(n){}
 
 	int create()
 	{
@@ -25,31 +29,44 @@ struct VV
 
 	int put(T x)
 	{
-		int idx = v.size();
-		v.push_back(x);
+        int idx = v_.size();
+		v_.push_back(x);
 		return idx;
 	}
 
 	size_t putI(size_t s, int x)
 	{
 		if (x == -1)return s;
-		v[s].push_back(x);
+        v_[s].push_back(x);
 		return s;
 	}
 
 	T& operator[](const size_t s)
 	{
-		if (s < 0 || s >= v.size())
+        if (s < 0 || s >= v_.size())
 		{
-			printf("VV error: %s size %d, read at %d", n, v.size(), s);
+            printf("VV error: %s size %d, read at %d", n_.c_str(), v_.size(), s);
 		}
-		return v[s];
+        return v_[s];
 	}
 
 	void clear()
 	{
-		v.clear();
+        v_.clear();
 	}
+
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & v_;
+        ar & n_;
+    }
+
+    std::vector<T> v_;
+    const std::string n_;
+    DISALLOW_COPY_AND_ASSIGN(VV);
 };
 
-#endif
+#endif  // LEX_VV_H_

@@ -3,7 +3,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#include "../lex/data.h"
+#include "../lex/data/data.h"
 
 namespace lex_test
 {		

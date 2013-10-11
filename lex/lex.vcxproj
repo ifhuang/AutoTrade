@@ -68,7 +68,7 @@
   <ItemGroup>
     <ClCompile Include="ast.cpp" />
     <ClCompile Include="check_visitor.cpp" />
-    <ClCompile Include="data.cpp" />
+    <ClCompile Include="data\data.cpp" />
     <ClCompile Include="el.tab.cpp" />
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="executor.cpp" />
@@ -79,15 +79,17 @@
     <ClCompile Include="lex_runner.cpp" />
     <ClCompile Include="operator.cpp" />
     <ClCompile Include="run_time_environment.cpp" />
-    <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="data\sqlite3.c" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="type.cpp" />
+    <ClCompile Include="data\type_serialization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast.h" />
+    <ClInclude Include="data\ast_serialization.h" />
     <ClInclude Include="check_visitor.h" />
-    <ClInclude Include="data.h" />
+    <ClInclude Include="data\data.h" />
     <ClInclude Include="el.tab.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="executor.h" />
@@ -101,15 +103,16 @@
     <ClInclude Include="lex_runner_interface.h" />
     <ClInclude Include="operator.h" />
     <ClInclude Include="run_time_environment.h" />
-    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="data\sqlite3.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
+    <ClInclude Include="data\tree_serialization.h" />
     <ClInclude Include="type.h" />
-    <ClInclude Include="type_serialization.h" />
+    <ClInclude Include="data\type_serialization.h" />
     <ClInclude Include="vv.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lex.sql" />
+    <None Include="data\lex.sql" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

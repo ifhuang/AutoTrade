@@ -3,7 +3,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#include "../lex/type_serialization.h"
+#include "../lex/data/type_serialization.h"
 
 #include <fstream>
 using namespace std;

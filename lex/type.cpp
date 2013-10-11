@@ -5,6 +5,8 @@
 using namespace std;
 
 #include "check_visitor.h"
+#include "data/data.h"
+#include "data/type_serialization.h"
 #include "table.h"
 
 namespace lex
@@ -228,6 +230,9 @@ namespace lex
     void storage()
     {
         Program p = { enviroment, strVector, astV, astsV, stmtV, stmtsV };
+        const string &s = save(p);
+        Data data;
+        data.InsertStudy(s.c_str());
     }
 
     void type_check()
@@ -235,5 +240,6 @@ namespace lex
         init();
         check_input();
         check_stmts(root);
+        storage();
     }
 }  // namespace lex
