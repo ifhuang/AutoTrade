@@ -22,13 +22,13 @@ private slots:
 private:
     Ui::AddContractDialog *ui;
 
-    QStringList cbot;
-    QStringList cme;
-    QStringList hkif;
-    QStringList lme;
-    QStringList nybot;
-    QStringList nymex;
-    QStringList tocom;
+    static const QStringList cbot;
+    static const QStringList cme;
+    static const QStringList hkif;
+    static const QStringList lme;
+    static const QStringList nybot;
+    static const QStringList nymex;
+    static const QStringList tocom;
 
     QString *exchange;
     QString *contract;
