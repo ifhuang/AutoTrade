@@ -9,14 +9,16 @@ using namespace std;
 #include "table.h"
 
 namespace lex{
-    Executor::Executor(const SetUpEnviroment & sue) :sue_(sue)
-    {
 
-    }
+    Executor::Executor(const Program *program) : program_(program),
+        sue_(*program->sue), strVector_(*program->strVector),
+        astV_(*program->astV), astsV_(*program->astsV),
+        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV) {}
 
     Executor::~Executor()
     {
         if (rte_)delete rte_;
+        if (program_)delete program_;
     }
 
     vector<Value> Executor::exec_paras(asts_t idx)
@@ -26,7 +28,7 @@ namespace lex{
         {
             return r;
         }
-        vector<ast_t> &args = astsV[idx];
+        const vector<ast_t> &args = astsV_[idx];
         for (size_t i = 0; i < args.size(); i++)
         {
             r.push_back(value(args[i]));
@@ -36,7 +38,7 @@ namespace lex{
 
     Value Executor::exec_func(ast_t idx)
     {
-        ast &func = astV[idx];
+        const ast &func = astV_[idx];
         string name = get_var(func.left);
         VSource source = find_name(name);
         switch (source)
@@ -53,7 +55,7 @@ namespace lex{
 
     Value Executor::value(ast_t idx)
     {
-        ast &n = astV[idx];
+        const ast &n = astV_[idx];
         switch (n.type)
         {
         case NodeType::ADD:
@@ -111,7 +113,7 @@ namespace lex{
     void Executor::exec_stmts(stmts_t idx)
     {
         if (idx == -1)return;
-        for (stmt_t stmt : stmtsV[idx])
+        for (stmt_t stmt : stmtsV_[idx])
         {
             exec(stmt);
         }
@@ -120,7 +122,7 @@ namespace lex{
     void Executor::exec(stmt_t stmt)
     {
         if (stmt == -1)return;
-        boost::apply_visitor(exec_visitor(this), stmtV[stmt]);
+        boost::apply_visitor(exec_visitor(this), stmtV_[stmt]);
     }
 
     void Executor::SetUp()

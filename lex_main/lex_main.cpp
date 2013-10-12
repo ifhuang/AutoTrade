@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
+#include "../lex/data/data_repository.h"
 #include "../lex/executor.h"
 #include "../lex/tree.h"
 #include "../lex/type.h"
@@ -27,7 +28,8 @@ int main()
         printf("%s\n", e.what());
         return 0;
     }
-    Executor executor(enviroment);
+    Program p = DataRepository::LoadProgram();
+    Executor executor(&p);
     executor.execute();
     return 0;
 }

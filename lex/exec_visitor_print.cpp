@@ -72,7 +72,7 @@ private:
     size_t remain = 256;
 };
 
-void exec_visitor::operator()(print_stmt & ps) const
+void exec_visitor::operator()(const print_stmt & ps) const
 {
     if (~ps.list)
     {

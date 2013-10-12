@@ -39,12 +39,12 @@ namespace lex{
     };
 
     struct Program{
-        const SetUpEnviroment &sue;
-        const std::vector<std::string> &strVector;
-        const VV<ast> &astV;
-        const VV<std::vector<stmt_t>> &astsV;
-        const VV<stmt> &stmtV;
-        const VV<std::vector<ast_t>> &stmtsV;
+        SetUpEnviroment *sue;
+        std::vector<std::string> *strVector;
+        VV<ast> *astV;
+        VV<std::vector<stmt_t>> *astsV;
+        VV<stmt> *stmtV;
+        VV<std::vector<ast_t>> *stmtsV;
     };
 
     class SemanticError : public std::exception

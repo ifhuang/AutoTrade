@@ -69,6 +69,7 @@
     <ClCompile Include="ast.cpp" />
     <ClCompile Include="check_visitor.cpp" />
     <ClCompile Include="data\data.cpp" />
+    <ClCompile Include="data\data_repository.cpp" />
     <ClCompile Include="el.tab.cpp" />
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="executor.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="data\ast_serialization.h" />
     <ClInclude Include="check_visitor.h" />
     <ClInclude Include="data\data.h" />
+    <ClInclude Include="data\data_repository.h" />
     <ClInclude Include="el.tab.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="executor.h" />

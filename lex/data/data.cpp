@@ -33,4 +33,19 @@ namespace lex{
         sqlite3_step(insert_study_stmt_);
     }
 
+    const unsigned char * Data::SelectStudy()
+    {
+        if (!select_study_stmt_)
+        {
+            const char *query = "select program from study where name = ?";
+            sqlite3_prepare_v2(db, query, -1, &select_study_stmt_, nullptr);
+        }
+        else
+        {
+            sqlite3_reset(select_study_stmt_);
+        }
+        sqlite3_bind_text(select_study_stmt_, 1, "test", -1, SQLITE_TRANSIENT);
+        sqlite3_step(select_study_stmt_);
+        return sqlite3_column_text(select_study_stmt_, 1);
+    }
 }

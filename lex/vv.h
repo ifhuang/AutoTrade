@@ -15,7 +15,7 @@ template <typename T>
 class VV
 {
 public:
-	VV(const std::string &n) :n_(n){}
+	VV(const std::string &n) :n_(n) {}
 
 	int create()
 	{
@@ -34,21 +34,24 @@ public:
 		return idx;
 	}
 
-	size_t putI(size_t s, int x)
-	{
-		if (x == -1)return s;
+    size_t putI(size_t s, int x)
+    {
+        if (x == -1)return s;
         v_[s].push_back(x);
-		return s;
-	}
+        return s;
+    }
 
 	T& operator[](const size_t s)
 	{
-        if (s < 0 || s >= v_.size())
-		{
-            printf("VV error: %s size %d, read at %d", n_.c_str(), v_.size(), s);
-		}
+        check(s);
         return v_[s];
 	}
+
+    const T& operator[](const size_t s) const
+    {
+        check(s);
+        return v_[s];
+    }
 
 	void clear()
 	{
@@ -56,12 +59,19 @@ public:
 	}
 
 private:
+    void check(const size_t s) const
+    {
+        if (s < 0 || s >= v_.size())
+        {
+            printf("VV error: %s size %d, read at %d", n_.c_str(), v_.size(), s);
+        }
+    }
+
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & v_;
-        ar & n_;
     }
 
     std::vector<T> v_;

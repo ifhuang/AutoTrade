@@ -51,13 +51,25 @@ namespace boost {
             ar & p.stmtsV;
         }
 
+        template<class Archive, typename T>
+        void save_construct_data(Archive & ar, VV<T> *t, const unsigned int file_version)
+        {
+                ar << t.n_;
+        }
 
+        template<class Archive, typename T>
+        void load_construct_data(Archive & ar, VV<T> *t, const unsigned int file_version)
+        {
+                string n;
+                ar >> n;
+                ::new(t)VV<T>(n);
+        }
     } // namespace serialization
 } // namespace boost
 
 namespace lex{
-    std::string save(Program &p);
-
+    std::string save(const Program &p);
+    Program load(const std::string &s);
 }
 
 #endif  // LEX_TYPE_SERIALIZATION_H_

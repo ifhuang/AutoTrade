@@ -1,5 +1,5 @@
-#ifndef EXECUTOR_H_
-#define EXECUTOR_H_
+#ifndef LEX_EXECUTOR_H_
+#define LEX_EXECUTOR_H_
 
 #include <vector>
 
@@ -11,7 +11,7 @@ namespace lex {
     class Executor
     {
     public:
-        Executor(const SetUpEnviroment & sue);
+        Executor(const Program *program);
         ~Executor();
 
         void execute();
@@ -31,10 +31,16 @@ namespace lex {
         std::vector<Value> exec_paras(asts_t idx);
         Value exec_func(ast_t idx);
 
+        const Program *program_;
         const SetUpEnviroment &sue_;
+        const std::vector<std::string> &strVector_;
+        const VV<ast> &astV_;
+        const VV<std::vector<stmt_t>> &astsV_;
+        const VV<stmt> &stmtV_;
+        const VV<std::vector<ast_t>> &stmtsV_;
 
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };
 
 }  // namespace lex
-#endif  // EXECUTOR_H_
+#endif  // LEX_EXECUTOR_H_

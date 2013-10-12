@@ -14,11 +14,26 @@ namespace boost {
     namespace serialization {
 
         template<class Archive>
+        void save_construct_data(Archive & ar, ast *t, const unsigned int file_version)
+        {
+            ar << t->type;
+            ar << t->loc;
+        }
+
+        template<class Archive>
+        void load_construct_data(Archive & ar, ast *t, const unsigned int file_version)
+        {
+            NodeType type;
+            ar >> type;
+            YYLTYPE loc;
+            ar >> loc;
+            ::new(t)ast(type, loc);
+        }
+
+        template<class Archive>
         void serialize(Archive &ar, ast &node, const unsigned int version)
         {
-            //ar & node.type;
             ar & binary_object(&node.dv, 3 * sizeof(ast_t));
-            ar & node.loc;
         }
 
         template<class Archive>

@@ -5,8 +5,7 @@
 using namespace std;
 
 #include "check_visitor.h"
-#include "data/data.h"
-#include "data/type_serialization.h"
+#include "data/data_repository.h"
 #include "table.h"
 
 namespace lex
@@ -229,10 +228,8 @@ namespace lex
 
     void storage()
     {
-        Program p = { enviroment, strVector, astV, astsV, stmtV, stmtsV };
-        const string &s = save(p);
-        Data data;
-        data.InsertStudy(s.c_str());
+        Program p = { &enviroment, &strVector, &astV, &astsV, &stmtV, &stmtsV };
+        DataRepository::SaveProgram(p);
     }
 
     void type_check()
