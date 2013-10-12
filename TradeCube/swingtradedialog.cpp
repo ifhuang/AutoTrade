@@ -3,6 +3,7 @@
 #include <QSize>
 #include <QInputDialog>
 #include "mainwindow.h"
+#include "addcontractdialog.h"
 
 SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent) :
     QDialog(parent),
@@ -104,15 +105,14 @@ void SwingTradeDialog::on_tab_customContextMenuRequested()
 
 void SwingTradeDialog::add_contract()
 {
-    bool ok;
-    QString text = QInputDialog::getText(NULL, tr("Add Contract"), tr("Exchange-Contract:"), QLineEdit::Normal, QString(), &ok);
-    if (ok && !text.isEmpty())
+    AddContractDialog *addcontractdialog = new AddContractDialog(&exchange, &contract);
+    addcontractdialog->setAttribute(Qt::WA_DeleteOnClose);
+    if(addcontractdialog->exec() == AddContractDialog::Accepted)
     {
-        QStringList list = text.split("-");
         QuoteItem* quoteItem = new QuoteItem;
-        quoteItem->setTradePlatform(SPTRADER);
-        quoteItem->setQuoteId(list[1].toStdString());
-        quoteItem->setExchange(list[0].toStdString());
+        quoteItem->setTradePlatform(disp->getPlatformInfo().platformName);
+        quoteItem->setQuoteId(contract.toStdString());
+        quoteItem->setExchange(exchange.toStdString());
         quoteItem->setMinContractQty(1);
         quoteItem->setPriceScale(1);
         TradeUnit* tradeUnit = new TradeUnit(quoteItem);
@@ -123,7 +123,7 @@ void SwingTradeDialog::add_contract()
         // simply turn on strategy when add contract
         swingtrader->turnOnStrategy();
 
-        swing_contract = text;
+        swing_contract = exchange.append("-").append(contract);
         setWindowTitle(swing_contract);
         swingright_addcon->setEnabled(false);
         swingright_modcon->setEnabled(true);

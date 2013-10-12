@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddContractDialog</class>
+ <widget class="QDialog" name="AddContractDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>193</width>
+    <height>171</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add Contract</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>30</y>
+     <width>54</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exchange</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>54</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Contract</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_exchange">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>30</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>CBOT</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>CME</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>HKIF</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>LME</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NYBOT</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NYMEX</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>TOCOM</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBox_contract">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>70</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>YMZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZCZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZCH4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZLV3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZLZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZMV3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZMZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZOZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZRX3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZSX3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZSF4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZSH4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZWZ3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ZWH4</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>120</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>comboBox_exchange</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>AddContractDialog</receiver>
+   <slot>on_change_exchange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>124</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>96</x>
+     <y>60</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>AddContractDialog</receiver>
+   <slot>on_click_add()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>97</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>96</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_change_exchange(int)</slot>
+  <slot>on_click_add()</slot>
+ </slots>
+</ui>

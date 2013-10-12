@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     ../TC/DispatcherFactory.cpp \
     ../TC/Strategy.cpp \
     ../TC/Bar.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    addcontractdialog.cpp
 
 HEADERS  += mainwindow.h \
     swingtradedialog.h \
@@ -48,12 +49,14 @@ HEADERS  += mainwindow.h \
     ../TC/PlatformInfo.h \
     iswingtradedialog.h \
     imainwindow.h \
-    logindialog.h
+    logindialog.h \
+    addcontractdialog.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \
     combotradedialog.ui \
-    logindialog.ui
+    logindialog.ui \
+    addcontractdialog.ui
 
 RESOURCES += \
     tradecube.qrc
