@@ -92,6 +92,7 @@ private:
 
     // resize components when resize mainwindow
     void resizeEvent(QResizeEvent* event);
+    void closeEvent(QCloseEvent *event);
 
 };
 

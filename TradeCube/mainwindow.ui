@@ -232,7 +232,7 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
-    <addaction name="actionEdit1"/>
+    <addaction name="action_Insert_Swing_Trader"/>
     <addaction name="action_Insert_Combo_Trader"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -281,7 +281,10 @@
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="actionEdit1">
+  <action name="action_Insert_Swing_Trader">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Insert Swing Trader</string>
    </property>
@@ -302,6 +305,9 @@
    </property>
   </action>
   <action name="action_Insert_Combo_Trader">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Insert Combo Trader</string>
    </property>
@@ -343,7 +349,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>actionEdit1</sender>
+   <sender>action_Insert_Swing_Trader</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>new_swing_trade()</slot>

@@ -4,6 +4,7 @@
 #include <QInputDialog>
 #include "mainwindow.h"
 #include "addcontractdialog.h"
+#include <QMessageBox>
 
 SwingTradeDialog::SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent) :
     QDialog(parent),
@@ -119,10 +120,6 @@ void SwingTradeDialog::add_contract()
         swingtrader->setTradeUnit(tradeUnit);
         this->disp->addPriceThreadId(quoteItem->getTradePlatform(), quoteItem->getQuoteId(),tbtid);
         this->disp->addOrderThreadId(swingtrader->getTraderId(), tbtid);
-
-        // simply turn on strategy when add contract
-        swingtrader->turnOnStrategy();
-
         swing_contract = exchange.append("-").append(contract);
         setWindowTitle(swing_contract);
         swingright_addcon->setEnabled(false);
@@ -139,39 +136,35 @@ QString SwingTradeDialog::getSwingContract()
 
 void SwingTradeDialog::modify_contract()
 {
-    bool ok;
-    QString text = QInputDialog::getText(NULL, tr("Modify Contract"), tr("Contract:"), QLineEdit::Normal, swing_contract, &ok);
-    if (ok && !text.isEmpty())
+    int selection = QMessageBox::question(this, QString("Confirm"), QString("Are you sure?\nAll positions in " + swing_contract + " will be closed!"), QMessageBox::Yes | QMessageBox::No);
+    if(selection == QMessageBox::Yes)
     {
-        QStringList list = text.split("-");
-        QuoteItem* quoteItem = new QuoteItem;
-        quoteItem->setTradePlatform(SPTRADER);
-        quoteItem->setQuoteId(list[1].toStdString());
-        quoteItem->setExchange(list[0].toStdString());
-        quoteItem->setMinContractQty(1);
-        quoteItem->setPriceScale(1);
-        TradeUnit* tradeUnit = new TradeUnit(quoteItem);
-        swingtrader->setTradeUnit(tradeUnit);
-        this->disp->addPriceThreadId(quoteItem->getTradePlatform(), quoteItem->getQuoteId(),tbtid);
-        this->disp->addOrderThreadId(swingtrader->getTraderId(), tbtid);
+        swingtrader->closeAllPositions();
 
-        // simply turn on strategy when modify contract
-        swingtrader->turnOnStrategy();
-
-        swing_contract = text;
-        setWindowTitle(swing_contract);
-        emit update_contract(swing_contract);
+        this->add_contract();
+    }
+    else if(selection == QMessageBox::No)
+    {
     }
 }
 
 void SwingTradeDialog::remove_contract()
 {
-    swing_contract = QString("Exchange-Contract");
-    setWindowTitle(swing_contract);
-    swingright_addcon->setEnabled(true);
-    swingright_modcon->setEnabled(false);
-    swingright_remcon->setEnabled(false);
-    emit update_contract(swing_contract);
+    int selection = QMessageBox::question(this, QString("Confirm"), QString("Are you sure?\nAll positions in " + swing_contract + " will be closed!"), QMessageBox::Yes | QMessageBox::No);
+    if(selection == QMessageBox::Yes)
+    {
+        swingtrader->closeAllPositions();
+
+        swing_contract = QString("Exchange-Contract");
+        setWindowTitle(swing_contract);
+        swingright_addcon->setEnabled(true);
+        swingright_modcon->setEnabled(false);
+        swingright_remcon->setEnabled(false);
+        emit update_contract(swing_contract);
+    }
+    else if(selection == QMessageBox::No)
+    {
+    }
 }
 
 void SwingTradeDialog::insert_strategy()
@@ -226,4 +219,21 @@ void SwingTradeDialog::displayProfit(double profit)
 void SwingTradeDialog::on_click_buyask()
 {
     swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, 1, MKT, DAY, SPTRADER);
+}
+
+void SwingTradeDialog::closeEvent(QCloseEvent *event)
+{
+    if(swingright_remcon->isEnabled())
+    {
+        int selection = QMessageBox::question(this, QString("Confirm"), QString("Are you sure?\nAll positions in " + swing_contract + " will be closed!"), QMessageBox::Yes | QMessageBox::No);
+        if(selection == QMessageBox::Yes)
+        {
+            swingtrader->closeAllPositions();
+            event->accept();
+        }
+        else if(selection == QMessageBox::No)
+        {
+            event->ignore();
+        }
+    }
 }

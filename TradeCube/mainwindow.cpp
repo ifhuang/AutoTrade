@@ -322,5 +322,17 @@ void MainWindow::connect_dispatcher()
     if(logindialog->exec() == LogInDialog::Accepted)
     {
         disp = DispatcherFactory::createDispatcher(platforminfo);
+        ui->action_Insert_Swing_Trader->setEnabled(true);
+        ui->action_Insert_Combo_Trader->setEnabled(true);
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    ui->mdiArea_swing->closeAllSubWindows();
+    if (ui->mdiArea_swing->currentSubWindow()) {
+        event->ignore();
+    } else {
+        event->accept();
     }
 }

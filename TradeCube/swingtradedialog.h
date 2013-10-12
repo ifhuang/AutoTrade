@@ -85,6 +85,8 @@ private:
 
     QString exchange;
     QString contract;
+
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // SWINGTRADEDIALOG_H
