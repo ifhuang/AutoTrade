@@ -431,11 +431,10 @@ SwingTrader::~SwingTrader()
 // 追价
 void SwingTrader::triggerWaitingOrder()
 {
-	map<long,OrderItem*>::iterator iter;
-	for(iter=tradeUnit->getOrderQueue().begin(); iter != tradeUnit->getOrderQueue().end(); iter++)
-	{
-		OrderItem* oi = iter->second;
-		if(!dispatcher->isSupport(oi->getOrderType()))
+    for (auto &pair : tradeUnit->getOrderQueue())
+    {
+        OrderItem* oi = pair.second;
+        if (!dispatcher->isSupport(oi->getOrderType()))
 		{
 			if(oi->getOrderType() == MKT && oi->getParentRefId() != 0)
 			{

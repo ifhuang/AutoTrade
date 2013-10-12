@@ -117,9 +117,9 @@ HANDLE SPTrader::startOrderThread()
 
 HANDLE SPTrader::startPriceThread()
 {
-	initPriceConnection();
-      hPriceThread = CreateThread(NULL, 0, this->priceThreadAdapter, this, 0, &priceThreadId);
-	return hPriceThread;
+    initPriceConnection();
+    hPriceThread = CreateThread(NULL, 0, this->priceThreadAdapter, this, 0, &priceThreadId);
+    return hPriceThread;
 }
 
 // added by xie
@@ -181,32 +181,33 @@ DWORD WINAPI SPTrader::checkConnectionThreadAdapter(LPVOID lpParam)
 				}
 			}
 		} else if (msg.message == LINK_STATE_MSG) {
-				memset(buf, 0, sizeof(buf));
-				memcpy(buf, (char*)msg.lParam, 256);
-				//LogHandler::getLogHandler().log(buf);
-				pstr = strtok(buf, ",");
-				pstr = strtok(NULL, ",");
-				if (pstr != NULL) {
-					id = atoi(pstr);
-				}
-				it = linkInfo.find((LinkID)id);
-				if (it != linkInfo.end()) {
-					pstr = strtok(NULL, ",");
-					if (pstr != NULL) {
-						status = atoi(pstr);
-					}
-					if (status == 0) {
-						//LogHandler::getLogHandler().log(it->second + " is connected!");
-					} else if (status == 1) {
-						spoi->setConnectStatus(false);
-						LogHandler::getLogHandler().alert(3, "Connection status", it->second + " is broken!");
-					}
-				}
-				if (!spoi->getConnectStatus()) {
-					// 失去连接 
-					LogHandler::getLogHandler().alert(3, "Lost Connection!", "Lost Connection!");
-					spoi->loseConnection();
-				}
+            memset(buf, 0, sizeof(buf));
+            memcpy(buf, (char*)msg.lParam, 256);
+            //LogHandler::getLogHandler().log(buf);
+            pstr = strtok(buf, ",");
+            pstr = strtok(NULL, ",");
+            if (pstr != NULL) {
+                id = atoi(pstr);
+            }
+            it = linkInfo.find((LinkID)id);
+            if (it != linkInfo.end()) {
+                pstr = strtok(NULL, ",");
+                if (pstr != NULL) {
+                    status = atoi(pstr);
+                }
+                if (status == 0) {
+                    //LogHandler::getLogHandler().log(it->second + " is connected!");
+                }
+                else if (status == 1) {
+                    spoi->setConnectStatus(false);
+                    LogHandler::getLogHandler().alert(3, "Connection status", it->second + " is broken!");
+                }
+            }
+            if (!spoi->getConnectStatus()) {
+                // 失去连接 
+                LogHandler::getLogHandler().alert(3, "Lost Connection!", "Lost Connection!");
+                spoi->loseConnection();
+            }
 		}
 	}
 	return 0; 
@@ -505,83 +506,83 @@ OrderItem* SPTrader::str2OrderItem(string orderStr)
 
 PriceItem* SPTrader::str2PriceItem(string priceStr)
 {
-	PriceItem* pi = new PriceItem();
-	pi->tradePlatform = SPTRADER;
-	char elem[30];
-	char* pelem = &priceStr[0];
-	char* delims = pelem;
-	int c = 1, strcount=0;
-	for(int i = 0; i <= priceStr.length(); i++)
-	{
-		if(*delims == ',' || *delims == '\0' )
-		{
-			memcpy(elem,pelem, strcount);	
-			elem[strcount]='\0';
-			
-			if(c==3 && strcount>0) pi->quoteId = elem;
-			else if(c==4 && strcount>0) pi->quoteName = elem;
-			else if(c==5 && strcount>0) pi->qouteType = atoi(elem);
-			else if(c==6 && strcount>0) pi->contractSize = atoi(elem);
-			else if(c==7 && strcount>0) pi->ExpiryDate = atoi(elem);
-			else if(c==8 && strcount>0) pi->instrumentCode = elem;
-			else if(c==9 && strcount>0) pi->currency = elem;
-			else if(c==10 && strcount>0) pi->strike = atof(elem);
-			else if(c==11 && strcount>0) pi->callPut = elem[0];
-			else if(c==12 && strcount>0) pi->underlying = elem;
-			else if(c==13 && strcount>0) pi->bidPrice1 = atof(elem);
-			else if(c==14 && strcount>0) pi->bidQty1 = atoi(elem);
-			else if(c==15 && strcount>0) pi->bidPrice2 = atof(elem);
-			else if(c==16 && strcount>0) pi->bidQty2 = atoi(elem);
-			else if(c==17 && strcount>0) pi->bidPrice3 = atof(elem);
-			else if(c==18 && strcount>0) pi->bidQty3 = atoi(elem);
-			else if(c==19 && strcount>0) pi->bidPrice4 = atof(elem);
-			else if(c==20 && strcount>0) pi->bidQty4 = atoi(elem);
-			else if(c==21 && strcount>0) pi->bidPrice5 = atof(elem);
-			else if(c==22 && strcount>0) pi->bidQty5 = atoi(elem);
-			else if(c==23 && strcount>0) pi->askPrice1 = atof(elem);
-			else if(c==24 && strcount>0) pi->askQty1 = atoi(elem);
-			else if(c==25 && strcount>0) pi->askPrice2 = atof(elem);
-			else if(c==26 && strcount>0) pi->askQty2 = atoi(elem);
-			else if(c==27 && strcount>0) pi->askPrice3 = atof(elem);
-			else if(c==28 && strcount>0) pi->askQty3 = atoi(elem);
-			else if(c==29 && strcount>0) pi->askPrice4 = atof(elem);
-			else if(c==30 && strcount>0) pi->askQty4 = atoi(elem);
-			else if(c==31 && strcount>0) pi->askPrice5 = atof(elem);
-			else if(c==32 && strcount>0) pi->askQty5 = atoi(elem);
-			else if(c==33 && strcount>0) pi->lastPrice1 = atof(elem);
-			else if(c==34 && strcount>0) pi->lastQty1 = atoi(elem);
-			else if(c==35 && strcount>0) pi->lastPrice2 = atof(elem);
-			else if(c==36 && strcount>0) pi->lastQty2 = atoi(elem);
-			else if(c==37 && strcount>0) pi->lastPrice3 = atof(elem);
-			else if(c==38 && strcount>0) pi->lastQty3 = atoi(elem);
-			else if(c==39 && strcount>0) pi->lastPrice4 = atof(elem);
-			else if(c==40 && strcount>0) pi->lastQty4 = atoi(elem);
-			else if(c==41 && strcount>0) pi->lastPrice5 = atof(elem);
-			else if(c==42 && strcount>0) pi->lastQty5 = atoi(elem);
-			else if(c==43 && strcount>0) pi->openInterest = atoi(elem);
-			else if(c==44 && strcount>0) pi->turnOverAmount = atof(elem);
-			else if(c==45 && strcount>0) pi->turnOverVolume = atoi(elem);
-			else if(c==46 && strcount>0) pi->equilibriumPrice = atof(elem);
-			else if(c==47 && strcount>0) pi->openD = atof(elem);
-			else if(c==48 && strcount>0) pi->highD = atof(elem);
-			else if(c==49 && strcount>0) pi->lowD = atof(elem);
-			else if(c==50 && strcount>0) pi->previousClose = atof(elem);
-			else if(c==51 && strcount>0) pi->previousCloseDate = atof(elem);
-			else if(c==53 && strcount>0) pi->tradeStateNo = atof(elem);
+    PriceItem* pi = new PriceItem();
+    pi->tradePlatform = SPTRADER;
+    char elem[30];
+    char* pelem = &priceStr[0];
+    char* delims = pelem;
+    int c = 1, strcount = 0;
+    for (int i = 0; i <= priceStr.length(); i++)
+    {
+        if (*delims == ',' || *delims == '\0')
+        {
+            memcpy(elem, pelem, strcount);
+            elem[strcount] = '\0';
 
-			delims++;
-			pelem = delims;
-			strcount = 0;
-			c++;
-		}
-		else
-		{
-			strcount++;
-			delims++;
-		}
-		
-	}
-	return pi;
+            if (c == 3 && strcount > 0) pi->quoteId = elem;
+            else if (c == 4 && strcount > 0) pi->quoteName = elem;
+            else if (c == 5 && strcount > 0) pi->qouteType = atoi(elem);
+            else if (c == 6 && strcount > 0) pi->contractSize = atoi(elem);
+            else if (c == 7 && strcount > 0) pi->ExpiryDate = atoi(elem);
+            else if (c == 8 && strcount > 0) pi->instrumentCode = elem;
+            else if (c == 9 && strcount > 0) pi->currency = elem;
+            else if (c == 10 && strcount > 0) pi->strike = atof(elem);
+            else if (c == 11 && strcount > 0) pi->callPut = elem[0];
+            else if (c == 12 && strcount > 0) pi->underlying = elem;
+            else if (c == 13 && strcount > 0) pi->bidPrice1 = atof(elem);
+            else if (c == 14 && strcount > 0) pi->bidQty1 = atoi(elem);
+            else if (c == 15 && strcount > 0) pi->bidPrice2 = atof(elem);
+            else if (c == 16 && strcount > 0) pi->bidQty2 = atoi(elem);
+            else if (c == 17 && strcount > 0) pi->bidPrice3 = atof(elem);
+            else if (c == 18 && strcount > 0) pi->bidQty3 = atoi(elem);
+            else if (c == 19 && strcount > 0) pi->bidPrice4 = atof(elem);
+            else if (c == 20 && strcount > 0) pi->bidQty4 = atoi(elem);
+            else if (c == 21 && strcount > 0) pi->bidPrice5 = atof(elem);
+            else if (c == 22 && strcount > 0) pi->bidQty5 = atoi(elem);
+            else if (c == 23 && strcount > 0) pi->askPrice1 = atof(elem);
+            else if (c == 24 && strcount > 0) pi->askQty1 = atoi(elem);
+            else if (c == 25 && strcount > 0) pi->askPrice2 = atof(elem);
+            else if (c == 26 && strcount > 0) pi->askQty2 = atoi(elem);
+            else if (c == 27 && strcount > 0) pi->askPrice3 = atof(elem);
+            else if (c == 28 && strcount > 0) pi->askQty3 = atoi(elem);
+            else if (c == 29 && strcount > 0) pi->askPrice4 = atof(elem);
+            else if (c == 30 && strcount > 0) pi->askQty4 = atoi(elem);
+            else if (c == 31 && strcount > 0) pi->askPrice5 = atof(elem);
+            else if (c == 32 && strcount > 0) pi->askQty5 = atoi(elem);
+            else if (c == 33 && strcount > 0) pi->lastPrice1 = atof(elem);
+            else if (c == 34 && strcount > 0) pi->lastQty1 = atoi(elem);
+            else if (c == 35 && strcount > 0) pi->lastPrice2 = atof(elem);
+            else if (c == 36 && strcount > 0) pi->lastQty2 = atoi(elem);
+            else if (c == 37 && strcount > 0) pi->lastPrice3 = atof(elem);
+            else if (c == 38 && strcount > 0) pi->lastQty3 = atoi(elem);
+            else if (c == 39 && strcount > 0) pi->lastPrice4 = atof(elem);
+            else if (c == 40 && strcount > 0) pi->lastQty4 = atoi(elem);
+            else if (c == 41 && strcount > 0) pi->lastPrice5 = atof(elem);
+            else if (c == 42 && strcount > 0) pi->lastQty5 = atoi(elem);
+            else if (c == 43 && strcount > 0) pi->openInterest = atoi(elem);
+            else if (c == 44 && strcount > 0) pi->turnOverAmount = atof(elem);
+            else if (c == 45 && strcount > 0) pi->turnOverVolume = atoi(elem);
+            else if (c == 46 && strcount > 0) pi->equilibriumPrice = atof(elem);
+            else if (c == 47 && strcount > 0) pi->openD = atof(elem);
+            else if (c == 48 && strcount > 0) pi->highD = atof(elem);
+            else if (c == 49 && strcount > 0) pi->lowD = atof(elem);
+            else if (c == 50 && strcount > 0) pi->previousClose = atof(elem);
+            else if (c == 51 && strcount > 0) pi->previousCloseDate = atof(elem);
+            else if (c == 53 && strcount > 0) pi->tradeStateNo = atof(elem);
+
+            delims++;
+            pelem = delims;
+            strcount = 0;
+            c++;
+        }
+        else
+        {
+            strcount++;
+            delims++;
+        }
+
+    }
+    return pi;
 }
 
 OrderItem* SPTrader::str2UpdatedOrder(string orderStr)

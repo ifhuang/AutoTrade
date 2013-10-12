@@ -1,6 +1,6 @@
 ﻿#include "Dispatcher.h" 
 
-Dispatcher::Dispatcher(PlatformInfo& platformInfo) :platformInfo(platformInfo), connectStatus(false), doneTradeCount(0), currentOrderCount(0)
+Dispatcher::Dispatcher(PlatformInfo& platformInfo) : platformInfo(platformInfo), connectStatus(false), doneTradeCount(0), currentOrderCount(0)
 {
 }
 
@@ -22,7 +22,7 @@ int Dispatcher::addOrderThreadId(int traderId, DWORD traderThreadId)
 {
     if (orderThreadIdTable.count(traderId) == 0)
     {
-        orderThreadIdTable.insert(map<int, DWORD>::value_type(traderId, traderThreadId));
+        orderThreadIdTable.insert({ traderId, traderThreadId });
     }
     else
     {
@@ -34,10 +34,9 @@ int Dispatcher::addOrderThreadId(int traderId, DWORD traderThreadId)
 
 int Dispatcher::addPriceThreadId(int tradePlatform, string quoteId, DWORD traderThreadId)
 {
-    list<quoteId_threadId*>::iterator iter = priceThreadIdQueue.begin();
-    for (; iter != priceThreadIdQueue.end(); iter++)
+    for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if ((*iter)->quoteId == quoteId && (*iter)->threadId == traderThreadId &&(*iter)->tradePlatform == tradePlatform)
+        if (qt->quoteId == quoteId && qt->threadId == traderThreadId && qt->tradePlatform == tradePlatform)
         {
             cout << "This quote has been registered." << endl;
             return SUCCESS;
@@ -78,11 +77,10 @@ void Dispatcher::forwardPrice(PriceItem* pPriceItem)
 {
     string quoteId = pPriceItem->quoteId;
     int tradePlatform = pPriceItem->tradePlatform;
-    list<quoteId_threadId*>::iterator iter = priceThreadIdQueue.begin();
-    for (; iter != priceThreadIdQueue.end(); iter++)
+    for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if ((*iter)->quoteId == quoteId && (*iter)->tradePlatform == tradePlatform) {
-            PostThreadMessage((*iter)->threadId, PRICE_MSG, 0, (LPARAM)pPriceItem);
+        if (qt->quoteId == quoteId && qt->tradePlatform == tradePlatform) {
+            PostThreadMessage(qt->threadId, PRICE_MSG, 0, (LPARAM)pPriceItem);
 
             // 在UI上更新价格数据
             if (UIThreadID > 0) {
@@ -97,11 +95,10 @@ void Dispatcher::forwardTickPrice(PriceItem* pPriceItem)
 {
     string quoteId = pPriceItem->quoteId;
     int tradePlatform = pPriceItem->tradePlatform;
-    list<quoteId_threadId*>::iterator iter = priceThreadIdQueue.begin();
-    for (; iter != priceThreadIdQueue.end(); iter++)
+    for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if ((*iter)->quoteId == quoteId && (*iter)->tradePlatform == tradePlatform) {
-            PostThreadMessage((*iter)->threadId, TICK_PRICE, 0, (LPARAM)pPriceItem);
+        if (qt->quoteId == quoteId && qt->tradePlatform == tradePlatform) {
+            PostThreadMessage(qt->threadId, TICK_PRICE, 0, (LPARAM)pPriceItem);
         }
     }
 }

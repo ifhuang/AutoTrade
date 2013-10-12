@@ -1,7 +1,6 @@
 #ifndef __QUOTEITEM__
 #define __QUOTEITEM__
 #include <string> 
-#include <iostream>
 using namespace std; 
 
 // 品种
