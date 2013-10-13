@@ -2,6 +2,9 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 using namespace boost::posix_time;
 
 // changed by xie, 非单例化
@@ -509,82 +512,61 @@ OrderItem* SPTrader::str2OrderItem(string orderStr)
 
 PriceItem* SPTrader::str2PriceItem(string priceStr)
 {
+    // 4102 string
+    vector<string> price_split;
+    boost::split(price_split, priceStr, boost::is_any_of(","));
     PriceItem* pi = new PriceItem();
     pi->tradePlatform = SPTRADER;
-    char elem[30];
-    char* pelem = &priceStr[0];
-    char* delims = pelem;
-    int c = 1, strcount = 0;
-    for (int i = 0; i <= priceStr.length(); i++)
-    {
-        if (*delims == ',' || *delims == '\0')
-        {
-            memcpy(elem, pelem, strcount);
-            elem[strcount] = '\0';
-
-            if (c == 3 && strcount > 0) pi->quoteId = elem;
-            else if (c == 4 && strcount > 0) pi->quoteName = elem;
-            else if (c == 5 && strcount > 0) pi->qouteType = atoi(elem);
-            else if (c == 6 && strcount > 0) pi->contractSize = atoi(elem);
-            else if (c == 7 && strcount > 0) pi->ExpiryDate = atoi(elem);
-            else if (c == 8 && strcount > 0) pi->instrumentCode = elem;
-            else if (c == 9 && strcount > 0) pi->currency = elem;
-            else if (c == 10 && strcount > 0) pi->strike = atof(elem);
-            else if (c == 11 && strcount > 0) pi->callPut = elem[0];
-            else if (c == 12 && strcount > 0) pi->underlying = elem;
-            else if (c == 13 && strcount > 0) pi->bidPrice1 = atof(elem);
-            else if (c == 14 && strcount > 0) pi->bidQty1 = atoi(elem);
-            else if (c == 15 && strcount > 0) pi->bidPrice2 = atof(elem);
-            else if (c == 16 && strcount > 0) pi->bidQty2 = atoi(elem);
-            else if (c == 17 && strcount > 0) pi->bidPrice3 = atof(elem);
-            else if (c == 18 && strcount > 0) pi->bidQty3 = atoi(elem);
-            else if (c == 19 && strcount > 0) pi->bidPrice4 = atof(elem);
-            else if (c == 20 && strcount > 0) pi->bidQty4 = atoi(elem);
-            else if (c == 21 && strcount > 0) pi->bidPrice5 = atof(elem);
-            else if (c == 22 && strcount > 0) pi->bidQty5 = atoi(elem);
-            else if (c == 23 && strcount > 0) pi->askPrice1 = atof(elem);
-            else if (c == 24 && strcount > 0) pi->askQty1 = atoi(elem);
-            else if (c == 25 && strcount > 0) pi->askPrice2 = atof(elem);
-            else if (c == 26 && strcount > 0) pi->askQty2 = atoi(elem);
-            else if (c == 27 && strcount > 0) pi->askPrice3 = atof(elem);
-            else if (c == 28 && strcount > 0) pi->askQty3 = atoi(elem);
-            else if (c == 29 && strcount > 0) pi->askPrice4 = atof(elem);
-            else if (c == 30 && strcount > 0) pi->askQty4 = atoi(elem);
-            else if (c == 31 && strcount > 0) pi->askPrice5 = atof(elem);
-            else if (c == 32 && strcount > 0) pi->askQty5 = atoi(elem);
-            else if (c == 33 && strcount > 0) pi->lastPrice1 = atof(elem);
-            else if (c == 34 && strcount > 0) pi->lastQty1 = atoi(elem);
-            else if (c == 35 && strcount > 0) pi->lastPrice2 = atof(elem);
-            else if (c == 36 && strcount > 0) pi->lastQty2 = atoi(elem);
-            else if (c == 37 && strcount > 0) pi->lastPrice3 = atof(elem);
-            else if (c == 38 && strcount > 0) pi->lastQty3 = atoi(elem);
-            else if (c == 39 && strcount > 0) pi->lastPrice4 = atof(elem);
-            else if (c == 40 && strcount > 0) pi->lastQty4 = atoi(elem);
-            else if (c == 41 && strcount > 0) pi->lastPrice5 = atof(elem);
-            else if (c == 42 && strcount > 0) pi->lastQty5 = atoi(elem);
-            else if (c == 43 && strcount > 0) pi->openInterest = atoi(elem);
-            else if (c == 44 && strcount > 0) pi->turnOverAmount = atof(elem);
-            else if (c == 45 && strcount > 0) pi->turnOverVolume = atoi(elem);
-            else if (c == 46 && strcount > 0) pi->equilibriumPrice = atof(elem);
-            else if (c == 47 && strcount > 0) pi->openD = atof(elem);
-            else if (c == 48 && strcount > 0) pi->highD = atof(elem);
-            else if (c == 49 && strcount > 0) pi->lowD = atof(elem);
-            else if (c == 50 && strcount > 0) pi->previousClose = atof(elem);
-            else if (c == 51 && strcount > 0) pi->previousCloseDate = atof(elem);
-            else if (c == 53 && strcount > 0) pi->tradeStateNo = atof(elem);
-
-            delims++;
-            pelem = delims;
-            strcount = 0;
-            c++;
-        }
-        else
-        {
-            strcount++;
-            delims++;
-        }
-
-    }
+    pi->quoteId = price_split[2];
+    pi->quoteName = price_split[3];
+    pi->qouteType = atoi(price_split[4].c_str());
+    pi->contractSize = atoi(price_split[5].c_str());
+    pi->ExpiryDate = atoi(price_split[6].c_str());
+    pi->instrumentCode = price_split[7];
+    pi->currency = price_split[8];
+    pi->strike = atof(price_split[9].c_str());
+    pi->callPut = price_split[10][0];
+    pi->underlying = price_split[11];
+    pi->bidPrice1 = atof(price_split[12].c_str());
+    pi->bidQty1 = atoi(price_split[13].c_str());
+    pi->bidPrice2 = atof(price_split[14].c_str());
+    pi->bidQty2 = atoi(price_split[15].c_str());
+    pi->bidPrice3 = atof(price_split[16].c_str());
+    pi->bidQty3 = atoi(price_split[17].c_str());
+    pi->bidPrice4         = atof(price_split[18].c_str());
+    pi->bidQty4           = atoi(price_split[19].c_str());
+    pi->bidPrice5         = atof(price_split[20].c_str());
+    pi->bidQty5           = atoi(price_split[21].c_str());
+    pi->askPrice1         = atof(price_split[22].c_str());
+    pi->askQty1           = atoi(price_split[23].c_str());
+    pi->askPrice2         = atof(price_split[24].c_str());
+    pi->askQty2           = atoi(price_split[25].c_str());
+    pi->askPrice3         = atof(price_split[26].c_str());
+    pi->askQty3           = atoi(price_split[27].c_str());
+    pi->askPrice4         = atof(price_split[28].c_str());
+    pi->askQty4           = atoi(price_split[29].c_str());
+    pi->askPrice5         = atof(price_split[30].c_str());
+    pi->askQty5           = atoi(price_split[31].c_str());
+    pi->lastPrice1        = atof(price_split[32].c_str());
+    pi->lastQty1          = atoi(price_split[33].c_str());
+    pi->lastPrice2        = atof(price_split[34].c_str());
+    pi->lastQty2          = atoi(price_split[35].c_str());
+    pi->lastPrice3        = atof(price_split[36].c_str());
+    pi->lastQty3          = atoi(price_split[37].c_str());
+    pi->lastPrice4        = atof(price_split[38].c_str());
+    pi->lastQty4          = atoi(price_split[39].c_str());
+    pi->lastPrice5        = atof(price_split[40].c_str());
+    pi->lastQty5          = atoi(price_split[41].c_str());
+    pi->openInterest      = atoi(price_split[42].c_str());
+    pi->turnOverAmount    = atof(price_split[43].c_str());
+    pi->turnOverVolume    = atoi(price_split[44].c_str());
+    pi->equilibriumPrice  = atof(price_split[47].c_str());
+    pi->openD             = atof(price_split[48].c_str());
+    pi->highD             = atof(price_split[49].c_str());
+    pi->lowD              = atof(price_split[50].c_str());
+    pi->previousClose     = atof(price_split[51].c_str());
+    pi->previousCloseDate = atof(price_split[52].c_str());
+    pi->tradeStateNo      = atof(price_split[54].c_str());
     return pi;
 }
 
