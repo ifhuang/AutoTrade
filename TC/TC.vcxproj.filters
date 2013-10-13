@@ -66,6 +66,12 @@
     <ClInclude Include="TradeUnit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="string_processor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -96,6 +102,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PriceItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="string_processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

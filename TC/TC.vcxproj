@@ -71,6 +71,7 @@
     <ClInclude Include="Bar.h" />
     <ClInclude Include="ComboOrder.h" />
     <ClInclude Include="ComboTrader.h" />
+    <ClInclude Include="constants.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="DispatcherFactory.h" />
     <ClInclude Include="LogHandler.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="QuoteItem.h" />
     <ClInclude Include="SPTrader.h" />
     <ClInclude Include="Strategy.h" />
+    <ClInclude Include="string_processor.h" />
     <ClInclude Include="SwingTrader.h" />
     <ClInclude Include="TradeCube.h" />
     <ClInclude Include="TradeItem.h" />
@@ -95,6 +97,7 @@
     <ClCompile Include="PriceItem.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="Strategy.cpp" />
+    <ClCompile Include="string_processor.cpp" />
     <ClCompile Include="SwingTrader.cpp" />
     <ClCompile Include="TradeUnit.cpp" />
   </ItemGroup>

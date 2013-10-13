@@ -36,7 +36,6 @@ private:
 	OrderItem* str2OrderItem(string orderStr);
 	TradeItem* str2TradeItem(string orderStr);
 	string orderItem2Str(OrderItem* po);
-	PriceItem* str2PriceItem(string priceStr);
 	OrderItem* str2UpdatedOrder(string orderStr);
 	Position* str2Position(string orderStr);
 	void processOrder();
