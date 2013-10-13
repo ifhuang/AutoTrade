@@ -65,34 +65,35 @@ MainWindow::MainWindow(QWidget *parent) :
 
     swingpositionsmodel = new QStandardItemModel;
     swingpositionsmodel->setColumnCount(6);
-    swingpositionsmodel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
-    swingpositionsmodel->setHeaderData(1, Qt::Horizontal, QString("Date"));
-    swingpositionsmodel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
-    swingpositionsmodel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
-    swingpositionsmodel->setHeaderData(4, Qt::Horizontal, QString("Price"));
-    swingpositionsmodel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    swingpositionsmodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
+    swingpositionsmodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
+    swingpositionsmodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
+    swingpositionsmodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
+    swingpositionsmodel->setHeaderData(4, Qt::Horizontal, tr("Price"));
+    swingpositionsmodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
     ui->swingPositionsView->setModel(swingpositionsmodel);
 
     swingworkingordersmodel = new QStandardItemModel;
     swingworkingordersmodel->setColumnCount(6);
-    swingworkingordersmodel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
-    swingworkingordersmodel->setHeaderData(1, Qt::Horizontal, QString("Date"));
-    swingworkingordersmodel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
-    swingworkingordersmodel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
-    swingworkingordersmodel->setHeaderData(4, Qt::Horizontal, QString("Price"));
-    swingworkingordersmodel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    swingworkingordersmodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
+    swingworkingordersmodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
+    swingworkingordersmodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
+    swingworkingordersmodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
+    swingworkingordersmodel->setHeaderData(4, Qt::Horizontal, tr("Price"));
+    swingworkingordersmodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
     ui->swingWorkingOrdersView->setModel(swingworkingordersmodel);
 
     swingorderhistorymodel = new QStandardItemModel;
     swingorderhistorymodel->setColumnCount(6);
-    swingorderhistorymodel->setHeaderData(0, Qt::Horizontal, QString("Instruments"));
-    swingorderhistorymodel->setHeaderData(1, Qt::Horizontal, QString("Date"));
-    swingorderhistorymodel->setHeaderData(2, Qt::Horizontal, QString("Order Type"));
-    swingorderhistorymodel->setHeaderData(3, Qt::Horizontal, QString("Buy Sell"));
-    swingorderhistorymodel->setHeaderData(4, Qt::Horizontal, QString("Price"));
-    swingorderhistorymodel->setHeaderData(5, Qt::Horizontal, QString("Quantity"));
+    swingorderhistorymodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
+    swingorderhistorymodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
+    swingorderhistorymodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
+    swingorderhistorymodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
+    swingorderhistorymodel->setHeaderData(4, Qt::Horizontal, tr("Price"));
+    swingorderhistorymodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
     ui->swingOrderHistoryView->setModel(swingorderhistorymodel);
 
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 MainWindow::~MainWindow()
@@ -108,13 +109,14 @@ MainWindow::~MainWindow()
     delete swingpositionsmodel;
     delete swingworkingordersmodel;
     delete swingorderhistorymodel;
+//    delete disp;
+
 }
 
 void MainWindow::new_swing_trade()
 {
-    QString contractName = QString("Exchange-Contract-%1").arg(swing_counter);
+    QString contractName = tr("Exchange-Contract-").append(QString("%1").arg(swing_counter));
     SwingTradeDialog *swingTradeDialog = new SwingTradeDialog(contractName, swing_counter, disp, this);
-    swingTradeDialog->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(swingTradeDialog, SIGNAL(update_contract(QString)), this, SLOT(update_swing_contract(QString)));
 
@@ -132,7 +134,6 @@ void MainWindow::new_swing_trade()
 void MainWindow::new_combo_trade()
 {
     ComboTradeDialog *comboTradeDialog = new ComboTradeDialog;
-    comboTradeDialog->setAttribute(Qt::WA_DeleteOnClose);
 
     QMdiSubWindow *qMdiSubWindow = ui->mdiArea_combo->addSubWindow(comboTradeDialog);
     qMdiSubWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -141,7 +142,7 @@ void MainWindow::new_combo_trade()
     qMdiSubWindow->show();
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event)
+void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
 
@@ -172,7 +173,7 @@ void MainWindow::activate_swing()
         swingTradeDialog = qobject_cast<SwingTradeDialog *>(activeSubWindow->widget());
     if(swingTradeDialog != NULL)
     {
-        selcon->setCurrentText(swingTradeDialog->getSwingContract());
+        selcon->setCurrentText(swingTradeDialog->getExchangeContract());
     }
 }
 
@@ -252,7 +253,7 @@ void MainWindow::update_swing_positions()
 void MainWindow::displaySwingAddWorkingOrders(OrderItem *orderItem)
 {
     QStandardItem* item1 = new QStandardItem(QString(orderItem->getQuoteId().c_str()));
-    QStandardItem* item2 = new QStandardItem(QString("20130925"));
+    QStandardItem* item2 = new QStandardItem(QString("20131013"));
     QStandardItem* item3 = new QStandardItem(QString("%1").arg(orderItem->getOrderType()));
     QStandardItem* item4 = new QStandardItem(QString("%1").arg(orderItem->getBuySell()));
     QStandardItem* item5 = new QStandardItem(QString("%1").arg(orderItem->getSubmitPrice()));
@@ -318,7 +319,6 @@ void MainWindow::add_swing_order_history()
 void MainWindow::connect_dispatcher()
 {
     LogInDialog *logindialog = new LogInDialog(&platforminfo);
-    logindialog->setAttribute(Qt::WA_DeleteOnClose);
     if(logindialog->exec() == LogInDialog::Accepted)
     {
         disp = DispatcherFactory::createDispatcher(platforminfo);

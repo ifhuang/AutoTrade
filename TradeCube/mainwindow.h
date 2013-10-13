@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "imainwindow.h"
 #include <QMainWindow>
+#include "imainwindow.h"
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
@@ -88,10 +88,10 @@ private:
     QStandardItemModel *swingorderhistorymodel;
 
     PlatformInfo platforminfo;
-    Dispatcher* disp;
+    Dispatcher *disp;
 
     // resize components when resize mainwindow
-    void resizeEvent(QResizeEvent* event);
+    void resizeEvent(QResizeEvent *event);
     void closeEvent(QCloseEvent *event);
 
 };

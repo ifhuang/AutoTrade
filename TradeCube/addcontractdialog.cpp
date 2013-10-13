@@ -15,8 +15,9 @@ AddContractDialog::AddContractDialog(QString *exchange, QString *contract, QWidg
 {
     this->exchange = exchange;
     this->contract = contract;
-
     ui->setupUi(this);
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 AddContractDialog::~AddContractDialog()
@@ -64,5 +65,5 @@ void AddContractDialog::on_click_add()
 {
     *exchange = ui->comboBox_exchange->currentText();
     *contract = ui->comboBox_contract->currentText();
-    this->accept();
+    accept();
 }

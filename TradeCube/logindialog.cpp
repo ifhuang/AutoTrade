@@ -8,6 +8,8 @@ LogInDialog::LogInDialog(PlatformInfo *platforminfo, QWidget *parent) :
 {
     this->platforminfo = platforminfo;
     ui->setupUi(this);
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 LogInDialog::~LogInDialog()
@@ -31,5 +33,5 @@ void LogInDialog::on_click_login()
     }
     platforminfo->accountNo = ui->lineEdit_userid->text().toStdString();
     platforminfo->password = ui->lineEdit_pwd->text().toStdString();
-    this->accept();
+    accept();
 }

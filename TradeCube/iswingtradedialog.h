@@ -7,7 +7,7 @@ class ISwingTradeDialog
 {
 public:
     virtual ~ISwingTradeDialog(){}
-    virtual void displayPriceItem(PriceItem* priceItem) = 0;
+    virtual void displayPriceItem(PriceItem *priceItem) = 0;
     virtual void displayPosition(double position) = 0;
     virtual void displayProfit(double profit) = 0;
 };

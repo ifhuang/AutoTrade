@@ -154,7 +154,8 @@ map<long, OrderItem*>& TradeUnit::getOrderQueue()
 int TradeUnit::addTrade(TradeItem* tradeRecord)
 {
     //cout<<tradeRecord->getTradeNo()<<endl;
-    tradeQueue.insert({ tradeRecord->getTradeNo(), tradeRecord });
+    // tradeQueue.insert({ tradeRecord->getTradeNo(), tradeRecord });
+    tradeQueue.insert(std::pair<long, TradeItem*>(tradeRecord->getTradeNo(), tradeRecord));
     return 0;
 }
 

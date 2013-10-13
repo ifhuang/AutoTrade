@@ -1,8 +1,8 @@
 #ifndef SWINGTRADEDIALOG_H
 #define SWINGTRADEDIALOG_H
 
-#include "iswingtradedialog.h"
 #include <QDialog>
+#include "iswingtradedialog.h"
 #include <QToolBar>
 #include <QMenu>
 #include <QPushButton>
@@ -24,12 +24,12 @@ class SwingTradeDialog : public QDialog, public ISwingTradeDialog
     Q_OBJECT
 
 public:
-    explicit SwingTradeDialog(QString &contract, int tradeId, Dispatcher *disp, QWidget *parent = 0);
+    explicit SwingTradeDialog(QString exchange_contract, int tradeId, Dispatcher *disp, QWidget *parent = 0);
     virtual ~SwingTradeDialog();
-    QString getSwingContract();
+    QString getExchangeContract();
 
     // display interface for price/position/profit
-    virtual void displayPriceItem(PriceItem* priceItem) override;
+    virtual void displayPriceItem(PriceItem *priceItem) override;
     virtual void displayPosition(double position) override;
     virtual void displayProfit(double profit) override;
 
@@ -77,11 +77,13 @@ private:
     QAction *swingright_modcon;
     QAction *swingright_remcon;
 
-    QString swing_contract;
+    QString exchange_contract;
 
-    SwingTrader* swingtrader;
+    SwingTrader *swingtrader;
     DWORD tbtid;
-    Dispatcher* disp;
+    Dispatcher *disp;
+    QuoteItem *quoteItem;
+    TradeUnit *tradeUnit;
 
     QString exchange;
     QString contract;
