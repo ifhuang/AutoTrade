@@ -1,25 +1,27 @@
 #ifndef __PRICEITEM__
 #define __PRICEITEM__
+
 #include <string> 
-#include <iostream>
-#include <sstream>
-#include "LogHandler.h"
-using namespace std; 
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 class PriceItem
 {
+    
 public:
+
+    void log() const;
+
 	int tradePlatform;
-	string quoteId;
-	string quoteName;
+	std::string quoteId;
+    std::string quoteName;
 	int qouteType; // Futures=1; Options=2; Spreads=3;
 	int contractSize;
 	int ExpiryDate; // 
-	string instrumentCode;
-	string currency;
+    std::string instrumentCode;
+    std::string currency;
 	double strike;
 	char callPut;
-	string underlying;
+    std::string underlying;
 	int openInterest;
 	double turnOverAmount;
 	int turnOverVolume;
@@ -63,35 +65,7 @@ public:
 	int askQty4;
 	double askPrice5;
 	int askQty5;
-	
-	void log() const {
-		stringstream str;
-		str << "Price Detail(" << quoteId << ")";
-		str << " ask price: " << askPrice1 << "(" << askQty1 << ") "
-							<< askPrice2 << "(" << askQty2 << ") "
-							<< askPrice3 << "(" << askQty3 << ") "
-							<< askPrice4 << "(" << askQty4 << ") "
-							<< askPrice5 << "(" << askQty5 << ")";	
 
-		str << " bid price: " << bidPrice1 << "(" << bidQty1 << ") "
-							<< bidPrice2 << "(" << bidQty2 << ") "
-							<< bidPrice3 << "(" << bidQty3 << ") "
-							<< bidPrice4 << "(" << bidQty4 << ") "
-							<< bidPrice5 << "(" << bidQty5 << ")";	
-
-		str << " last price: " << lastPrice1 << "(" << lastQty1 << ") "
-							<< lastPrice2 << "(" << lastQty2 << ") "
-							<< lastPrice3 << "(" << lastQty3 << ") "
-							<< lastPrice4 << "(" << lastQty4 << ") "
-							<< lastPrice5 << "(" << lastQty5 << ")";	
-		char buff[256] = {0}; 
-		if (currentTime > 0) {
-			strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S",localtime(&currentTime)); 
-			str << " " << buff;
-		}
-		LogHandler::getLogHandler().log(str.str());
-	}
-
-	time_t currentTime;
+	boost::posix_time::ptime currentTime;
 };
 #endif

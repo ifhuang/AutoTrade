@@ -1,7 +1,6 @@
 #ifndef __TRADE_UNIT__
 #define __TRADE_UNIT__
 #include <tchar.h>
-#include <time.h>
 #include <iostream>
 #include <map>
 #include <string> 
@@ -9,6 +8,7 @@
 #include <direct.h>
 #include <io.h>
 #include <windows.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "TradeCube.h"
 
 class TradeUnit
@@ -83,7 +83,8 @@ private:
     // added by xie
     vector<Bar*> bars;
     int barPeriod; // unit=second
-    time_t barStartTime, timeDiff;
+    boost::posix_time::ptime barStartTime;
+    boost::posix_time::time_duration timeDiff;
     int stepTickNum;
     double stepMoney;
     double stepQty;

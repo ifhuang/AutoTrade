@@ -6,7 +6,8 @@
 #include <windows.h>
 #include <io.h>
 #include <direct.h>
-#include <time.h> 
+#include "boost/date_time/gregorian/gregorian.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
 using namespace std;
 
 // by xie
@@ -35,12 +36,13 @@ public:
 		}
 	}
 private:
-	string getCurrentTime() const {
-		char currentTime[256] = {0};
-		time_t t = time(0); 
-		strftime( currentTime, sizeof(currentTime), "%Y-%m-%d %H:%M:%S",localtime(&t)); 
-		return currentTime;
-	}
+    string getCurrentTime() const {
+        return boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    }
+
+    string getCurrentDate() const {
+        return boost::gregorian::to_iso_extended_string(boost::gregorian::day_clock::local_day());
+    }
 
 	LogHandler() {
 		if (access("Log",0)) {
@@ -49,11 +51,8 @@ private:
 				exit(1);
 			}
 		}
-		char day[256] = {0};
-		time_t t = time(0); 
-		strftime(day, sizeof(day), "%Y-%m-%d",localtime(&t)); 
 		string filename = "Log\\";
-		filename.append(day);
+        filename.append(getCurrentDate());
 		filename.append(".log");
 		logFile.open(filename.c_str(), ios::out /*| ios::app*/);
 		if (!logFile.is_open()) {

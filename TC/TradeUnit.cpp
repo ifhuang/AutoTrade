@@ -1,5 +1,9 @@
 ﻿#include "TradeUnit.h"
 
+using boost::posix_time::ptime;
+using boost::posix_time::second_clock;
+using boost::posix_time::seconds;
+
 TradeUnit::TradeUnit(QuoteItem* quote)
 {
     this->quote = quote;
@@ -11,8 +15,7 @@ TradeUnit::TradeUnit(QuoteItem* quote)
     barPeriod = 30; // unit=second
     maxRefBarNum = 2;
     tickPrice = NULL;
-    barStartTime = 0;//time(0); 
-    timeDiff = 0;
+    //barStartTime = 0;//time(0); 
     stepTickNum = -1;
     stepMoney = -1;
     stepQty = 0;
@@ -102,10 +105,10 @@ void TradeUnit::updateTickPrice(PriceItem* pi) {
     this->tickPrice = pi;
 
     // 有数据来的时候是一定要更新bar的, added by xie
-    time_t current = time(0);
+    ptime current = second_clock::local_time();
     // 更新服务器时间和本地时间的差别
     timeDiff = current - pi->currentTime;
-    cout << "time diff:" << timeDiff << endl;
+    cout << "time diff:" << timeDiff.seconds() << endl;
     updateBars();
 }
 
@@ -155,7 +158,7 @@ int TradeUnit::addTrade(TradeItem* tradeRecord)
 {
     //cout<<tradeRecord->getTradeNo()<<endl;
     // tradeQueue.insert({ tradeRecord->getTradeNo(), tradeRecord });
-    tradeQueue.insert(std::pair<long, TradeItem*>(tradeRecord->getTradeNo(), tradeRecord));
+    tradeQueue.insert(make_pair(tradeRecord->getTradeNo(), tradeRecord));
     return 0;
 }
 
@@ -170,7 +173,7 @@ int TradeUnit::savePrice()
     char str[500] = "";
 
     fputs(price->quoteId.c_str(), pricefp);
-    sprintf(str, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+    sprintf_s(str, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
         price->lastPrice1, price->lastPrice2, price->lastPrice3, price->lastPrice4, price->lastPrice5,
         price->bidPrice1, price->bidPrice2, price->bidPrice3, price->bidPrice4, price->bidPrice5,
         price->askPrice1, price->askPrice2, price->askPrice3, price->askPrice4, price->askPrice5);
@@ -183,7 +186,7 @@ TradeUnit::TradeUnit()
     openPriceFile();
     tradefp = NULL;
     price = NULL;
-    barStartTime = 0;//time(0); 
+    //barStartTime = 0;//time(0); 
     stepTickNum = -1;
     stepMoney = -1;
     stepQty = 0;
@@ -223,20 +226,13 @@ int TradeUnit::saveTradeRecord()
             return -1;
         }
     }
-    tm* pTmp = NULL;
-    char datetime[20] = "";
-    map<long, TradeItem*>::iterator iter = tradeQueue.begin();
-    for (; iter != tradeQueue.end(); iter++)
+    for (auto pair : tradeQueue)
     {
-        TradeItem* ti = iter->second;
-        time_t t = ti->getTradeTime();
-        pTmp = localtime(&t);
-        if (pTmp == NULL)
-        {
-            return -1;
-        }
-        sprintf(datetime, "%d-%d-%d %d:%d:%d", pTmp->tm_year + 1900, pTmp->tm_mon + 1, pTmp->tm_mday, pTmp->tm_hour, pTmp->tm_min, pTmp->tm_sec);
-        fprintf(tradefp, "%s\t%d\t%s\t%s\t%f\t%d\t%f\t%s", ti->getQuoteId(), ti->getTradeNo(), datetime, ti->getBuySell(), ti->getTradePrice(), ti->getQty(), ti->getSubmitPrice(), ti->getOpenClose());
+        TradeItem* ti = pair.second;
+        string datetime = to_iso_extended_string(ti->getTradeTime());
+        fprintf(tradefp, "%s\t%d\t%s\t%s\t%f\t%d\t%f\t%s", ti->getQuoteId(),
+            ti->getTradeNo(), datetime.c_str(), ti->getBuySell(),
+            ti->getTradePrice(), ti->getQty(), ti->getSubmitPrice(), ti->getOpenClose());
     }
     fclose(tradefp);
     tradeQueue.clear();
@@ -267,10 +263,10 @@ void TradeUnit::updateBars()
     //priceItem->log();
 
     // 计算得到服务器时间
-    time_t current = time(0) - timeDiff;
+    ptime current = second_clock::local_time() - timeDiff;
     Bar* currentBar = NULL;
     double lastPrice = tickPrice->lastPrice1;
-    if (current > barStartTime + barPeriod || bars.empty()) {
+    if (current > barStartTime + seconds(barPeriod) || bars.empty()) {
         if (!bars.empty()) {
             // 这里标志着上一根k线的结束
             currentBar = bars[bars.size() - 1];
@@ -281,9 +277,8 @@ void TradeUnit::updateBars()
         currentBar = new Bar(lastPrice, lastPrice, lastPrice, lastPrice, barPeriod);
         bars.push_back(currentBar);
 
-        char buff[256] = { 0 };
-        strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", localtime(&barStartTime));
-        LogHandler::getLogHandler().log("bar start time init:" + string(buff));
+        string start_time = to_iso_extended_string(barStartTime);
+        LogHandler::getLogHandler().log("bar start time init:" + start_time);
 
         if (bars.size() > maxRefBarNum) {
             // 如果添加后超出最大的refbarnum了。将最老的一根k线删除

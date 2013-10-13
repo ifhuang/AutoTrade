@@ -23,7 +23,7 @@ int Dispatcher::addOrderThreadId(int traderId, DWORD traderThreadId)
     if (orderThreadIdTable.count(traderId) == 0)
     {
         // orderThreadIdTable.insert({ traderId, traderThreadId });
-        orderThreadIdTable.insert(std::pair<int, DWORD>(traderId, traderThreadId));
+        orderThreadIdTable.insert(make_pair(traderId, traderThreadId));
     }
     else
     {
