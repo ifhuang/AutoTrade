@@ -11,11 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TradeCube
 TEMPLATE = app
 
+INCLUDEPATH += C:/boost_1_54_0/
+LIBS += "-LC:/boost_1_54_0/stage/lib/"
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     swingtradedialog.cpp \
     combotradedialog.cpp \
+    logindialog.cpp \
+    addcontractdialog.cpp \
     ../TC/ComboTrader.cpp \
     ../TC/Dispatcher.cpp \
     ../TC/SPTrader.cpp \
@@ -24,12 +28,20 @@ SOURCES += main.cpp\
     ../TC/DispatcherFactory.cpp \
     ../TC/Strategy.cpp \
     ../TC/Bar.cpp \
-    logindialog.cpp \
-    addcontractdialog.cpp
+    ../TC/ComboOrder.cpp \
+    ../TC/LogHandler.cpp \
+    ../TC/OrderItem.cpp \
+    ../TC/PriceItem.cpp \
+    ../TC/string_processor.cpp \
+    C:\boost_1_54_0\libs\date_time\src\gregorian\greg_month.cpp
 
 HEADERS  += mainwindow.h \
     swingtradedialog.h \
     combotradedialog.h \
+    iswingtradedialog.h \
+    imainwindow.h \
+    logindialog.h \
+    addcontractdialog.h \
     ../TC/Bar.h \
     ../TC/ComboOrder.h \
     ../TC/ComboTrader.h \
@@ -47,10 +59,8 @@ HEADERS  += mainwindow.h \
     ../TC/TradeUnit.h \
     ../TC/DispatcherFactory.h \
     ../TC/PlatformInfo.h \
-    iswingtradedialog.h \
-    imainwindow.h \
-    logindialog.h \
-    addcontractdialog.h
+    ../TC/constants.h \
+    ../TC/string_processor.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \

@@ -3,7 +3,9 @@
 
 #include <string> 
 #include <sstream>
+#ifndef Q_MOC_RUN
 #include <boost/date_time/posix_time/posix_time.hpp>
+#endif
 #include "LogHandler.h"
 using namespace std; 
 

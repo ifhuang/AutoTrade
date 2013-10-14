@@ -3,8 +3,10 @@
 #include <iostream>
 #include <io.h>
 #include <direct.h>
+#ifndef Q_MOC_RUN
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#endif
 
 using namespace std;
 using namespace boost::gregorian;

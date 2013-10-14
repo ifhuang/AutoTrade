@@ -196,7 +196,8 @@ void MainWindow::displaySwingAddPositions(Position *position)
     for(list<TradeItem *>::const_iterator it = tradeList.begin(); it != tradeList.end(); ++it)
     {
         QStandardItem* item1 = new QStandardItem(QString((*it)->getQuoteId().c_str()));
-        QStandardItem* item2 = new QStandardItem(QString("%1").arg((*it)->getTradeTime()));
+        //QStandardItem* item2 = new QStandardItem(QString("%1").arg((*it)->getTradeTime()));
+        QStandardItem* item2 = new QStandardItem(QString(""));
         QStandardItem* item3 = new QStandardItem(QString("%1").arg((*it)->getOrderType()));
         QStandardItem* item4 = new QStandardItem(QString("%1").arg((*it)->getBuySell()));
         QStandardItem* item5 = new QStandardItem(QString("%1").arg((*it)->getTradePrice()));
@@ -222,7 +223,7 @@ void MainWindow::add_swing_positions()
     {
         TradeItem *tradeItem = new TradeItem;
         tradeItem->setQuoteId("EUR/USD");
-        tradeItem->setTradeTime(20130920 + i);
+        //tradeItem->setTradeTime(20130920 + i);
         tradeItem->setOrderType('M');
         tradeItem->setBuySell('B');
         tradeItem->setTradePrice(1.31415 + i * 0.00001);
@@ -240,7 +241,7 @@ void MainWindow::update_swing_positions()
     {
         TradeItem *tradeItem = new TradeItem;
         tradeItem->setQuoteId("DJIA");
-        tradeItem->setTradeTime(20130922 + i);
+        //tradeItem->setTradeTime(20130922 + i);
         tradeItem->setOrderType('L');
         tradeItem->setBuySell('S');
         tradeItem->setTradePrice(18888.1415 + i);
@@ -276,13 +277,13 @@ void MainWindow::displaySwingRemoveWorkingOrders()
 
 void MainWindow::add_swing_working_orders()
 {
-    OrderItem *orderItem = new OrderItem(0, "EUR/USD", (qrand() % 10000)/1000., qrand() % 100, 'B', 1, 0, 'O' );
+    OrderItem *orderItem = new OrderItem(0, "EUR/USD", (qrand() % 10000)/1000., qrand() % 100, 'B', 1, 0, "O" );
     displaySwingAddWorkingOrders(orderItem);
 }
 
 void MainWindow::update_swing_working_orders()
 {
-    OrderItem *orderItem = new OrderItem(0, "DJIA", (qrand() % 10000)/1., qrand() % 1000, 'S', 0, 0, 'C' );
+    OrderItem *orderItem = new OrderItem(0, "DJIA", (qrand() % 10000)/1., qrand() % 1000, 'S', 0, 0, "C" );
     displaySwingUpdateWorkingOrders(orderItem);
 }
 
@@ -294,7 +295,8 @@ void MainWindow::remove_swing_working_orders()
 void MainWindow::displaySwingAddOrderHistory(TradeItem *tradeItem)
 {
     QStandardItem* item1 = new QStandardItem(QString(tradeItem->getQuoteId().c_str()));
-    QStandardItem* item2 = new QStandardItem(QString("%1").arg(tradeItem->getTradeTime()));
+    //QStandardItem* item2 = new QStandardItem(QString("%1").arg(tradeItem->getTradeTime()));
+    QStandardItem* item2 = new QStandardItem(QString(""));
     QStandardItem* item3 = new QStandardItem(QString("%1").arg(tradeItem->getOrderType()));
     QStandardItem* item4 = new QStandardItem(QString("%1").arg(tradeItem->getBuySell()));
     QStandardItem* item5 = new QStandardItem(QString("%1").arg(tradeItem->getTradePrice()));
@@ -308,7 +310,7 @@ void MainWindow::add_swing_order_history()
 {
     TradeItem *tradeItem = new TradeItem;
     tradeItem->setQuoteId("DJIA");
-    tradeItem->setTradeTime(20130920 + qrand() % 10);
+    //tradeItem->setTradeTime(20130920 + qrand() % 10);
     tradeItem->setOrderType('L');
     tradeItem->setBuySell('S');
     tradeItem->setTradePrice(qrand() % 10000);

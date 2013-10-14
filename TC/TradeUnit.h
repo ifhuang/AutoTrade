@@ -8,7 +8,9 @@
 #include <direct.h>
 #include <io.h>
 #include <windows.h>
+#ifndef Q_MOC_RUN
 #include <boost/date_time/posix_time/posix_time.hpp>
+#endif
 #include "TradeCube.h"
 
 class TradeUnit

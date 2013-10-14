@@ -2,7 +2,9 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
+#ifndef Q_MOC_RUN
 #include <boost/lexical_cast.hpp>
+#endif
 #include "string_processor.h"
 
 using boost::lexical_cast;

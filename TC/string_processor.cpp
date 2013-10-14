@@ -1,9 +1,11 @@
 #include "string_processor.h"
 
 #include <vector>
+#ifndef Q_MOC_RUN
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/lexical_cast.hpp>
+#endif
 #include "constants.h"
 
 using std::string;
@@ -25,7 +27,7 @@ namespace{
             return message_split.size() > idx;
         }
 
-        template<class T = string>
+        template<class T>
         T Get(size_t idx)
         {
             if (!Exists(idx))return T();
@@ -44,16 +46,16 @@ PriceItem* StringProcessor::StringToPriceItem(std::string price_str)
     pi->tradePlatform = SPTRADER;
     try
     {
-        pi->quoteId           = spliter.Get(2);
-        pi->quoteName         = spliter.Get(3);
+        pi->quoteId           = spliter.Get<string>(2);
+        pi->quoteName         = spliter.Get<string>(3);
         pi->qouteType         = spliter.Get<int>(4);
         pi->contractSize      = spliter.Get<int>(5);
         pi->ExpiryDate        = spliter.Get<int>(6);
-        pi->instrumentCode    = spliter.Get(7);
-        pi->currency          = spliter.Get(8);
+        pi->instrumentCode    = spliter.Get<string>(7);
+        pi->currency          = spliter.Get<string>(8);
         pi->strike            = spliter.Get<double>(9);
-        pi->callPut           = spliter.Get(10)[0];
-        pi->underlying        = spliter.Get(11);
+        pi->callPut           = spliter.Get<string>(10)[0];
+        pi->underlying        = spliter.Get<string>(11);
         pi->bidPrice1         = spliter.Get<double>(12);
         pi->bidQty1           = spliter.Get<int>(13);
         pi->bidPrice2         = spliter.Get<double>(14);
@@ -109,8 +111,8 @@ Position* StringProcessor::StringToPosition(std::string order_str)
     Position* pos = new Position();
     try
     {
-        pos->accountNo = spliter.Get(2);
-        pos->setQuoteId(spliter.Get(3));
+        pos->accountNo = spliter.Get<string>(2);
+        pos->setQuoteId(spliter.Get<string>(3));
         pos->preqty = spliter.Get<int>(4);
         pos->preavg = spliter.Get<double>(5);
         pos->longqty = spliter.Get<int>(6);
@@ -143,18 +145,18 @@ OrderItem* StringProcessor::StrintToOrderItem(string order_str)
     try
     {
         oi->setReturnCode(spliter.Get<int>(2));
-        oi->setReturnMessage(spliter.Get(3));
+        oi->setReturnMessage(spliter.Get<string>(3));
         oi->setStatus(spliter.Get<int>(4));
         oi->setAction(spliter.Get<int>(5));
-        oi->setAccount(spliter.Get(6));
+        oi->setAccount(spliter.Get<string>(6));
         oi->setOrderNo(spliter.Get<int>(7));
-        oi->setQuoteId(spliter.Get(8));
-        oi->setBuySell(spliter.Get(9)[0]);
+        oi->setQuoteId(spliter.Get<string>(8));
+        oi->setBuySell(spliter.Get<string>(9)[0]);
         oi->setSubmitPrice(spliter.Get<double>(10));
         oi->setQty(spliter.Get<double>(2));
-        oi->setOpenClose(spliter.Get(12));
+        oi->setOpenClose(spliter.Get<string>(12));
         oi->setValidType(spliter.Get<int>(14));
-        string ref = spliter.Get(16);
+        string ref = spliter.Get<string>(16);
         if (!ref.empty())
         {
             char tmp2[20] = "";
