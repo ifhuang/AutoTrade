@@ -45,8 +45,8 @@ private:
     }
 
 	LogHandler() {
-		if (access("Log",0)) {
-			if (!mkdir("Log")) {
+		if (_access("Log",0)) {
+			if (!_mkdir("Log")) {
 				cerr << "log folder fail to create" << endl;
 				exit(1);
 			}

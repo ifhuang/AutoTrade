@@ -1,9 +1,9 @@
-﻿#include "Dispatcher.h"
-#include "SPTrader.h"
-#include "ComboTrader.h"
-#include "SwingTrader.h"
-#include "TradeCube.h"
-#include "DispatcherFactory.h"
+﻿#include "../TC/Dispatcher.h"
+#include "../TC/SPTrader.h"
+#include "../TC/ComboTrader.h"
+#include "../TC/SwingTrader.h"
+#include "../TC/TradeCube.h"
+#include "../TC/DispatcherFactory.h"
 
 int traderId = 1;
 const char *PROGRAM_NAME="TradeCube";

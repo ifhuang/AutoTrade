@@ -10,19 +10,27 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TC\TC.vcxproj">
+      <Project>{07408764-8f8c-435a-a4e8-ea91eca4e72c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{07408764-8F8C-435A-A4E8-EA91ECA4E72C}</ProjectGuid>
-    <RootNamespace>TC</RootNamespace>
+    <ProjectGuid>{900FD203-032F-4100-8285-76CEEF5E61B7}</ProjectGuid>
+    <RootNamespace>TC_main</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -43,7 +51,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -57,7 +65,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -67,39 +75,6 @@
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Bar.h" />
-    <ClInclude Include="ComboOrder.h" />
-    <ClInclude Include="ComboTrader.h" />
-    <ClInclude Include="constants.h" />
-    <ClInclude Include="Dispatcher.h" />
-    <ClInclude Include="DispatcherFactory.h" />
-    <ClInclude Include="LogHandler.h" />
-    <ClInclude Include="OrderItem.h" />
-    <ClInclude Include="PlatformInfo.h" />
-    <ClInclude Include="Position.h" />
-    <ClInclude Include="PriceItem.h" />
-    <ClInclude Include="QuoteItem.h" />
-    <ClInclude Include="SPTrader.h" />
-    <ClInclude Include="Strategy.h" />
-    <ClInclude Include="string_processor.h" />
-    <ClInclude Include="SwingTrader.h" />
-    <ClInclude Include="TradeCube.h" />
-    <ClInclude Include="TradeItem.h" />
-    <ClInclude Include="TradeUnit.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Bar.cpp" />
-    <ClCompile Include="ComboTrader.cpp" />
-    <ClCompile Include="Dispatcher.cpp" />
-    <ClCompile Include="DispatcherFactory.cpp" />
-    <ClCompile Include="PriceItem.cpp" />
-    <ClCompile Include="SPTrader.cpp" />
-    <ClCompile Include="Strategy.cpp" />
-    <ClCompile Include="string_processor.cpp" />
-    <ClCompile Include="SwingTrader.cpp" />
-    <ClCompile Include="TradeUnit.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

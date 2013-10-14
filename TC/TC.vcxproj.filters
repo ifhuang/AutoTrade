@@ -83,9 +83,6 @@
     <ClCompile Include="DispatcherFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SPTrader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

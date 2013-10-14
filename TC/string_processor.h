@@ -8,9 +8,9 @@ class StringProcessor
 {
 public:
 
-    /// <summary>   String to price item.  4102 string. </summary>
+    /// <summary>   4102 string to price item. </summary>
     ///
-    /// <param name="priceStr"> The price item string. </param>
+    /// <param name="priceStr"> The 4102 string. </param>
     /// <returns>   a PriceItem*. </returns>
     static PriceItem* StringToPriceItem(std::string priceStr);
 };
