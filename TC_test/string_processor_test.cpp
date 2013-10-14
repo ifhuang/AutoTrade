@@ -27,7 +27,18 @@ Q,,0,-,,3207.25,8,3207,5,3206.75,5,3206.5,3,3206.25,6,3207.5,7,3207.75,1,3208,\
             Assert::AreEqual(3205.0, pi->openD);
             Assert::AreEqual(3210.25, pi->highD);
             Assert::AreEqual(3195.0, pi->lowD);
+            delete pi;
 		}
 
+        TEST_METHOD(TestStringToPosition)
+		{
+            string test_string = "9901,3,DEMO258,NQZ3,0,0,243,3228.33127572016,243,3226.93209876543,0,0";
+            Position* pos = StringProcessor::StringToPosition(test_string);
+            Assert::AreEqual(string("DEMO258"), pos->accountNo);
+            Assert::AreEqual(string("NQZ3"), pos->getQuoteId());
+            Assert::AreEqual(0, pos->preqty);
+            Assert::AreEqual(3228.33127572016, pos->longavg);
+            delete pos;
+		}
 	};
 }

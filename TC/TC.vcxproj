@@ -93,6 +93,7 @@
     <ClCompile Include="ComboTrader.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="DispatcherFactory.cpp" />
+    <ClCompile Include="LogHandler.cpp" />
     <ClCompile Include="PriceItem.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="Strategy.cpp" />

@@ -104,5 +104,8 @@
     <ClCompile Include="string_processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LogHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

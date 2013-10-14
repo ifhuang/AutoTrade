@@ -3,15 +3,18 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/lexical_cast.hpp>
 #include "constants.h"
 
 using std::string;
 using std::vector;
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
 
-PriceItem* StringProcessor::StringToPriceItem(std::string priceStr)
+PriceItem* StringProcessor::StringToPriceItem(std::string price_str)
 {
     vector<string> price_split;
-    boost::split(price_split, priceStr, boost::is_any_of(","));
+    boost::split(price_split, price_str, boost::is_any_of(","));
     PriceItem* pi = new PriceItem();
     pi->tradePlatform = SPTRADER;
     pi->quoteId = price_split[2];
@@ -65,4 +68,30 @@ PriceItem* StringProcessor::StringToPriceItem(std::string priceStr)
     pi->previousCloseDate = atof(price_split[52].c_str());
     pi->tradeStateNo      = atof(price_split[54].c_str());
     return pi;
+}
+
+Position* StringProcessor::StringToPosition(std::string order_str)
+{
+    vector<string> message_split;
+    boost::split(message_split, order_str, boost::is_any_of(","));
+    Position* pos = new Position();
+    pos->accountNo = message_split[2];
+    pos->setQuoteId(message_split[3]);
+    try
+    {
+        pos->preqty = lexical_cast<int>(message_split[4]);
+        pos->preavg = lexical_cast<double>(message_split[5]);
+        pos->longqty = lexical_cast<int>(message_split[6]);
+        pos->longavg = lexical_cast<double>(message_split[7]);
+        pos->shortqty = lexical_cast<int>(message_split[8]);
+        pos->shortavg = lexical_cast<double>(message_split[9]);
+        pos->netqty = lexical_cast<int>(message_split[10]);
+        pos->netavg = lexical_cast<double>(message_split[11]);
+    }
+    catch (bad_lexical_cast &)
+    {
+        delete pos;
+        return nullptr;
+    }
+    return pos;
 }

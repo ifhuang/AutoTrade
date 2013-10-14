@@ -539,35 +539,6 @@ OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
     return oi;
 }
 
-Position* SPTrader::str2Position(string orderStr)
-{
-    Position* pos = new Position();
-    int start = 7;
-    orderStr += ",";
-    int end = orderStr.find(",", start);
-    string str = "";
-    int cur = 3;
-    while (end != string::npos){
-        str = orderStr.substr(start, end - start);
-        switch (cur) {
-        case 3:	pos->accountNo = str; break;
-        case 4: pos->setQuoteId(str); break;
-        case 5: pos->preqty = atoi(str.c_str()); break;
-        case 6: pos->preavg = atof(str.c_str()); break;
-        case 7: pos->longqty = atoi(str.c_str()); break;
-        case 8: pos->longavg = atof(str.c_str()); break;
-        case 9: pos->shortqty = atoi(str.c_str()); break;
-        case 10: pos->shortavg = atof(str.c_str()); break;
-        case 11: pos->netqty = atoi(str.c_str()); break;
-        case 12: pos->netavg = atof(str.c_str()); break;
-        }
-        start = end + 1;
-        end = orderStr.find(",", start);
-        cur++;
-    }
-    return pos;
-}
-
 string DoubleToString(double d)
 {
     string str;
@@ -818,7 +789,7 @@ void SPTrader::processOrder()
             }
             else if (orderStr.find("9901,3", 0) != string::npos) {
                 //LogHandler::getLogHandler().log(orderStr);
-                Position* pos = str2Position(orderStr);
+                Position* pos = StringProcessor::StringToPosition(orderStr);
                 string quoteID = pos->getQuoteId();
                 if (positionEvents.count(quoteID) > 0
                     && positionEvents[quoteID] != NULL) {
