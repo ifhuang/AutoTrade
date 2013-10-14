@@ -1,6 +1,7 @@
 ﻿#include "Strategy.h"
 
-long Strategy::createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter)
+long Strategy::createOrder(char buysell, string openclose, double submitPrice,
+    double qty, int orderType, int validType, int submitter)
 {
 	return 0;
 }

@@ -2,265 +2,189 @@
 #define __COMBO_ORDER__
 #include <list>
 #include <string> 
+#include "constants.h"
 #include "OrderItem.h"
 #include "QuoteItem.h"
 
 class OrderUnit
 {
 private:
-	int qouteNo;
-	double qty;
-	char buysell;
-	int status;
-	long orderRefId;
-	int rankId;
-	OrderItem* orderItem;
-	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1;
+    int qouteNo;
+    double qty;
+    char buysell;
+    int status;
+    long orderRefId;
+    int rankId;
+    OrderItem* orderItem;
+    int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1;
 
 public:
 
-	bool comp(const OrderUnit* lpou, const OrderUnit* rpou)
-	{
-		return lpou->rankId < rpou->rankId ;
-	}
+    bool comp(const OrderUnit* lpou, const OrderUnit* rpou)
+    {
+        return lpou->rankId < rpou->rankId;
+    }
 
-	void setRankId(int rankId)
-	{
-		this->rankId = rankId;
-	}
-	int getRankId()
-	{
-		return this->rankId;
-	}
-	
-	char getBuySell()
-	{
-		return this->buysell;
-	}
-	int getQuoteNo()
-	{
-		return this->qouteNo;
-	}
-	double getQty()
-	{
-		return this->qty;
-	}
+    void setRankId(int rankId)
+    {
+        this->rankId = rankId;
+    }
+    int getRankId()
+    {
+        return this->rankId;
+    }
 
-	OrderUnit(int quoteNo, double qty, char buysell, int rankId)
-	{
-		this->qouteNo = quoteNo;
-		this->qty =qty;
-		this->buysell = buysell;
-		this->rankId = rankId;
-		this->status = WAITING;
-	}
+    char getBuySell()
+    {
+        return this->buysell;
+    }
+    int getQuoteNo()
+    {
+        return this->qouteNo;
+    }
+    double getQty()
+    {
+        return this->qty;
+    }
 
-	void setStatus(int status)
-	{
-		this->status = status;
-	}
-	
-	int getStatus()
-	{
-		return this->status;
-	}
+    OrderUnit(int quoteNo, double qty, char buysell, int rankId)
+    {
+        this->qouteNo = quoteNo;
+        this->qty = qty;
+        this->buysell = buysell;
+        this->rankId = rankId;
+        this->status = WAITING;
+    }
 
-	void setOrderRefId(long orderRefId)
-	{
-		this->orderRefId = orderRefId;
-	}
-	long getOrderRefId()
-	{
-		return this->orderRefId;
-	}
+    void setStatus(int status)
+    {
+        this->status = status;
+    }
 
-	void setOrderItem(OrderItem* orderItem)
-	{
-		this->orderItem = orderItem;
-	}
+    int getStatus()
+    {
+        return this->status;
+    }
 
-	// by xie
-	OrderItem* getOrderItem() const 
-	{
-		return this->orderItem;
-	}
+    void setOrderRefId(long orderRefId)
+    {
+        this->orderRefId = orderRefId;
+    }
+    long getOrderRefId()
+    {
+        return this->orderRefId;
+    }
+
+    void setOrderItem(OrderItem* orderItem)
+    {
+        this->orderItem = orderItem;
+    }
+
+    // by xie
+    OrderItem* getOrderItem() const
+    {
+        return this->orderItem;
+    }
 };
 
 class ComboOrder
 {
 private:
-	char openclose;
-	double qty;
-	char buysell;
-	int orderType;
-	int validType;
-	int status;  // waiting=0; working=1; partiltraded=8
-	list<OrderUnit*>* orderTemplate;
-	string formula;
-	double skippage;
-	long comboRefId;
-	int orderRank;
-	int counter;
-	int timespan;
-	int submitter;
+    string openclose;
+    double qty;
+    char buysell;
+    int orderType;
+    int validType;
+    int status;  // waiting=0; working=1; partiltraded=8
+    list<OrderUnit*>* orderTemplate;
+    string formula;
+    double skippage;
+    long comboRefId;
+    int orderRank;
+    int counter;
+    int timespan;
+    int submitter;
 public:
 
-	
-	list<OrderUnit*>* getOrderTemplate()
-	{
-		return this->orderTemplate;
-	}
-	int getSubmitter()
-	{
-		return this->submitter;
-	}
-	void addCounter()
-	{
-		counter++;
-	}
-	int getCounter()
-	{
-		return this->counter;
-	}
-	void setOrderRank(int orderRank)
-	{
-		this->orderRank = orderRank;
-	}
+    ComboOrder(char buysell, string openclose, double qty, int orderType,
+        int validType, double skippage, list<OrderUnit*>* orderTemplate, int orderRank, int submitter);
 
-	int getOrderRank()
-	{
-		return this->orderRank;
-	}
+    list<OrderUnit*>* getOrderTemplate()
+    {
+        return this->orderTemplate;
+    }
+    int getSubmitter()
+    {
+        return this->submitter;
+    }
+    void addCounter()
+    {
+        counter++;
+    }
+    int getCounter()
+    {
+        return this->counter;
+    }
+    void setOrderRank(int orderRank)
+    {
+        this->orderRank = orderRank;
+    }
 
-	char getOpenClose()
-	{
-		return this->openclose;
-	}
-	char getBuySell()
-	{
-		return this->buysell;
-	}
-	double getQty()
-	{
-		return this->qty;
-	}
+    int getOrderRank()
+    {
+        return this->orderRank;
+    }
 
-	int getValidType()
-	{
-		return this->validType;
-	}
+    string getOpenClose()
+    {
+        return this->openclose;
+    }
+    char getBuySell()
+    {
+        return this->buysell;
+    }
+    double getQty()
+    {
+        return this->qty;
+    }
 
-	int getOrderType()
-	{
-		return this->orderType;
-	}
+    int getValidType()
+    {
+        return this->validType;
+    }
 
-	OrderUnit* getOrderUnit(long orderRefId)
-	{
-		OrderUnit* ou = NULL;
-		list<OrderUnit*>::iterator iter;
-		for(iter=orderTemplate->begin(); iter!=orderTemplate->end(); iter++)
-		{
-			ou = *iter;
-			if(ou->getOrderRefId() == orderRefId)
-				break;
-		}
-		return ou;
-	}
+    int getOrderType()
+    {
+        return this->orderType;
+    }
 
-	bool isAllOrderTraded()
-	{
-		list<OrderUnit*>::iterator iter;
-		for(iter=orderTemplate->begin(); iter!=orderTemplate->end(); iter++)
-		{
-			if((*iter)->getStatus() != ALLTRADED)
-					return false;
-		}			
-		return true;
-	}
+    OrderUnit* getOrderUnit(long orderRefId);
 
-	void setOrderRankId(int rankNum, int rankId[])
-	{
-		if(orderTemplate->size()>1 && rankNum>=orderTemplate->size()){
-			list<OrderUnit*>::iterator iter;
-			int i = 0;
-			for(iter=orderTemplate->begin(); iter!=orderTemplate->end(); iter++)
-			{
-				(*iter)->setRankId(rankId[i]);
-				i++;
-			}
-		}
-	}
+    bool isAllOrderTraded();
 
-	void setTimespan(int timespan)
-	{
-		this->timespan = timespan;
-	}
+    void setOrderRankId(int rankNum, int rankId[]);
 
-	int getTimespan()
-	{
-		return this->timespan;
-	}
+    void setTimespan(int timespan)
+    {
+        this->timespan = timespan;
+    }
 
-	void updateStatus()
-	{
-		int flag = 0;
-		list<OrderUnit*>::iterator iter;
-		if(this->status == WAITING)
-		{
-			for(iter=orderTemplate->begin(); iter!=orderTemplate->end(); iter++)
-			{
-				if((*iter)->getStatus() == WORKING)
-					status = ADDING;
-				if((*iter)->getStatus() == WAITING)
-					flag = 1;
-			}
-			if(status==ADDING && flag==1)
-				status = ADDING;
-			else if(status==ADDING && flag ==0)
-				status = WORKING;
-		}
-		flag = 0;
-		if(this->status == WORKING)
-		{
-			for(iter=orderTemplate->begin(); iter!=orderTemplate->end(); iter++)
-			{
-				if((*iter)->getStatus() == ALLTRADED)
-					status = PARTIALTRADED;
-				if((*iter)->getStatus() == WORKING)
-					flag = 1;
-			}
-			if(status==PARTIALTRADED && flag==1)
-				status = PARTIALTRADED;
-			else if(status==PARTIALTRADED && flag==0)
-				status = ALLTRADED;
-		}		
-	}
+    int getTimespan()
+    {
+        return this->timespan;
+    }
 
-	ComboOrder(char buysell, char openclose, double qty, int orderType,int validType, double skippage, list<OrderUnit*>* orderTemplate, int orderRank, int submitter)
-	{
-		this->buysell = buysell;
-		this->openclose = openclose;
-		this->qty = qty;
-		this->orderType = orderType;
-		this->validType = validType;
-		this->skippage = skippage;
-		this->orderTemplate = orderTemplate;
-		this->submitter = submitter;
-		this->status = WAITING;
-		this->orderRank = orderRank;
-		this->counter = 1;
-		this->timespan = 0;
-	}
+    void updateStatus();
 
-	long getComboRefId()
-	{
-		return this->comboRefId;
-	}
-	void setComboRefId(long refId)
-	{
-		this->comboRefId = refId;
-	}
+    
+    long getComboRefId()
+    {
+        return this->comboRefId;
+    }
+    void setComboRefId(long refId)
+    {
+        this->comboRefId = refId;
+    }
 };
 
 
@@ -268,43 +192,43 @@ public:
 class ComboPosition
 {
 private:
-	int longshort;
-	double size;
-	list<ComboOrder*> comboOrderList;
+    int longshort;
+    double size;
+    list<ComboOrder*> comboOrderList;
 public:
 
-	void setLongShort(int longshort)
-	{
-		this->longshort = longshort;
-	}
+    void setLongShort(int longshort)
+    {
+        this->longshort = longshort;
+    }
 
-	int getLongShort()
-	{
-		return longshort;
-	}
+    int getLongShort()
+    {
+        return longshort;
+    }
 
-	void setSize(double size)
-	{
-		this->size = size;
-	}
+    void setSize(double size)
+    {
+        this->size = size;
+    }
 
-	double getSize()
-	{
-		return this->size;
-	}
+    double getSize()
+    {
+        return this->size;
+    }
 
-	void addComboOrder(ComboOrder* comboOrder)
-	{
-		comboOrderList.push_front(comboOrder);
-	}
+    void addComboOrder(ComboOrder* comboOrder)
+    {
+        comboOrderList.push_front(comboOrder);
+    }
 
-	list<ComboOrder*>& getComboOrderList()
-	{
-		return this->comboOrderList;
-	}
-	 void setComboOrderList(list<ComboOrder*> orderList)
-	 {
-		 this->comboOrderList = orderList;
-	 }
+    list<ComboOrder*>& getComboOrderList()
+    {
+        return this->comboOrderList;
+    }
+    void setComboOrderList(list<ComboOrder*> orderList)
+    {
+        this->comboOrderList = orderList;
+    }
 };
 #endif

@@ -374,7 +374,8 @@ int ComboTrader::deleteTradeUnit(int quoteNo)
 }
 
 
-long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter, long comboRefId)
+long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, string openclose,
+    double submitPrice, double qty, int orderType, int validType, int submitter, long comboRefId)
 {
     TradeUnit* tradeUnit = getTradeUnit(orderUnit->getQuoteNo());
     OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
@@ -430,7 +431,8 @@ long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, char openclose
 }
 
 
-long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysell, char openclose, double submitPrice, double qty, int validType)
+long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysell,
+    string openclose, double submitPrice, double qty, int validType)
 {
     TradeUnit* tradeUnit = getTradeUnit(orderUnit->getQuoteNo());
     OrderItem* oi = tradeUnit->getOrder(orderRefId);
@@ -730,7 +732,8 @@ int ComboTrader::createOrderTemplate(int num, int quoteNo[], double qty[], char 
     return 0;
 }
 
-int ComboTrader::updateComboOrder(long& comboRefId, char buysell, char openclose, double qty, int validType, double skippage)
+int ComboTrader::updateComboOrder(long& comboRefId, char buysell,
+    string openclose, double qty, int validType, double skippage)
 {
     return SUCCESS;
 }
@@ -894,7 +897,8 @@ int ComboTrader::submitComboOrder(ComboOrder* pco)
     return SUCCESS;
 }
 
-int ComboTrader::createComboOrder(long& comboRefId, char buysell, char openclose, double qty, int orderType, int validType, double skippage, int orderRank, int submitter)
+int ComboTrader::createComboOrder(long& comboRefId, char buysell, string openclose,
+    double qty, int orderType, int validType, double skippage, int orderRank, int submitter)
 {
     if (orderTemplate.size() <= 1){
         //MessageBox(NULL,_T("Please create order template for ComboTrader before putting order"),_T(" Submit combo order error"),MB_OK|MB_ICONSTOP);

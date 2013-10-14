@@ -59,6 +59,7 @@ public:
 	{
 		this->quoteId = quoteId;
 	}
+
 	string getQuoteId()
 	{
 		return this->quoteId;

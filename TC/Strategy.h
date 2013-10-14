@@ -80,7 +80,8 @@ public:
 	}
 
 	// reconstructed and tested by xie
-	long createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter);
+	long createOrder(char buysell, string openclose, double submitPrice,
+        double qty, int orderType, int validType, int submitter);
 	int decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi);
 	int decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi);
 	int decomposeOrder(TradeUnit* tradeUnit, OrderItem* poi);

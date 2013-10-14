@@ -2,8 +2,10 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
+#include <boost/lexical_cast.hpp>
 #include "string_processor.h"
 
+using boost::lexical_cast;
 using namespace boost::posix_time;
 
 // changed by xie, 非单例化
@@ -446,69 +448,6 @@ TradeItem* SPTrader::str2TradeItem(string TradeStr)
     return ti;
 }
 
-OrderItem* SPTrader::str2OrderItem(string orderStr)
-{
-    OrderItem* oi = new OrderItem();
-    oi->setTradePlatform(SPTRADER);
-    char elem[30];
-    char* pelem = &orderStr[0];
-    char* delims = pelem;
-    int c = 1, strcount = 0;
-    for (int i = 0; i <= orderStr.length(); i++)
-    {
-        if (*delims == ',' || *delims == '\0')
-        {
-            strncpy(elem, pelem, strcount);
-            elem[strcount] = '\0';
-            if (c == 3 && elem[0] != '0')
-            {
-                //cout<<"order is not correctly processed by server! Maybe the order has been deleted or traded."<<endl;
-                LogHandler::getLogHandler()
-                    .alert(1, "", "order is not correctly processed by server! Maybe the order has been deleted or traded.(" + orderStr + ")");
-                //oi->log();
-                break;
-            }
-            /**  decode ordermsg string to an order instance ***/
-            if (c == 3 && strcount > 0) oi->setReturnCode(atoi(elem));
-            else if (c == 4 && strcount > 0) oi->setReturnMessage(elem);
-            else if (c == 5 && strcount > 0) oi->setStatus(atoi(elem));
-            else if (c == 6 && strcount > 0) oi->setAction(atoi(elem));
-            else if (c == 7 && strcount > 0) oi->setAccount(elem);
-            else if (c == 8 && strcount > 0) oi->setOrderNo(atoi(elem));
-            else if (c == 9 && strcount > 0) oi->setQuoteId(elem);
-            else if (c == 10 && strcount > 0) oi->setBuySell(elem[0]);
-            else if (c == 11 && strcount > 0) oi->setSubmitPrice(atof(elem));
-            else if (c == 12 && strcount > 0) oi->setQty(atof(elem));
-            else if (c == 13 && strcount > 0) oi->setOpenClose(elem[0]);
-            else if (c == 15 && strcount > 0) oi->setValidType(atoi(elem));
-            else if (c == 17 && strcount > 0)
-            {
-                char tmp2[20] = "";
-                char *elem2 = NULL;
-                char *delims2 = ":";
-                strcpy(tmp2, elem);
-                elem2 = strtok(tmp2, delims2);
-                elem2 = strtok(NULL, delims2);
-                oi->setTraderId(atoi(elem2));
-                elem2 = strtok(NULL, delims2);
-                oi->setOrderRefId(atol(elem2));
-            }
-            else if (c == 18 && strcount > 0) oi->setOriginalPrice(atof(elem));
-            else if (c == 19 && strcount > 0) oi->setOriginalQty(atof(elem));
-            delims++;
-            pelem = delims;
-            strcount = 0;
-            c++;
-        }
-        else
-        {
-            strcount++;
-            delims++;
-        }
-    }
-    return oi;
-}
-
 OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
 {
     OrderItem* oi = new OrderItem();
@@ -527,7 +466,7 @@ OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
         case 7: oi->setBuySell(str[0]); break;
         case 8: oi->setOriginalPrice(atof(str.c_str())); break;
         case 9: oi->setOriginalQty(atof(str.c_str())); break;
-        case 10: oi->setOpenClose(str[0]); break;
+        case 10: oi->setOpenClose(str); break;
         case 11: oi->setOrderType(atoi(str.c_str())); break;
         case 12: oi->setValidType(atoi(str.c_str())); break;
         case 13: oi->setValidTime(atoi(str.c_str())); break;
@@ -553,10 +492,10 @@ string SPTrader::orderItem2Str(OrderItem* po)
     char buff[20];
     string orderStr = string("3103,0,") + itoa(po->getAction(), buff, RADIX) + "," + platformInfo.accountNo + "," + itoa(po->getOrderNo(), buff, RADIX) + ",";
     orderStr += po->getQuoteId() + "," + string(1, po->getBuySell()) + "," + DoubleToString(po->getSubmitPrice()) + ",";
-    orderStr += DoubleToString(po->getQty()) + "," + string(1, po->getOpenClose()) + ",0,";
-    orderStr += (string)itoa(po->getValidType(), buff, RADIX) + ",," + (string)PROGRAM_NAME + ":";
-    orderStr += (string)itoa(po->getTraderId(), buff, RADIX) + ":";
-    orderStr += (string)ltoa(po->getOrderRefId(), buff, RADIX) + "\r\n";
+    orderStr += DoubleToString(po->getQty()) + "," + po->getOpenClose() + ",0,";
+    orderStr += lexical_cast<string>(po->getValidType()) + ",," + PROGRAM_NAME + ":";
+    orderStr += lexical_cast<string>(po->getTraderId()) + ":";
+    orderStr += lexical_cast<string>(po->getOrderRefId()) + "\r\n";
     //cout<<orderStr<<endl;
 
     return orderStr;
@@ -728,7 +667,7 @@ void SPTrader::processOrder()
             }
             /** decode ordermsg string to an order instance and forward to OrderItem Dispatcher Thread **/
             if (orderStr.find("3103,3", 0) != string::npos) {
-                OrderItem* po = str2OrderItem(orderStr);
+                OrderItem* po = StringProcessor::StrintToOrderItem(orderStr);
 
                 // 接收订单ORDER_ACCEPT_MSG
                 returnOrder(po);

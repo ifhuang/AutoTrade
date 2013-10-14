@@ -1,6 +1,8 @@
 #ifndef TC_CONSTANTS_H_
 #define TC_CONSTANTS_H_
 
+#include <string>
+
 #define ORDER_SEND_MSG WM_USER+1
 #define ORDER_ACCEPT_MSG WM_USER+2
 #define TRADE_DONE_MSG WM_USER+3
@@ -38,8 +40,8 @@ const int GTD = 4;
 const int SA = 1;
 const int AA = 2;
 
-const char OPEN = 'O';
-const char CLOSE = 'C';
+const std::string OPEN = "O";
+const std::string CLOSE = "C";
 
 const int WAITING = 0;
 const int WORKING = 1;

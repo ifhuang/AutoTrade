@@ -252,16 +252,19 @@ int SwingTrader::deleteTradeUnit()
 }
 
 
-long SwingTrader::createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter)
+long SwingTrader::createOrder(char buysell, string openclose, double submitPrice,
+    double qty, int orderType, int validType, int submitter)
 {	
 	int minqty = tradeUnit->getQuote()->getMinContractQty();
 	if(!double_divide(qty, minqty))
 	{
-		LogHandler::getLogHandler().alert(3, "Create Order Error", "The quantity is not the integer multiples of the unit contract");
+		LogHandler::getLogHandler().alert(3, "Create Order Error",
+            "The quantity is not the integer multiples of the unit contract");
 		return MY_ERROR;
 	}
 
-	OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
+	OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(),
+        tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
 	oi->setOrderRefId(ascOrderRefId++);
 	oi->setSubmitter(submitter);
 	oi->setStatus(ADDING);
@@ -312,7 +315,8 @@ long SwingTrader::createOrder(char buysell, char openclose, double submitPrice, 
 }
 
 
-long SwingTrader::updateOrder( long orderRefId, char buysell, char openclose, double submitPrice, double qty, int validType)
+long SwingTrader::updateOrder( long orderRefId, char buysell, string openclose,
+    double submitPrice, double qty, int validType)
 {
 	OrderItem* oi = tradeUnit->getOrder(orderRefId);
 	oi->addCounter();
@@ -332,7 +336,6 @@ long SwingTrader::updateOrder( long orderRefId, char buysell, char openclose, do
 				oi->setSubmitPrice(submitPrice);
 				dispatcher->sendOrder(oi); // transimit order 
 			}
-
 		}
 		else if(!dispatcher->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
 		{

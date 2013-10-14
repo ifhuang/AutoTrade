@@ -27,12 +27,16 @@ public:
     void closeAllPositions();
     void deleteStrategyOrder();
 
-    long createOrder(char buysell, char openclose, double submitPrice, double qty, int orderType, int validType, int submitter);
+    long createOrder(char buysell, string openclose, double submitPrice,
+        double qty, int orderType, int validType, int submitter);
 
 protected:
     void triggerWaitingOrder();
     int deleteOrder(long orderRefId);
-    long updateOrder(long orderRefId, char buysell, char openclose, double submitPrice, double qty, int validType);
+    
+    long updateOrder(long orderRefId, char buysell, string openclose,
+        double submitPrice, double qty, int validType);
+
     bool double_divide(double divisor, double dividend);
     long buy(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);
     long sell(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);

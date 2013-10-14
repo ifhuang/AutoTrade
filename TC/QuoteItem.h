@@ -48,6 +48,7 @@ public:
 	{
 		return this->quoteId;
 	}
+
 	string getExchange()
 	{
 		return this->exchange;

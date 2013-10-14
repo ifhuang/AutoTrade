@@ -33,7 +33,6 @@ private:
 	int confirmTradeInfo(int tradeRecordNo);
 	int confirmPriceInfo(string quoteId);
 	
-	OrderItem* str2OrderItem(string orderStr);
 	TradeItem* str2TradeItem(string orderStr);
 	string orderItem2Str(OrderItem* po);
 	OrderItem* str2UpdatedOrder(string orderStr);
