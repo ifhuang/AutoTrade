@@ -1,7 +1,56 @@
 #include "data.h"
 
+#include <exception>
+#include <string>
+#include <boost/lexical_cast.hpp>
+
+using std::exception;
+using std::string;
+using boost::lexical_cast;
+
 namespace lex{
-    Data::Data()
+
+    void Statement::Reset(sqlite3 *db)
+    {
+        if (!stmt_)
+        {
+            int return_code = sqlite3_prepare_v2(db, query_, -1, &stmt_, nullptr);
+            if (return_code != SQLITE_OK)
+            {
+                throw exception("error code " + return_code);
+            }
+        }
+        else
+        {
+            sqlite3_reset(stmt_);
+        }
+    }
+
+    void Statement::Bind(int n, const char *text)
+    {
+        int return_code = sqlite3_bind_text(stmt_, n, text, -1, SQLITE_TRANSIENT);
+        if (return_code != SQLITE_OK)
+        {
+            throw exception(("error code " + lexical_cast<string>(return_code)).c_str());
+        }
+    }
+
+    bool Statement::Step()
+    {
+        int return_code = sqlite3_step(stmt_);
+        if (return_code != SQLITE_ROW && return_code != SQLITE_DONE)
+        {
+            throw exception(("error code " + lexical_cast<string>(return_code)).c_str());
+        }
+        return return_code == SQLITE_ROW;
+    }
+
+    const char* Statement::ColumnText(int n)
+    {
+        return reinterpret_cast<const char*>(sqlite3_column_text(stmt_, n));
+    }
+
+    Data::Data() : insert_study_stmt_(insert_study_query_), select_study_stmt_(select_study_query_)
     {
         sqlite3_open("lex.db", &db);
     }
@@ -17,35 +66,38 @@ namespace lex{
         sqlite3_exec(db, "insert into a values ('1',1)", nullptr, 0, &error_message);
     }
 
+    const char* Data::insert_study_query_ = "begin transaction;"
+        "delete from study where name = ?001;"
+        "insert into study values(?001, 1, 1, ?002);"
+        "commit;";
+
     void Data::InsertStudy(const char *program)
     {
-        if (!insert_study_stmt_)
+        char *error_message = nullptr;
+        int error_code = sqlite3_exec(db, insert_study_query_, nullptr, nullptr, &error_message);
+        string em;
+        if (error_message)
         {
-            const char *query = "insert into study values(?, 1, 1, ?)";
-            sqlite3_prepare_v2(db, query, -1, &insert_study_stmt_, nullptr);
+            em = error_message;
+            sqlite3_free(error_message);
         }
-        else
+        if (error_code != SQLITE_OK || !em.empty())
         {
-            sqlite3_reset(insert_study_stmt_);
+            throw exception(("error code " + lexical_cast<string>(error_code)+":" + em).c_str());
         }
-        sqlite3_bind_text(insert_study_stmt_, 1, "test", -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(insert_study_stmt_, 2, program, -1, SQLITE_TRANSIENT);
-        sqlite3_step(insert_study_stmt_);
     }
 
-    const unsigned char * Data::SelectStudy()
+    const char* Data::select_study_query_ = "select program from study where name = ?";
+
+    const char* Data::SelectStudy()
     {
-        if (!select_study_stmt_)
-        {
-            const char *query = "select program from study where name = ?";
-            sqlite3_prepare_v2(db, query, -1, &select_study_stmt_, nullptr);
-        }
-        else
-        {
-            sqlite3_reset(select_study_stmt_);
-        }
-        sqlite3_bind_text(select_study_stmt_, 1, "test", -1, SQLITE_TRANSIENT);
-        sqlite3_step(select_study_stmt_);
-        return sqlite3_column_text(select_study_stmt_, 1);
+        select_study_stmt_.Reset(db);
+        select_study_stmt_.Bind(1, "text");
+        select_study_stmt_.Step();
+        return select_study_stmt_.ColumnText(0);
     }
+
+
+
+
 }

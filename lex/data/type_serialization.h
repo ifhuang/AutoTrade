@@ -43,27 +43,14 @@ namespace boost {
         template<class Archive>
         void serialize(Archive &ar, Program &p, const unsigned int version)
         {
-            ar & p.sue;
-            ar & p.strVector;
-            ar & p.astV;
-            ar & p.astsV;
-            ar & p.stmtV;
-            ar & p.stmtsV;
+            ar & *p.sue;
+            ar & *p.strVector;
+            ar & *p.astV;
+            ar & *p.astsV;
+            ar & *p.stmtV;
+            ar & *p.stmtsV;
         }
 
-        template<class Archive, typename T>
-        void save_construct_data(Archive & ar, VV<T> *t, const unsigned int file_version)
-        {
-                ar << t.n_;
-        }
-
-        template<class Archive, typename T>
-        void load_construct_data(Archive & ar, VV<T> *t, const unsigned int file_version)
-        {
-                string n;
-                ar >> n;
-                ::new(t)VV<T>(n);
-        }
     } // namespace serialization
 } // namespace boost
 

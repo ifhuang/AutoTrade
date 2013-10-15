@@ -15,6 +15,7 @@ template <typename T>
 class VV
 {
 public:
+    VV() {}
 	VV(const std::string &n) :n_(n) {}
 
 	int create()
@@ -71,11 +72,12 @@ private:
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
+        ar & n_;
         ar & v_;
     }
 
     std::vector<T> v_;
-    const std::string n_;
+    std::string n_;
     DISALLOW_COPY_AND_ASSIGN(VV);
 };
 
