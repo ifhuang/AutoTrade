@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     combotradedialog.cpp \
     logindialog.cpp \
     addcontractdialog.cpp \
-    $(BOOST_ROOT)/libs/date_time/src/gregorian/greg_month.cpp
+    $(BOOST_ROOT)/libs/date_time/src/gregorian/greg_month.cpp \
+    insertstrategydialog.cpp
 
 HEADERS  += mainwindow.h \
     swingtradedialog.h \
@@ -35,12 +36,14 @@ HEADERS  += mainwindow.h \
     imainwindow.h \
     logindialog.h \
     addcontractdialog.h \
+    insertstrategydialog.h
 
 FORMS    += mainwindow.ui \
     swingtradedialog.ui \
     combotradedialog.ui \
     logindialog.ui \
-    addcontractdialog.ui
+    addcontractdialog.ui \
+    insertstrategydialog.ui
 
 RESOURCES += \
     tradecube.qrc

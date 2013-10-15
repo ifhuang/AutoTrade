@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "addcontractdialog.h"
 #include <QMessageBox>
+#include "insertstrategydialog.h"
 
 SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispatcher *disp, QWidget *parent) :
     QDialog(parent),
@@ -197,11 +198,11 @@ void SwingTradeDialog::remove_contract()
 
 void SwingTradeDialog::insert_strategy()
 {
-    bool ok;
-    QString text = QInputDialog::getText(NULL, tr("Insert Strategy"), tr("Strategy:"), QLineEdit::Normal, QString(), &ok);
-    if (ok && !text.isEmpty())
+    QString name;
+    InsertStrategyDialog *insertstrategydialog = new InsertStrategyDialog(&name);
+    if(insertstrategydialog->exec() == InsertStrategyDialog::Accepted)
     {
-        label_strategy->setText(text);
+        label_strategy->setText(name);
         swingright_insstr->setEnabled(false);
         swingright_setstr->setEnabled(true);
         swingright_remstr->setEnabled(true);
@@ -210,11 +211,14 @@ void SwingTradeDialog::insert_strategy()
 
 void SwingTradeDialog::set_strategy()
 {
-    bool ok;
-    QString text = QInputDialog::getText(NULL, tr("Set Strategy"), tr("Strategy:"), QLineEdit::Normal, label_strategy->text(), &ok);
-    if (ok && !text.isEmpty())
+    QString name;
+    InsertStrategyDialog *insertstrategydialog = new InsertStrategyDialog(&name);
+    if(insertstrategydialog->exec() == InsertStrategyDialog::Accepted)
     {
-        label_strategy->setText(text);
+        label_strategy->setText(name);
+        swingright_insstr->setEnabled(false);
+        swingright_setstr->setEnabled(true);
+        swingright_remstr->setEnabled(true);
     }
 }
 
