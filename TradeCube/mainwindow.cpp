@@ -93,12 +93,11 @@ MainWindow::MainWindow(QWidget *parent) :
     swingorderhistorymodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
     ui->swingOrderHistoryView->setModel(swingorderhistorymodel);
 
-    setAttribute(Qt::WA_DeleteOnClose);
+//    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
     delete selcon;
     delete ordertype;
     delete qty;
@@ -109,6 +108,7 @@ MainWindow::~MainWindow()
     delete swingpositionsmodel;
     delete swingworkingordersmodel;
     delete swingorderhistorymodel;
+    delete ui;
 //    delete disp;
 
 }
