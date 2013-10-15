@@ -19,7 +19,6 @@ LogInDialog::~LogInDialog()
 
 void LogInDialog::on_click_login()
 {
-
     switch(ui->comboBox->currentIndex())
     {
     case 0:

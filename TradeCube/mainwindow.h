@@ -24,50 +24,47 @@ class MainWindow : public QMainWindow, public IMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
     // display interface for add/update positions tab in swing trade tab
     void displaySwingAddPositions(Position *position);
     void displaySwingUpdatePositions(Position *position);
-
     // display interface for add/update/remove working orders tab in swing trade tab
     virtual void displaySwingAddWorkingOrders(OrderItem *orderItem) override;
     void displaySwingUpdateWorkingOrders(OrderItem *orderItem);
     void displaySwingRemoveWorkingOrders();
-
     // display interface for add order history tab in swing trade tab
     void displaySwingAddOrderHistory(TradeItem *orderItem);
 
 private slots:    
-
     // insert swing/combo trade dialog
     void new_swing_trade();
     void new_combo_trade();
-
+    // about tradecube
     void about();
-
-    // update menu using active swing trade dialog in mdi area
+    // update toolbar using active swing trade dialog in mdi area
     void activate_swing();
     void activate_combo();
-
-    // update menu add/modify/remove contract of swing trade dialog
+    // update toolbar add/modify/remove contract of swing trade dialog
     void update_swing_contract(QString contract);
-
+    // log in and connect to dispatcher
+    void connect_dispatcher();
+    // right popup menu for swing/combo mdi area
+    void click_swing_right();
+    void click_combo_right();
+    // --------------------test slots--------------------
     // test for display interface for add/update positions tab in swing trade tab
     void add_swing_positions();
     void update_swing_positions();
-
     // test for display interface for add/update/remove working orders tab in swing trade tab
     void add_swing_working_orders();
     void update_swing_working_orders();
     void remove_swing_working_orders();
-
     // test for display interface for add order history tab in swing trade tab
     void add_swing_order_history();
-
-    void connect_dispatcher();
+    // --------------------test slots--------------------
 
 private:
     Ui::MainWindow *ui;    
+
     QComboBox *selcon;
     QComboBox *ordertype;
     QLineEdit *qty;
@@ -75,14 +72,15 @@ private:
     QComboBox *valid;
     QPushButton *buy;
     QPushButton *sell;
-
+    QMenu *swingmdiright;
+    QMenu *combomdiright;
+    QAction *insertswing;
+    QAction *insertcombo;
     // counter for swing/combo trade dialog
     int swing_counter;
     int combo_counter;
-
     // tree model for positions tab in swing trade tab
     QStandardItemModel *swingpositionsmodel;
-
     // table model for working orders / order history tab in swing trade tab
     QStandardItemModel *swingworkingordersmodel;
     QStandardItemModel *swingorderhistorymodel;
@@ -93,7 +91,6 @@ private:
     // resize components when resize mainwindow
     void resizeEvent(QResizeEvent *event);
     void closeEvent(QCloseEvent *event);
-
 };
 
 #endif // MAINWINDOW_H

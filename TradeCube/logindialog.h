@@ -17,6 +17,7 @@ public:
     ~LogInDialog();
 
 private slots:
+    // set platforminfo with current input
     void on_click_login();
 
 private:

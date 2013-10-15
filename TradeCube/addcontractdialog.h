@@ -16,7 +16,9 @@ public:
     ~AddContractDialog();
 
 private slots:
+    // update contract combobox with current exchange combobox index
     void on_change_exchange(int index);
+    // set exchange and contract with current inputs
     void on_click_add();
 
 private:

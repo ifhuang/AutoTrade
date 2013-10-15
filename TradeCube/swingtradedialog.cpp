@@ -26,21 +26,12 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     pb1 = new QPushButton(tr("1"));
     pb1->setFixedSize(pbSize);
     toolbar->addWidget(pb1);
-
     label_strategy = new QLabel(tr("Strategy Name"));
     label_strategy->setFixedWidth(90);
     toolbar->addWidget(label_strategy);
-
     pb2 = new QPushButton(tr("2"));
-    pb2->setFixedSize(pbSize);
-    pb2_menu = new QMenu;
-    pb2_menu_open = pb2_menu->addAction(tr("Open/Close Strategy"));
-    pb2_menu->addSeparator();
-    pb2_menu_attr = pb2_menu->addAction(tr("Attribute"));
-    pb2_menu_auto = pb2_menu->addAction(tr("Auto Trade"));
-    pb2_menu_warn = pb2_menu->addAction(tr("Warn"));
+    pb2->setFixedSize(pbSize);    
     toolbar->addWidget(pb2);
-
     cb = new QComboBox;
     cb->insertItem(0, tr("Tick"));
     cb->insertItem(1, tr("1 Min"));
@@ -55,14 +46,19 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     cb->insertItem(10, tr("1 Month"));
     cb->insertItem(11, tr("Customize"));
     toolbar->addWidget(cb);
-
     pb3 = new QPushButton(tr("3"));
     pb3->setFixedSize(pbSize);
     toolbar->addWidget(pb3);
-
     pb4 = new QPushButton(tr("4"));
     pb4->setFixedSize(pbSize);
     toolbar->addWidget(pb4);
+
+    pb2_menu = new QMenu;
+    pb2_menu_open = pb2_menu->addAction(tr("Open/Close Strategy"));
+    pb2_menu->addSeparator();
+    pb2_menu_attr = pb2_menu->addAction(tr("Attribute"));
+    pb2_menu_auto = pb2_menu->addAction(tr("Auto Trade"));
+    pb2_menu_warn = pb2_menu->addAction(tr("Warn"));
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     swingright = new QMenu;

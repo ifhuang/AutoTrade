@@ -14,8 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    swing_counter = 0;
+    combo_counter = 0;
 
+    ui->setupUi(this);
     //int currentScreenWid = QApplication::desktop()->width();
     //int currentScreenHei = QApplication::desktop()->height();
     //setFixedSize(currentScreenWid, currentScreenHei);
@@ -25,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     selcon->insertItem(0, tr("Select Contract"));
     selcon->setEditable(true);
     ui->mainToolBar->addWidget(selcon);
-
     ordertype = new QComboBox;
     ordertype->insertItem(0, tr("Order Type"));
     ordertype->insertItem(1, tr("Market"));
@@ -33,17 +34,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ordertype->insertItem(3, tr("Limit"));
     ordertype->insertItem(4, tr("Stop Limit"));
     ui->mainToolBar->addWidget(ordertype);
-
     qty = new QLineEdit;
     qty->setText(tr("Quantity"));
     qty->setMaximumWidth(60);
     ui->mainToolBar->addWidget(qty);
-
     price = new QLineEdit;
     price->setText(tr("Price"));
     price->setMaximumWidth(40);
     ui->mainToolBar->addWidget(price);
-
     valid = new QComboBox;
     valid->insertItem(0, tr("Validity"));
     valid->insertItem(1, tr("DAY"));
@@ -51,17 +49,20 @@ MainWindow::MainWindow(QWidget *parent) :
     valid->insertItem(3, tr("GTD"));
     valid->insertItem(4, tr("IOC"));
     ui->mainToolBar->addWidget(valid);
-
     buy = new QPushButton;
     buy->setText(tr("Buy"));
     ui->mainToolBar->addWidget(buy);
-
     sell = new QPushButton;
     sell->setText(tr("Sell"));
     ui->mainToolBar->addWidget(sell);
 
-    swing_counter = 0;
-    combo_counter = 0;
+    swingmdiright = new QMenu;
+    insertswing = swingmdiright->addAction(tr("Insert Swing Trader"));
+    insertswing->setEnabled(false);
+
+    combomdiright = new QMenu;
+    insertcombo = combomdiright->addAction(tr("Insert Combo Trader"));
+    insertcombo->setEnabled(false);
 
     swingpositionsmodel = new QStandardItemModel;
     swingpositionsmodel->setColumnCount(6);
@@ -93,6 +94,9 @@ MainWindow::MainWindow(QWidget *parent) :
     swingorderhistorymodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
     ui->swingOrderHistoryView->setModel(swingorderhistorymodel);
 
+    connect(insertswing, SIGNAL(triggered()), this, SLOT(new_swing_trade()));
+    connect(insertcombo, SIGNAL(triggered()), this, SLOT(new_combo_trade()));
+
 //    setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -109,6 +113,10 @@ MainWindow::~MainWindow()
     delete swingworkingordersmodel;
     delete swingorderhistorymodel;
     delete ui;
+    delete insertswing;
+    delete swingmdiright;
+    delete insertcombo;
+    delete combomdiright;
 //    delete disp;
 
 }
@@ -134,7 +142,6 @@ void MainWindow::new_swing_trade()
 void MainWindow::new_combo_trade()
 {
     ComboTradeDialog *comboTradeDialog = new ComboTradeDialog;
-
     QMdiSubWindow *qMdiSubWindow = ui->mdiArea_combo->addSubWindow(comboTradeDialog);
     qMdiSubWindow->setAttribute(Qt::WA_DeleteOnClose);
     qMdiSubWindow->setFixedSize(320, 240);
@@ -324,8 +331,9 @@ void MainWindow::connect_dispatcher()
     if(logindialog->exec() == LogInDialog::Accepted)
     {
         disp = DispatcherFactory::createDispatcher(platforminfo);
-        ui->action_Insert_Swing_Trader->setEnabled(true);
-        ui->action_Insert_Combo_Trader->setEnabled(true);
+        ui->action_Connect->setEnabled(false);
+        insertswing->setEnabled(true);
+        insertcombo->setEnabled(true);
     }
 }
 
@@ -337,4 +345,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
     } else {
         event->accept();
     }
+}
+
+void MainWindow::click_swing_right()
+{
+    swingmdiright->exec(QCursor::pos());
+}
+
+void MainWindow::click_combo_right()
+{
+    combomdiright->exec(QCursor::pos());
 }

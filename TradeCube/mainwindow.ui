@@ -137,7 +137,7 @@
        </rect>
       </property>
       <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
+       <enum>Qt::CustomContextMenu</enum>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAsNeeded</enum>
@@ -203,7 +203,7 @@
        </rect>
       </property>
       <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
+       <enum>Qt::CustomContextMenu</enum>
       </property>
       <property name="viewMode">
        <enum>QMdiArea::SubWindowView</enum>
@@ -232,8 +232,6 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
-    <addaction name="action_Insert_Swing_Trader"/>
-    <addaction name="action_Insert_Combo_Trader"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -250,7 +248,6 @@
     <property name="title">
      <string>&amp;Window</string>
     </property>
-    <addaction name="actionWindow1"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -281,35 +278,14 @@
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="action_Insert_Swing_Trader">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Insert Swing Trader</string>
-   </property>
-  </action>
   <action name="actionAdd_Swing_Positions">
    <property name="text">
     <string>Add Swing Positions</string>
    </property>
   </action>
-  <action name="actionWindow1">
-   <property name="text">
-    <string>window1</string>
-   </property>
-  </action>
   <action name="actionHelp1">
    <property name="text">
     <string>&amp;About</string>
-   </property>
-  </action>
-  <action name="action_Insert_Combo_Trader">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Insert Combo Trader</string>
    </property>
   </action>
   <action name="actionUpdate_Swing_Positions">
@@ -349,22 +325,6 @@
  </resources>
  <connections>
   <connection>
-   <sender>action_Insert_Swing_Trader</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>new_swing_trade()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>372</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionFile1</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -385,22 +345,6 @@
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>about()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>action_Insert_Combo_Trader</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>new_combo_trade()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -556,6 +500,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mdiArea_swing</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>click_swing_right()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>381</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mdiArea_combo</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>click_combo_right()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>381</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>new_swing_trade()</slot>
@@ -570,5 +546,7 @@
   <slot>remove_swing_working_orders()</slot>
   <slot>add_swing_order_history()</slot>
   <slot>connect_dispatcher()</slot>
+  <slot>click_swing_right()</slot>
+  <slot>click_combo_right()</slot>
  </slots>
 </ui>

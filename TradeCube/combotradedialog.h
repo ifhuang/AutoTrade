@@ -23,12 +23,12 @@ public:
 private slots:
     // right popup menu in combo trade dialog
     void on_tab_customContextMenuRequested_combo();
-
     // popup menu for strategy
     void on_trigger_pb2();
 
 private:
     Ui::ComboTradeDialog *ui;
+
     QToolBar *toolbar;
     QMenu *pb2_menu;
     QMenu *comboright;
