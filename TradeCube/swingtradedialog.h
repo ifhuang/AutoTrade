@@ -92,6 +92,7 @@ private:
     TradeUnit *tradeUnit;
 
     void closeEvent(QCloseEvent *event);
+    void setPanelEnabled(bool enabled);
 };
 
 #endif // SWINGTRADEDIALOG_H

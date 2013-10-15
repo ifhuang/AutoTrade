@@ -75,6 +75,7 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     swingright_modcon->setEnabled(false);
     swingright_remcon = swingright->addAction(tr("Remove Contract"));
     swingright_remcon->setEnabled(false);
+    setPanelEnabled(false);
 
     connect(pb2, SIGNAL(clicked()), this, SLOT(on_trigger_pb2()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tab_customContextMenuRequested()));
@@ -153,6 +154,7 @@ void SwingTradeDialog::add_contract()
         swingright_addcon->setEnabled(false);
         swingright_modcon->setEnabled(true);
         swingright_remcon->setEnabled(true);
+        setPanelEnabled(true);
         emit update_contract(exchange_contract);
     }
 }
@@ -185,6 +187,7 @@ void SwingTradeDialog::remove_contract()
         swingright_addcon->setEnabled(true);
         swingright_modcon->setEnabled(false);
         swingright_remcon->setEnabled(false);
+        setPanelEnabled(false);
         emit update_contract(exchange_contract);
     }
     else if(selection == QMessageBox::No)
@@ -293,4 +296,22 @@ void SwingTradeDialog::on_click_sellbid()
 void SwingTradeDialog::on_click_sellask()
 {
     swingtrader->createOrder(SELL, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+}
+
+void SwingTradeDialog::setPanelEnabled(bool enabled)
+{
+    pb1->setEnabled(enabled);
+    pb2->setEnabled(enabled);
+    cb->setEnabled(enabled);
+    pb3->setEnabled(enabled);
+    pb4->setEnabled(enabled);
+    ui->pushButton_ba->setEnabled(enabled);
+    ui->pushButton_bb->setEnabled(enabled);
+    ui->pushButton_sa->setEnabled(enabled);
+    ui->pushButton_sb->setEnabled(enabled);
+    ui->spinBox_qty->setEnabled(enabled);
+    ui->checkBox_pt->setEnabled(enabled);
+    ui->checkBox_sl->setEnabled(enabled);
+    ui->doubleSpinBox_pt->setEnabled(enabled);
+    ui->doubleSpinBox_sl->setEnabled(enabled);
 }
