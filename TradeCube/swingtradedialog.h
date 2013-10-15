@@ -53,6 +53,11 @@ private slots:
     void remove_strategy();
 
     void on_click_buyask();
+    void on_click_buybid();
+    void on_click_sellbid();
+    void on_click_sellask();
+
+    void open_close_strategy();
 
 private:
     Ui::SwingTradeDialog *ui;

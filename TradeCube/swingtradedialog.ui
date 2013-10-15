@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>SwingTradeDialog</class>
  <widget class="QDialog" name="SwingTradeDialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,6 +17,9 @@
    <string/>
   </property>
   <widget class="QPushButton" name="pushButton_ba">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -28,6 +34,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_sb">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -42,6 +51,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_bb">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -56,6 +68,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_sa">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -70,6 +85,9 @@
    </property>
   </widget>
   <widget class="QLabel" name="label_position">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -92,6 +110,9 @@
    </property>
   </widget>
   <widget class="QSpinBox" name="spinBox_qty">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -100,8 +121,17 @@
      <height>22</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_sl">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -115,6 +145,9 @@
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="doubleSpinBox_sl">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -125,6 +158,9 @@
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="doubleSpinBox_pt">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -135,6 +171,9 @@
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_pt">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -148,6 +187,9 @@
    </property>
   </widget>
   <widget class="QLabel" name="label_profit">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -188,8 +230,59 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_bb</sender>
+   <signal>clicked()</signal>
+   <receiver>SwingTradeDialog</receiver>
+   <slot>on_click_buybid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_sb</sender>
+   <signal>clicked()</signal>
+   <receiver>SwingTradeDialog</receiver>
+   <slot>on_click_sellbid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_sa</sender>
+   <signal>clicked()</signal>
+   <receiver>SwingTradeDialog</receiver>
+   <slot>on_click_sellask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>on_click_buyask()</slot>
+  <slot>on_click_buybid()</slot>
+  <slot>on_click_sellbid()</slot>
+  <slot>on_click_sellask()</slot>
  </slots>
 </ui>

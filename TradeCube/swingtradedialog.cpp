@@ -88,6 +88,7 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     connect(swingright_insstr, SIGNAL(triggered()), this, SLOT(insert_strategy()));
     connect(swingright_setstr, SIGNAL(triggered()), this, SLOT(set_strategy()));
     connect(swingright_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
+    connect(pb2_menu_open, SIGNAL(triggered()), this, SLOT(open_close_strategy()));
 
     setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -246,7 +247,7 @@ void SwingTradeDialog::displayProfit(double profit)
 
 void SwingTradeDialog::on_click_buyask()
 {
-    swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, 1, MKT, DAY, SPTRADER);
+    swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
 }
 
 void SwingTradeDialog::closeEvent(QCloseEvent *event)
@@ -269,4 +270,31 @@ void SwingTradeDialog::closeEvent(QCloseEvent *event)
 QString SwingTradeDialog::getExchangeContract()
 {
     return exchange_contract;
+}
+
+void SwingTradeDialog::open_close_strategy()
+{
+    if(swingtrader->getAutoTrading())
+    {
+        swingtrader->turnOffStrategy();
+    }
+    else
+    {
+        swingtrader->turnOnStrategy();
+    }
+}
+
+void SwingTradeDialog::on_click_buybid()
+{
+    swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->bidPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+}
+
+void SwingTradeDialog::on_click_sellbid()
+{
+    swingtrader->createOrder(SELL, OPEN, swingtrader->getTradeUnit()->getPrice()->bidPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+}
+
+void SwingTradeDialog::on_click_sellask()
+{
+    swingtrader->createOrder(SELL, OPEN, swingtrader->getTradeUnit()->getPrice()->askPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
 }
