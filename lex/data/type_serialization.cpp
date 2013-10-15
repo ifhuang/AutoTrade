@@ -17,8 +17,8 @@ namespace lex{
     {
         stringstream ss(s);
         boost::archive::text_iarchive ia(ss);
-        Program p{ new SetUpEnviroment(), new vector<string>(), new VV<ast>(),
-            new VV<vector<ast_t> >(), new VV<stmt>(), new VV<vector<stmt_t> >() };
+        //Program p{ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+        Program p;
         ia >> p;
         return p;
     }

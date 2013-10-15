@@ -43,12 +43,12 @@ namespace boost {
         template<class Archive>
         void serialize(Archive &ar, Program &p, const unsigned int version)
         {
-            ar & *p.sue;
-            ar & *p.strVector;
-            ar & *p.astV;
-            ar & *p.astsV;
-            ar & *p.stmtV;
-            ar & *p.stmtsV;
+            ar & p.sue;
+            ar & p.strVector;
+            ar & p.astV;
+            ar & p.astsV;
+            ar & p.stmtV;
+            ar & p.stmtsV;
         }
 
     } // namespace serialization

@@ -81,6 +81,12 @@
     <ClCompile Include="data\data_repository.cpp">
       <Filter>Source Files\data</Filter>
     </ClCompile>
+    <ClCompile Include="data\statements.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lex_factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">
@@ -157,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="data\data_repository.h">
       <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\statements.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\lex_factory.h">
+      <Filter>Header Files\interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

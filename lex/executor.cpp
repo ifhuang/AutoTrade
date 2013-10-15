@@ -18,7 +18,7 @@ namespace lex{
     Executor::~Executor()
     {
         if (rte_)delete rte_;
-        if (program_)delete program_;
+        //if (program_)delete program_;
     }
 
     vector<Value> Executor::exec_paras(asts_t idx)

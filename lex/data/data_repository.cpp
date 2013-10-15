@@ -15,6 +15,6 @@ void DataRepository::SaveProgram(const Program &p)
 lex::Program DataRepository::LoadProgram()
 {
     Data data;
-    string s = (const char*)(data.SelectStudy());
+    string s = data.SelectStudy();
     return load(s);
 }
