@@ -13,8 +13,12 @@ TEMPLATE = app
 
 INCLUDEPATH += $(BOOST_ROOT) \
     ../TC
-LIBS += $(BOOST_ROOT)/stage/lib/libboost_date_time-vc110-mt-gd-1_54.lib \
-    ../build-TC-Desktop_Qt_5_1_1_MSVC2012_OpenGL_64bit-Debug/debug/TC.lib
+
+LIBS += $(BOOST_ROOT)/stage/lib/libboost_date_time-vc110-mt-gd-1_54.lib
+
+debug{
+LIBS += ../x64/Debug/TC.lib
+}
 
 SOURCES += main.cpp\
     mainwindow.cpp \
