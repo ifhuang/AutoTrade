@@ -34,7 +34,6 @@ private:
 	int confirmPriceInfo(string quoteId);
 	
 	TradeItem* str2TradeItem(string orderStr);
-	string orderItem2Str(OrderItem* po);
 	OrderItem* str2UpdatedOrder(string orderStr);
 	void processOrder();
 	void processPrice();

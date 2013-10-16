@@ -1,0 +1,1 @@
+const char * PROGRAM_NAME = "TradeCube";

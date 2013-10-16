@@ -333,7 +333,7 @@ int SPTrader::sendOrder(OrderItem* pOrderItem)
 {
     int len = 0;
     if (connectStatus == true){
-        string orderStr = this->orderItem2Str(pOrderItem);
+        string orderStr = StringProcessor::OrderItemToString(pOrderItem, platformInfo.accountNo);
         //LogHandler::getLogHandler().log(orderStr);
         pOrderItem->log();
         if ((len = send(orderSocket, orderStr.c_str(), orderStr.length(), 0)) < 0){
@@ -478,29 +478,6 @@ OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
         cur++;
     }
     return oi;
-}
-
-string DoubleToString(double d)
-{
-    string str;
-    stringstream ss;
-    ss << d;
-    ss >> str;
-    return str;
-}
-
-string SPTrader::orderItem2Str(OrderItem* po)
-{
-    char buff[20];
-    string orderStr = string("3103,0,") + itoa(po->getAction(), buff, RADIX) + "," + platformInfo.accountNo + "," + itoa(po->getOrderNo(), buff, RADIX) + ",";
-    orderStr += po->getQuoteId() + "," + string(1, po->getBuySell()) + "," + DoubleToString(po->getSubmitPrice()) + ",";
-    orderStr += DoubleToString(po->getQty()) + "," + po->getOpenClose() + ",0,";
-    orderStr += lexical_cast<string>(po->getValidType()) + ",," + PROGRAM_NAME + ":";
-    orderStr += lexical_cast<string>(po->getTraderId()) + ":";
-    orderStr += lexical_cast<string>(po->getOrderRefId()) + "\r\n";
-    //cout<<orderStr<<endl;
-
-    return orderStr;
 }
 
 int SPTrader::deleteQuote(QuoteItem *pQuoteItem)

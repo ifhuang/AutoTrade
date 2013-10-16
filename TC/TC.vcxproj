@@ -129,6 +129,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="DispatcherFactory.h" />
+    <ClInclude Include="global.h" />
     <ClInclude Include="LogHandler.h" />
     <ClInclude Include="OrderItem.h" />
     <ClInclude Include="PlatformInfo.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="string_processor.cpp" />
     <ClCompile Include="SwingTrader.cpp" />
+    <ClCompile Include="TC.cpp" />
     <ClCompile Include="TradeUnit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

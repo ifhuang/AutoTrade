@@ -27,6 +27,8 @@ public:
     /// <param name="order_str">    The order string. </param>
     /// <returns>   null if it fails, else an OrderItem*. </returns>
     static OrderItem* StrintToOrderItem(string order_str);
+
+    static std::string OrderItemToString(OrderItem* po, const std::string &account_no);
 };
 
 #endif  // TC_STRING_PROCESSOR_H_

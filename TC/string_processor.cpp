@@ -3,10 +3,12 @@
 #include <vector>
 #ifndef Q_MOC_RUN
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/lexical_cast.hpp>
 #endif
 #include "constants.h"
+#include "global.h"
 
 using std::string;
 using std::vector;
@@ -36,6 +38,30 @@ namespace{
 
     private:
         vector<string> message_split;
+        DISALLOW_COPY_AND_ASSIGN(Spliter);
+    };
+
+    class Joiner
+    {
+    public:
+        Joiner(string str) : str_(str) {}
+
+        template<class T>
+        Joiner& Put(T item)
+        {
+            items_.push_back(lexical_cast<string>(item));
+            return *this;
+        }
+
+        string Join() const
+        {
+            return boost::join(items_, str_);
+        }
+
+    private:
+        vector<string> items_;
+        string str_;
+        DISALLOW_COPY_AND_ASSIGN(Joiner);
     };
 }
 
@@ -178,4 +204,18 @@ OrderItem* StringProcessor::StrintToOrderItem(string order_str)
         return nullptr;
     }
     return oi;
+}
+
+std::string StringProcessor::OrderItemToString(OrderItem* po, const std::string &account_no)
+{
+    Joiner joiner(",");
+    joiner.Put("3103,0").Put(po->getAction()).Put(account_no);
+    joiner.Put(po->getOrderNo()).Put(po->getQuoteId()).Put(po->getBuySell());
+    joiner.Put(po->getSubmitPrice()).Put(po->getQty()).Put(po->getOpenClose()).Put(0);
+    joiner.Put(po->getValidType()).Put("");
+    Joiner app_info(":");
+    app_info.Put(PROGRAM_NAME).Put(po->getTraderId()).Put(po->getOrderRefId());
+    joiner.Put(app_info.Join());
+    string order_str = joiner.Join() + "\r\n";
+    return order_str;
 }

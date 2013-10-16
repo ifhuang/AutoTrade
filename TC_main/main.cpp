@@ -6,7 +6,6 @@
 #include "../TC/DispatcherFactory.h"
 
 int traderId = 1;
-const char * PROGRAM_NAME = "TradeCube";
 
 void testComboTrader() 
 {
