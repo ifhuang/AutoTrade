@@ -13,18 +13,23 @@ using boost::tuple;
 
 namespace lex{
 
-    Data::Data()
-    {
-        Data("lex.db");
-    }
-
-    Data::Data(const char *database_file)
+    void Data::Open(const char *database_file)
     {
         int return_code = sqlite3_open(database_file, &db);
         if (return_code != SQLITE_OK)
         {
             throw exception(("error code " + lexical_cast<string>(return_code)).c_str());
         }
+    }
+
+    Data::Data(const char *database_file)
+    {
+        Open(database_file);
+    }
+
+    Data::Data()
+    {
+        Open("lex.db");
     }
 
     Data::~Data()
@@ -51,7 +56,7 @@ namespace lex{
     {
         select_study_stmt_.Reset(db);
         select_study_stmt_.Bind(1, "test");
-        select_study_stmt_.Step();
+        if(!select_study_stmt_.Step())return nullptr;
         return select_study_stmt_.ColumnText(0);
     }
 

@@ -8,7 +8,6 @@
 
 namespace lex{
 
-
     class Data
     {
     public:
@@ -20,6 +19,8 @@ namespace lex{
         std::vector<boost::tuple<std::string, bool> > SelectStudies();
 
     private:
+        void Open(const char *database_file);
+
         sqlite3 *db;
 
         static const char *insert_study_query_;

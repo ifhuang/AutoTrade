@@ -105,9 +105,4 @@ namespace boost {
     } // namespace serialization
 } // namespace boost
 
-namespace lex{
-    std::string save(Program &p);
-
-}
-
 #endif  // LEX_TREE_SERIALIZATION_H_

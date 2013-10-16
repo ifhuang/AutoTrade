@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+
 #define SQLITE_OMIT_DEPRECATED
 #include "sqlite3.h"
 
@@ -12,6 +13,7 @@ namespace lex{
     {
     public:
         Statement(const std::string &query) : query_(query), stmt_(nullptr) {}
+        ~Statement();
 
         void Reset(sqlite3 *db);
         void Bind(int n, const char *text);

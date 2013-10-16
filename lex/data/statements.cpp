@@ -13,6 +13,11 @@ using boost::lexical_cast;
 
 namespace lex
 {
+    Statement::~Statement()
+    {
+        if (!stmt_)sqlite3_finalize(stmt_);
+    }
+
     void Statement::Reset(sqlite3 *db)
     {
         if (!stmt_)

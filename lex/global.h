@@ -1,5 +1,5 @@
-#ifndef GLOBAL_H_
-#define GLOBAL_H_
+#ifndef LEX_GLOBAL_H_
+#define LEX_GLOBAL_H_
 
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
@@ -7,4 +7,4 @@
     TypeName(const TypeName&) = delete;        \
     void operator=(const TypeName&) = delete
 
-#endif
+#endif  // LEX_GLOBAL_H_
