@@ -17,6 +17,7 @@ namespace lex{
         void Bind(int n, const char *text);
         bool Step();
         const char* ColumnText(int n);
+        bool ColumnBool(int n);
 
     private:
         const std::string query_;

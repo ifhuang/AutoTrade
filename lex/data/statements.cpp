@@ -55,6 +55,11 @@ namespace lex
         return reinterpret_cast<const char*>(sqlite3_column_text(stmt_, n));
     }
 
+    bool Statement::ColumnBool(int n)
+    {
+        return sqlite3_column_int(stmt_, n);
+    }
+
     void lex::Statements::Reset(sqlite3 *db)
     {
         if (!initialized_)Initialize();

@@ -18,3 +18,17 @@ lex::Program DataRepository::LoadProgram()
     string s = data.SelectStudy();
     return load(s);
 }
+
+vector<LexStudy> DataRepository::ListStudies()
+{
+    Data data;
+    auto studies = data.SelectStudies();
+    vector<LexStudy> lex_studies;
+    for (auto study : studies)
+    {
+        LexStudy lex_study;
+        boost::tie(lex_study.name, lex_study.ready_status) = study;
+        lex_studies.push_back(lex_study);
+    }
+    return lex_studies;
+}

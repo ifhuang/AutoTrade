@@ -22,4 +22,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lex_test.db">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="lex_test_empty.db">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

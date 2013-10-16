@@ -87,6 +87,9 @@
     <ClCompile Include="lex_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lex_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="el.tab.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="interface\lex_factory.h">
       <Filter>Header Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="lex_impl.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

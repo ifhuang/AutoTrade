@@ -3,29 +3,33 @@
 #include <exception>
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include <boost/tuple/tuple.hpp>
 
 using std::exception;
 using std::string;
+using std::vector;
 using boost::lexical_cast;
+using boost::tuple;
 
 namespace lex{
 
-    
-
-    Data::Data() : insert_study_stmt_(insert_study_query_), select_study_stmt_(select_study_query_)
+    Data::Data()
     {
-        sqlite3_open("lex.db", &db);
+        Data("lex.db");
+    }
+
+    Data::Data(const char *database_file)
+    {
+        int return_code = sqlite3_open(database_file, &db);
+        if (return_code != SQLITE_OK)
+        {
+            throw exception(("error code " + lexical_cast<string>(return_code)).c_str());
+        }
     }
 
     Data::~Data()
     {
         sqlite3_close(db);
-    }
-
-    void Data::test()
-    {
-        char *error_message;
-        sqlite3_exec(db, "insert into a values ('1',1)", nullptr, 0, &error_message);
     }
 
     const char* Data::insert_study_query_ = "begin transaction;"
@@ -51,7 +55,20 @@ namespace lex{
         return select_study_stmt_.ColumnText(0);
     }
 
+    const char* Data::select_studies_query_ = "select * from study";
 
+    vector<tuple<string, bool> > Data::SelectStudies()
+    {
+        Statement &stmt = select_studies_stmt_;
+        stmt.Reset(db);
+        vector<tuple<string, bool> > studies;
+        while (stmt.Step())
+        {
+            tuple<string, bool> study{ stmt.ColumnText(0), stmt.ColumnBool(1) };
+            studies.push_back(study);
+        }
+        return studies;
+    }
 
 
 }

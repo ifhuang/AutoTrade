@@ -78,6 +78,7 @@
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="lex.yy.cpp" />
     <ClCompile Include="lex_factory.cpp" />
+    <ClCompile Include="lex_impl.cpp" />
     <ClCompile Include="lex_runner.cpp" />
     <ClCompile Include="operator.cpp" />
     <ClCompile Include="run_time_environment.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="interface\tc_bar_interface.h" />
     <ClInclude Include="lex.h" />
     <ClInclude Include="interface\lex_factory.h" />
+    <ClInclude Include="lex_impl.h" />
     <ClInclude Include="lex_runner.h" />
     <ClInclude Include="lex_runner_interface.h" />
     <ClInclude Include="operator.h" />
