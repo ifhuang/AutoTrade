@@ -119,5 +119,11 @@
     <ClCompile Include="TC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TradeItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

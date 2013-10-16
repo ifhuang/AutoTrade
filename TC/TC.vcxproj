@@ -152,12 +152,14 @@
     <ClCompile Include="DispatcherFactory.cpp" />
     <ClCompile Include="LogHandler.cpp" />
     <ClCompile Include="OrderItem.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="PriceItem.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="string_processor.cpp" />
     <ClCompile Include="SwingTrader.cpp" />
     <ClCompile Include="TC.cpp" />
+    <ClCompile Include="TradeItem.cpp" />
     <ClCompile Include="TradeUnit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

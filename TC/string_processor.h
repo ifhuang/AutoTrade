@@ -5,6 +5,7 @@
 #include "OrderItem.h"
 #include "Position.h"
 #include "PriceItem.h"
+#include "TradeItem.h"
 
 class StringProcessor
 {
@@ -26,9 +27,15 @@ public:
     ///
     /// <param name="order_str">    The order string. </param>
     /// <returns>   null if it fails, else an OrderItem*. </returns>
-    static OrderItem* StrintToOrderItem(string order_str);
+    static OrderItem* StrintToOrderItem(std::string order_str);
 
     static std::string OrderItemToString(OrderItem* po, const std::string &account_no);
+
+    /// <summary>   3109 string to trade item. </summary>
+    ///
+    /// <param name="trade_str">    The trade string. </param>
+    /// <returns>   null if it fails, else a TradeItem*. </returns>
+    static TradeItem* StringToTradeItem(std::string trade_str);
 };
 
 #endif  // TC_STRING_PROCESSOR_H_

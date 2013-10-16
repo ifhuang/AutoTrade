@@ -6,22 +6,25 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/tuple/tuple.hpp>
 #endif
 #include "constants.h"
 #include "global.h"
+#include "LogHandler.h"
 
 using std::string;
 using std::vector;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
+using boost::tuple;
 
 namespace{
     class Spliter
     {
     public:
-        Spliter(string str)
+        Spliter(string str, const char *s = ",")
         {
-            boost::split(message_split, str, boost::is_any_of(","));
+            boost::split(message_split, str, boost::is_any_of(s));
         }
 
         bool Exists(size_t idx)
@@ -63,6 +66,12 @@ namespace{
         string str_;
         DISALLOW_COPY_AND_ASSIGN(Joiner);
     };
+
+    tuple<int, int> ParseRef(string ref)
+    {
+        Spliter spliter(ref, ":");
+        return boost::make_tuple(spliter.Get<int>(1), spliter.Get<int>(2));
+    }
 }
 
 PriceItem* StringProcessor::StringToPriceItem(std::string price_str)
@@ -183,18 +192,9 @@ OrderItem* StringProcessor::StrintToOrderItem(string order_str)
         oi->setOpenClose(spliter.Get<string>(12));
         oi->setValidType(spliter.Get<int>(14));
         string ref = spliter.Get<string>(16);
-        if (!ref.empty())
-        {
-            char tmp2[20] = "";
-            char *elem2 = NULL;
-            char *delims2 = ":";
-            strcpy(tmp2, ref.c_str());
-            elem2 = strtok(tmp2, delims2);
-            elem2 = strtok(NULL, delims2);
-            oi->setTraderId(atoi(elem2));
-            elem2 = strtok(NULL, delims2);
-            oi->setOrderRefId(atol(elem2));
-        }
+        auto tuple = ParseRef(ref);
+        oi->setTraderId(tuple.get<0>());
+        oi->setOrderRefId(tuple.get<1>());
         oi->setOriginalPrice(spliter.Get<double>(17));
         oi->setOriginalQty(spliter.Get<double>(18));
     }
@@ -218,4 +218,37 @@ std::string StringProcessor::OrderItemToString(OrderItem* po, const std::string 
     joiner.Put(app_info.Join());
     string order_str = joiner.Join() + "\r\n";
     return order_str;
+}
+
+TradeItem* StringProcessor::StringToTradeItem(std::string trade_str)
+{
+    Spliter spliter(trade_str);
+    TradeItem* ti = new TradeItem();
+    ti->setTradePlatform(SPTRADER);
+    try
+    {
+        ti->setTradeRecordNo(spliter.Get<int>(2));
+        ti->setAccount(spliter.Get<string>(3));
+        ti->setOrderNo(spliter.Get<int>(4));
+        ti->setQuoteId(spliter.Get<string>(5));
+        ti->setBuySell(spliter.Get<string>(6)[0]);
+        ti->setTradePrice(spliter.Get<double>(7));
+        ti->setQty(spliter.Get<int>(8));
+        ti->setOpenClose(spliter.Get<string>(9));
+        string ref = spliter.Get<string>(10);
+        auto tuple = ParseRef(ref);
+        ti->setTraderId(tuple.get<0>());
+        ti->setOrderRefId(tuple.get<1>());
+
+        ti->setTradeNo(spliter.Get<int>(13));
+        ti->setStatus(spliter.Get<int>(14));
+        ti->setPositionSize(spliter.Get<int>(15));
+        ti->setTradeTime(boost::posix_time::from_time_t(spliter.Get<time_t>(16)));
+    }
+    catch (bad_lexical_cast &)
+    {
+        delete ti;
+        return nullptr;
+    }
+    return ti;
 }

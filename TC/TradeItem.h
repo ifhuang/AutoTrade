@@ -2,20 +2,17 @@
 #define __TRADEITEM__
 
 #include <string> 
-#include <sstream>
 #ifndef Q_MOC_RUN
 #include <boost/date_time/posix_time/posix_time.hpp>
 #endif
-#include "LogHandler.h"
-using namespace std; 
 
 class TradeItem
 {
 private:
-	string account;
+	std::string account;
 	int traderId;
 	int tradePlatform;
-	string quoteId;
+    std::string quoteId;
 	int action;
 	double tradePrice;
 	long tradeNo;
@@ -29,7 +26,7 @@ private:
 	int orderNo;
 	long orderRefId;
 	int positionSize;
-	char openclose;
+    std::string openclose;
 	int tradeRecordNo;
     boost::posix_time::ptime tradeTime;
 
@@ -45,12 +42,12 @@ public:
 		return this->tradeRecordNo;
 	}
 
-	void setAccount(string account)
+    void setAccount(std::string account)
 	{
 		this->account = account;
 	}
 
-	string getAccount()
+    std::string getAccount()
 	{
 		return this->account;
 	}
@@ -95,7 +92,7 @@ public:
 		this->tradeTime = tradeTime;
 	}
 
-	void setQuoteId(string quoteId)
+    void setQuoteId(std::string quoteId)
 	{
 		this->quoteId = quoteId;
 	}
@@ -110,7 +107,8 @@ public:
 		this->submitPrice = submitPrice;
 	}
 
-	void setQty(int qty){
+	void setQty(int qty)
+    {
 		this->qty = qty;
 	}
 
@@ -144,12 +142,12 @@ public:
 		this->orderRefId = orderRefId;
 	}
 
-	void setOpenClose(char openclose)
+    void setOpenClose(std::string openclose)
 	{
 		this->openclose = openclose;
 	}
 
-	string getQuoteId()
+    std::string getQuoteId()
 	{
 		return this->quoteId;
 	}
@@ -198,7 +196,7 @@ public:
 		return this->orderRefId;
 	}
 
-	char getOpenClose()
+    std::string getOpenClose()
 	{
 		return this->openclose;
 	}
@@ -223,28 +221,6 @@ public:
 		return this->tradeTime;
 	}
 
-	void log() {
-		stringstream str;
-		str << "TradeItem: Account(" << account << ") "
-			<< "traderId(" << traderId << ") "
-			<< "tradePlatform(" << tradePlatform << ") "
-			<< "quoteId(" << quoteId << ") "
-			<< "action(" << action << ") "
-			<< "tradePrice(" << tradePrice << ") "
-			<< "tradeNo(" << tradeNo  << ") "
-			<< "submitPrice(" << submitPrice << ") "
-			<< "qty(" << qty << ") "
-			<< "buysell(" << buysell << ") "
-			<< "orderType(" << orderType << ") "
-			<< "validType(" <<  validType << ") "
-			<< "status(" << status << ") "
-			<< "orderNo(" << orderNo << ") "
-			<< "orderRefId(" << orderRefId << ") "
-			<< "positionSize(" << positionSize << ") "
-			<< "openclose(" << openclose << ") "
-			<< "tradeRecordNo(" << tradeRecordNo << ") "
-			<< "tradeTime(" << tradeTime << ")";
-		LogHandler::getLogHandler().log(str.str());
-	}
+	void log();
 };
 #endif

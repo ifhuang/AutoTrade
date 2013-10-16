@@ -389,67 +389,6 @@ bool SPTrader::isSupport(int orderType)
         return false;
 }
 
-TradeItem* SPTrader::str2TradeItem(string TradeStr)
-{
-    TradeItem* ti = new TradeItem();
-    ti->setTradePlatform(SPTRADER);
-    char elem[30] = { 0 };
-    char* pelem = &TradeStr[0];
-    char* delims = pelem;
-    int c = 1, strcount = 0;
-
-    for (int i = 0; i <= TradeStr.length(); i++)
-    {
-        if (*delims == ',' || *delims == '\0')
-        {
-            //memset(tmp,0,count+1);
-            strncpy(elem, pelem, strcount);
-            elem[strcount] = '\0';
-            if (c == 3 && strcount > 0) ti->setTradeRecordNo(atoi(elem));
-            else if (c == 4 && strcount > 0) ti->setAccount(elem);
-            else if (c == 5 && strcount > 0) ti->setOrderNo(atol(elem));
-            else if (c == 6 && strcount > 0) ti->setQuoteId(elem);
-            else if (c == 7 && strcount > 0) ti->setBuySell(elem[0]);
-            else if (c == 8 && strcount > 0) ti->setTradePrice(atof(elem));
-            else if (c == 9 && strcount > 0) ti->setQty(atoi(elem));
-            else if (c == 10 && strcount > 0) ti->setOpenClose(atoi(elem));
-            else if (c == 11 && strcount > 0)
-            {
-                char tmp2[100] = "";
-                char *elem2 = NULL;
-                char *delims2 = ":";
-                strcpy(tmp2, elem);
-                elem2 = strtok(tmp2, delims2);
-
-                elem2 = strtok(NULL, delims2);
-                if (elem2 != NULL) {
-                    ti->setTraderId(atoi(elem2));
-                }
-
-                elem2 = strtok(NULL, delims2);
-                if (elem2 != NULL) {
-                    ti->setOrderRefId(atol(elem2));
-                }
-            }
-            else if (c == 14 && strcount > 0) ti->setTradeNo(atoi(elem));
-            else if (c == 15 && strcount > 0) ti->setStatus(atoi(elem));
-            else if (c == 16 && strcount > 0) ti->setPositionSize(atoi(elem));
-            else if (c == 17 && strcount > 0) ti->setTradeTime(from_time_t(atol(elem)));
-            delims++;
-            pelem = delims;
-            strcount = 0;
-            c++;
-        }
-        else
-        {
-            strcount++;
-            delims++;
-        }
-
-    }
-    return ti;
-}
-
 OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
 {
     OrderItem* oi = new OrderItem();
@@ -614,24 +553,20 @@ void SPTrader::processPrice()
 
 void SPTrader::processOrder()
 {
-    char recvbuff[200] = "";
-    int pkglen = 0;
-    string rmd = "", orderStr = "", tmp;
-    char* pstr = NULL;
     while (true){
         if (connectStatus != true){
             continue;
         }
-        recvbuff[0] = '\0';
-        pkglen = recv(orderSocket, recvbuff, sizeof(recvbuff), 0);
+        char recvbuff[4096] = "";
+        int pkglen = recv(orderSocket, recvbuff, sizeof(recvbuff), 0);
         if (pkglen < 0){
             LogHandler::getLogHandler().alert(2, "Processing order", "error occured when receive data from order socket!");
             continue;
         }
-        recvbuff[pkglen] = 0;
+        string tmp = string(recvbuff, pkglen);
         int start = 0;
-        orderStr = "";
-        tmp = recvbuff;
+        string rmd;
+        string orderStr;
         while (true){
             int end = tmp.find("\r\n", start);
             if (end == string::npos){
@@ -652,7 +587,7 @@ void SPTrader::processOrder()
                 returnOrder(po);
             }
             else if (orderStr.find("3109,0", 0) != string::npos) {
-                TradeItem* ti = str2TradeItem(orderStr);
+                TradeItem* ti = StringProcessor::StringToTradeItem(orderStr);
                 confirmTradeInfo(ti->getTradeNo());
                 //ti->log();
                 // 订单完成TRADE_DONE_MSG
@@ -723,13 +658,11 @@ void SPTrader::processOrder()
 
 void SPTrader::processTickerMessage()
 {
-    char recvbuff[200] = { 0 };
-    int pkglen = 0;
     char* pstr = NULL;
     while (true){
         if (connectStatus == true){
-            recvbuff[0] = '\0';
-            pkglen = recv(tickSocket, recvbuff, sizeof(recvbuff), 0);
+            char recvbuff[4096] = "";
+            int pkglen = recv(tickSocket, recvbuff, sizeof(recvbuff), 0);
             if (pkglen < 0){
                 LogHandler::getLogHandler().alert(3, "Ticker error", "error occured when receive data from order socket!");
             }

@@ -1,20 +1,19 @@
 #ifndef __POSITION__
 #define __POSITION__
+
 #include <list>
-#include <sstream>
 #include "TradeItem.h"
-#include "LogHandler.h"
 
 class Position
 {
 private:
 	int tradePlatform;
 	int longshort;
-	string quoteId;
+	std::string quoteId;
 	double size;
-	list<TradeItem*> tradeList;
+    std::list<TradeItem*> tradeList;
 public:
-	string accountNo;
+    std::string accountNo;
 	int preqty; 
 	double preavg; 
 	int longqty;
@@ -23,20 +22,8 @@ public:
 	double shortavg;
 	int netqty;
 	double netavg;
-	void log() {
-		stringstream str;
-		str << "Position:accountNo(" << accountNo << ") "
-			<< "quoteID(" << quoteId << ") "
-			<< "preqty(" << preqty << ") "
-			<< "preavg(" << preavg << ") "
-			<< "longqty(" << longqty << ") "
-			<< "longav(" << longavg << ") "
-			<< "shortqty(" << shortqty << ") "
-			<< "shortavg(" << shortavg << ") "
-			<< "netqty(" << netqty << ") "
-			<< "netavg(" << netavg << ") ";
-		LogHandler::getLogHandler().log(str.str());
-	}
+	void log();
+
 	void setLongShort(int longshort)
 	{
 		this->longshort = longshort;
@@ -55,12 +42,12 @@ public:
 	{
 		return this->tradePlatform;
 	}
-	void setQuoteId(string quoteId)
+    void setQuoteId(std::string quoteId)
 	{
 		this->quoteId = quoteId;
 	}
 
-	string getQuoteId()
+    std::string getQuoteId()
 	{
 		return this->quoteId;
 	}
@@ -75,7 +62,7 @@ public:
 		return this->size;
 	}
 
-	list<TradeItem*>& getTradeList()
+    std::list<TradeItem*>& getTradeList()
 	{
 		return this->tradeList;
 	}
