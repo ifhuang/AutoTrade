@@ -15,7 +15,7 @@ namespace lex
 {
     Statement::~Statement()
     {
-        if (!stmt_)sqlite3_finalize(stmt_);
+        if (stmt_)sqlite3_finalize(stmt_);
     }
 
     void Statement::Reset(sqlite3 *db)
@@ -62,15 +62,24 @@ namespace lex
 
     bool Statement::ColumnBool(int n)
     {
-        return sqlite3_column_int(stmt_, n);
+        return sqlite3_column_int(stmt_, n) != 0;
     }
+
+    Statements::~Statements()
+    {
+        for (Statement *stmt : stmts_)
+        {
+            delete stmt;
+        }
+    }
+
 
     void lex::Statements::Reset(sqlite3 *db)
     {
         if (!initialized_)Initialize();
-        for (Statement &stmt : stmts_)
+        for (Statement *stmt : stmts_)
         {
-            stmt.Reset(db);
+            stmt->Reset(db);
         }
     }
 
@@ -82,24 +91,25 @@ namespace lex
         {
             boost::trim(query);
             if (query.empty())continue;
-            stmts_.push_back(Statement(query));
+            Statement *stmt = new Statement(query);
+            stmts_.push_back(stmt);
         }
         initialized_ = true;
     }
 
     void Statements::Bind(int n, const char *text)
     {
-        for (Statement &stmt : stmts_)
+        for (Statement *stmt : stmts_)
         {
-            stmt.Bind(n, text);
+            stmt->Bind(n, text);
         }
     }
 
     void Statements::Step()
     {
-        for (Statement &stmt : stmts_)
+        for (Statement *stmt : stmts_)
         {
-            stmt.Step();
+            stmt->Step();
         }
     }
 

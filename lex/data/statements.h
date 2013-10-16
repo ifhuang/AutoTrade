@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include "../global.h"
 #define SQLITE_OMIT_DEPRECATED
 #include "sqlite3.h"
 
@@ -25,12 +25,14 @@ namespace lex{
         const std::string query_;
         sqlite3_stmt *stmt_;
         int parameter_count_;
+        DISALLOW_COPY_AND_ASSIGN(Statement);
     };
 
     class Statements
     {
     public:
         Statements(const char *query) : query_(query) {}
+        ~Statements();
 
         void Reset(sqlite3 *db);
         void Bind(int n, const char *text);
@@ -42,7 +44,8 @@ namespace lex{
 
         const char *query_;
         bool initialized_ = false;
-        std::vector<Statement> stmts_;
+        std::vector<Statement*> stmts_;
+        DISALLOW_COPY_AND_ASSIGN(Statements);
     };
 }
 #endif  // LEX_DATA_STATEMENTS_H__
