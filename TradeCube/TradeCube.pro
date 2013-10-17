@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TradeCube
 TEMPLATE = app
 
+DEFINES += NOMINMAX
+
 INCLUDEPATH += $(BOOST_ROOT) \
     ../TC
 

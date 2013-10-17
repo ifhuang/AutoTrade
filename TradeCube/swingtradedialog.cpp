@@ -88,12 +88,12 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     connect(swingright_remstr, SIGNAL(triggered()), this, SLOT(remove_strategy()));
     connect(pb2_menu_open, SIGNAL(triggered()), this, SLOT(open_close_strategy()));
 
-    setAttribute(Qt::WA_DeleteOnClose);
+//    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 SwingTradeDialog::~SwingTradeDialog()
 {
-    delete ui;   
+    delete ui;
     delete pb1;
     delete label_strategy;
     delete pb2;
@@ -290,6 +290,8 @@ void SwingTradeDialog::open_close_strategy()
 void SwingTradeDialog::on_click_buybid()
 {
     swingtrader->createOrder(BUY, OPEN, swingtrader->getTradeUnit()->getPrice()->bidPrice1, ui->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+    //swingtrader->updateOrder(1, SELL, CLOSE, swingtrader->getTradeUnit()->getPrice()->bidPrice1, ui->spinBox_qty->text().toInt() + 1, DAY);
+    //swingtrader->deleteOrder(1);
 }
 
 void SwingTradeDialog::on_click_sellbid()

@@ -29,10 +29,10 @@ public:
     void displaySwingUpdatePositions(Position *position);
     // display interface for add/update/remove working orders tab in swing trade tab
     virtual void displaySwingAddWorkingOrders(OrderItem *orderItem) override;
-    void displaySwingUpdateWorkingOrders(OrderItem *orderItem);
-    void displaySwingRemoveWorkingOrders();
+    virtual void displaySwingUpdateWorkingOrders(long orderRefId, OrderItem *orderItem) override;
+    virtual void displaySwingRemoveWorkingOrders(long orderRefId) override;
     // display interface for add order history tab in swing trade tab
-    void displaySwingAddOrderHistory(TradeItem *orderItem);
+    void displaySwingAddOrderHistory(TradeItem *tradeItem);
 
 private slots:    
     // insert swing/combo trade dialog
@@ -55,9 +55,6 @@ private slots:
     void add_swing_positions();
     void update_swing_positions();
     // test for display interface for add/update/remove working orders tab in swing trade tab
-    void add_swing_working_orders();
-    void update_swing_working_orders();
-    void remove_swing_working_orders();
     // test for display interface for add order history tab in swing trade tab
     void add_swing_order_history();
     // --------------------test slots--------------------

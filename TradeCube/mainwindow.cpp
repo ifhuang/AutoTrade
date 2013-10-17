@@ -9,6 +9,7 @@
 #include <list>
 #include "../TC/DispatcherFactory.h"
 #include "logindialog.h"
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -66,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     swingpositionsmodel = new QStandardItemModel;
     swingpositionsmodel->setColumnCount(6);
-    swingpositionsmodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
+    swingpositionsmodel->setHeaderData(0, Qt::Horizontal, tr("Instrument"));
     swingpositionsmodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
     swingpositionsmodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
     swingpositionsmodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
@@ -75,18 +76,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->swingPositionsView->setModel(swingpositionsmodel);
 
     swingworkingordersmodel = new QStandardItemModel;
-    swingworkingordersmodel->setColumnCount(6);
-    swingworkingordersmodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
-    swingworkingordersmodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
-    swingworkingordersmodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
-    swingworkingordersmodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
-    swingworkingordersmodel->setHeaderData(4, Qt::Horizontal, tr("Price"));
-    swingworkingordersmodel->setHeaderData(5, Qt::Horizontal, tr("Quantity"));
+    swingworkingordersmodel->setColumnCount(8);
+    swingworkingordersmodel->setHeaderData(0, Qt::Horizontal, tr("Id"));
+    swingworkingordersmodel->setHeaderData(1, Qt::Horizontal, tr("Instrument"));
+    swingworkingordersmodel->setHeaderData(2, Qt::Horizontal, tr("Date"));
+    swingworkingordersmodel->setHeaderData(3, Qt::Horizontal, tr("Order Type"));
+    swingworkingordersmodel->setHeaderData(4, Qt::Horizontal, tr("Buy Sell"));
+    swingworkingordersmodel->setHeaderData(5, Qt::Horizontal, tr("Price"));
+    swingworkingordersmodel->setHeaderData(6, Qt::Horizontal, tr("Quantity"));
+    swingworkingordersmodel->setHeaderData(7, Qt::Horizontal, tr("Status"));
     ui->swingWorkingOrdersView->setModel(swingworkingordersmodel);
 
     swingorderhistorymodel = new QStandardItemModel;
     swingorderhistorymodel->setColumnCount(6);
-    swingorderhistorymodel->setHeaderData(0, Qt::Horizontal, tr("Instruments"));
+    swingorderhistorymodel->setHeaderData(0, Qt::Horizontal, tr("Instrument"));
     swingorderhistorymodel->setHeaderData(1, Qt::Horizontal, tr("Date"));
     swingorderhistorymodel->setHeaderData(2, Qt::Horizontal, tr("Order Type"));
     swingorderhistorymodel->setHeaderData(3, Qt::Horizontal, tr("Buy Sell"));
@@ -260,43 +263,48 @@ void MainWindow::update_swing_positions()
 
 void MainWindow::displaySwingAddWorkingOrders(OrderItem *orderItem)
 {
-    QStandardItem* item1 = new QStandardItem(QString(orderItem->getQuoteId().c_str()));
-    QStandardItem* item2 = new QStandardItem(QString("20131013"));
-    QStandardItem* item3 = new QStandardItem(QString("%1").arg(orderItem->getOrderType()));
-    QStandardItem* item4 = new QStandardItem(QString("%1").arg(orderItem->getBuySell()));
-    QStandardItem* item5 = new QStandardItem(QString("%1").arg(orderItem->getSubmitPrice()));
-    QStandardItem* item6 = new QStandardItem(QString("%1").arg(orderItem->getQty()));
+    QStandardItem* item1 = new QStandardItem(QString("%0").arg(orderItem->getOrderRefId()));
+    QStandardItem* item2 = new QStandardItem(QString(orderItem->getQuoteId().c_str()));
+    QStandardItem* item3 = new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+    QStandardItem* item4 = new QStandardItem(QString("%0").arg(orderItem->getOrderType()));
+    QStandardItem* item5 = new QStandardItem(QString("%0").arg(orderItem->getBuySell()));
+    QStandardItem* item6 = new QStandardItem(QString("%0").arg(orderItem->getSubmitPrice()));
+    QStandardItem* item7 = new QStandardItem(QString("%0").arg(orderItem->getQty()));
+    QStandardItem* item8 = new QStandardItem(QString("%0").arg(orderItem->getStatus()));
     QList<QStandardItem *> data;
-    data<<item1<<item2<<item3<<item4<<item5<<item6;
+    data << item1 << item2 << item3 << item4 << item5 << item6 << item7 << item8;
     swingworkingordersmodel->insertRow(0, data);
 }
 
-void MainWindow::displaySwingUpdateWorkingOrders(OrderItem *orderItem)
+void MainWindow::displaySwingUpdateWorkingOrders(long orderRefId, OrderItem *orderItem)
 {
-    swingworkingordersmodel->removeRow(0);
-    displaySwingAddWorkingOrders(orderItem);
+    for(int i=0; i<swingworkingordersmodel->rowCount(); i++)
+    {
+        if(swingworkingordersmodel->item(i)->text().compare(QString("%0").arg(orderRefId)) == 0)
+        {
+            swingworkingordersmodel->setItem(i, 0, new QStandardItem(QString("%0").arg(orderItem->getOrderRefId())));
+            swingworkingordersmodel->setItem(i, 1, new QStandardItem(QString(orderItem->getQuoteId().c_str())));
+            swingworkingordersmodel->setItem(i, 2, new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+            swingworkingordersmodel->setItem(i, 3, new QStandardItem(QString("%0").arg(orderItem->getOrderType())));
+            swingworkingordersmodel->setItem(i, 4, new QStandardItem(QString("%0").arg(orderItem->getBuySell())));
+            swingworkingordersmodel->setItem(i, 5, new QStandardItem(QString("%0").arg(orderItem->getSubmitPrice())));
+            swingworkingordersmodel->setItem(i, 6, new QStandardItem(QString("%0").arg(orderItem->getQty())));
+            swingworkingordersmodel->setItem(i, 7, new QStandardItem(QString("%0").arg(orderItem->getStatus())));
+            break;
+        }
+    }
 }
 
-void MainWindow::displaySwingRemoveWorkingOrders()
+void MainWindow::displaySwingRemoveWorkingOrders(long orderRefId)
 {
-    swingworkingordersmodel->removeRow(0);
-}
-
-void MainWindow::add_swing_working_orders()
-{
-    OrderItem *orderItem = new OrderItem(0, "EUR/USD", (qrand() % 10000)/1000., qrand() % 100, 'B', 1, 0, "O" );
-    displaySwingAddWorkingOrders(orderItem);
-}
-
-void MainWindow::update_swing_working_orders()
-{
-    OrderItem *orderItem = new OrderItem(0, "DJIA", (qrand() % 10000)/1., qrand() % 1000, 'S', 0, 0, "C" );
-    displaySwingUpdateWorkingOrders(orderItem);
-}
-
-void MainWindow::remove_swing_working_orders()
-{
-    displaySwingRemoveWorkingOrders();
+    for(int i=0; i<swingworkingordersmodel->rowCount(); i++)
+    {
+        if(swingworkingordersmodel->item(i)->text().compare(QString("%0").arg(orderRefId)) == 0)
+        {
+            swingworkingordersmodel->removeRow(i);
+            break;
+        }
+    }
 }
 
 void MainWindow::displaySwingAddOrderHistory(TradeItem *tradeItem)

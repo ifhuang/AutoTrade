@@ -227,6 +227,11 @@ int SwingTrader::deleteOrder(long orderRefId)
 			tradeUnit->deleteOrder(orderRefId);
 		}
 	}
+
+#ifdef UI_DEBUG
+    iMainWindow->displaySwingRemoveWorkingOrders(orderRefId);
+#endif
+
 	return SUCCESS;
 }
 
@@ -362,6 +367,11 @@ long SwingTrader::updateOrder( long orderRefId, char buysell, string openclose,
 			}					
 		}
 	}
+
+#ifdef UI_DEBUG
+    iMainWindow->displaySwingUpdateWorkingOrders(orderRefId, oi);
+#endif
+
 	return orderRefId;
 }
 
