@@ -32,7 +32,7 @@ public:
     virtual void displaySwingUpdateWorkingOrders(long orderRefId, OrderItem *orderItem) override;
     virtual void displaySwingRemoveWorkingOrders(long orderRefId) override;
     // display interface for add order history tab in swing trade tab
-    void displaySwingAddOrderHistory(TradeItem *tradeItem);
+    virtual void displaySwingAddOrderHistory(TradeItem *tradeItem) override;
 
 private slots:    
     // insert swing/combo trade dialog

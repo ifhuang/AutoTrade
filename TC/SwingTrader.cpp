@@ -165,6 +165,11 @@ void SwingTrader::processTradeDone(MSG& msg) {
 			LogHandler::getLogHandler().alert(3, "Process TRADE_DONE_MSG error", "Done trade is not found in local order queues");
 		}
 	}
+
+#ifdef UI_DEBUG
+    iMainWindow->displaySwingAddOrderHistory(ti);
+#endif
+
 }
 
 void SwingTrader::processPrice(MSG& msg) {
