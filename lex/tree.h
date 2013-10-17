@@ -1,17 +1,13 @@
-#ifndef TREE_H_
-#define TREE_H_
+#ifndef LEX_TREE_H_
+#define LEX_TREE_H_
 
-#include <vector>
 #include <boost/variant.hpp>
+#include "bison/el.tab.h"
 
-#include "ast.h"
-#include "vv.h"
-
-typedef int stmt_t;
+typedef int ast_t;
 typedef int asts_t;
+typedef int stmt_t;
 typedef int stmts_t;
-
-extern stmts_t root;
 
 struct if_stmt
 {
@@ -92,22 +88,4 @@ struct print_stmt
 typedef boost::variant<if_stmt, once_stmt, for_stmt, while_stmt, switch_stmt,
 	order_stmt, func_stmt, asm_stmt, block_stmt, var_stmt, print_stmt> stmt;
 
-extern VV<stmt> stmtV;
-extern VV<std::vector<stmt_t> > stmtsV;
-extern VV<std::vector<ast_t> >astsV;
-
-extern std::vector<ast_t> inputVector;
-
-int new_if(ast_t con, stmt_t then, stmt_t els = -1);
-int new_once(ast_t con, stmt_t stmt);
-int new_order(int type, ast_t price);
-int new_while(int type, ast_t con, stmts_t stmts);
-int new_print(int location, asts_t list);
-int new_var(int type, asts_t vars);
-
-void putInput(asts_t asts);
-void pre();
-void post();
-int elparse(FILE *f);
-
-#endif  // TREE_H_
+#endif  // LEX_TREE_H_

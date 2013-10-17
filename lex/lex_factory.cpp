@@ -4,5 +4,5 @@
 
 LexInterface* LexFactory::CreateLexInterface()
 {
-    return new LexImpl();
+    return new lex::LexImpl();
 }

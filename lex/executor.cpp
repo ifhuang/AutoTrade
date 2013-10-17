@@ -83,7 +83,7 @@ namespace lex{
         case NodeType::TF:
             return n.bv;
         case NodeType::TEXT:
-            return strVector[n.idx];
+            return strVector_[n.idx];
         case NodeType::EQ:
             return boost::apply_visitor(eq_visitor(), value(n.left), value(n.right));
         case NodeType::NE:
@@ -144,7 +144,14 @@ namespace lex{
     void Executor::execute()
     {
         SetUp();
-        exec_stmts(root);
+        exec_stmts(program_->root);
+    }
+
+    std::string Executor::get_var(ast_t idx)
+    {
+        const ast &node = astV_[idx];
+        if (node.type != NodeType::VAR)throw RuntimeException("Internal get_var");
+        return strVector_[node.idx];
     }
 
 }  // namespace lex

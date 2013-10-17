@@ -64,7 +64,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "el.y" /* yacc.c:339  */
 
-#include "tree.h"
+#include "bison.h"
 extern int yylex();
 
 #line 71 "el.tab.c" /* yacc.c:339  */

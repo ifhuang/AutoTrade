@@ -1,11 +1,13 @@
-#ifndef TYPE_H_
-#define TYPE_H_
+#ifndef LEX_TYPE_H_
+#define LEX_TYPE_H_
 
 #include <string>
 #include <vector>
 
+#include "ast.h"
 #include "global.h"
 #include "tree.h"
+#include "vv.h"
 
 namespace lex{
 
@@ -39,6 +41,7 @@ namespace lex{
     };
 
     struct Program{
+        stmts_t root;
         SetUpEnviroment *sue;
         std::vector<std::string> *strVector;
         VV<ast> *astV;
@@ -69,15 +72,7 @@ namespace lex{
         TypesNotCompatible(const YYLTYPE * const loc) : SemanticError("types not compatible", loc) {}
     };
 
-    extern int kAstTrue;
-    extern SetUpEnviroment enviroment;
-
-    VType get_type(ast_t &idx, bool is_input = false);
-    std::string get_var(ast_t idx);
-    VType check_func(ast_t &idx, bool is_input = false);
-    void check(stmt_t stmt);
-    void check_stmts(stmts_t idx);
     void type_check();
 }  // namespace lex
 
-#endif  // TYPE_H_
+#endif  // LEX_TYPE_H_
