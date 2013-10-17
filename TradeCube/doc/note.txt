@@ -3,9 +3,13 @@
 2. When I run the program after totally rebuild, log folder fail to create and program down.
 
 3. When I create order, where to get the submitprice?
++getTradeUnit()
 
 4. When I close a swingtradedialog, how should I delete swingtrader?
 
 5. When I modify/remove contract in a swingtradedialog, how should I modify/remove quoteItem/tradeUnit?
 
 6. When I close the mainwindow, how should I delete disp?
+
+7. Where should I display add/update positions?
+

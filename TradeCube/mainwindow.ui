@@ -239,7 +239,6 @@
     </property>
     <addaction name="actionAdd_Swing_Positions"/>
     <addaction name="actionUpdate_Swing_Positions"/>
-    <addaction name="actionAdd_Swing_Order_History"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -288,11 +287,6 @@
   <action name="actionUpdate_Swing_Positions">
    <property name="text">
     <string>Update Swing Positions</string>
-   </property>
-  </action>
-  <action name="actionAdd_Swing_Order_History">
-   <property name="text">
-    <string>Add Swing Order History</string>
    </property>
   </action>
   <action name="action_Connect">
@@ -391,22 +385,6 @@
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>update_swing_positions()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAdd_Swing_Order_History</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>add_swing_order_history()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

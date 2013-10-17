@@ -54,9 +54,6 @@ private slots:
     // test for display interface for add/update positions tab in swing trade tab
     void add_swing_positions();
     void update_swing_positions();
-    // test for display interface for add/update/remove working orders tab in swing trade tab
-    // test for display interface for add order history tab in swing trade tab
-    void add_swing_order_history();
     // --------------------test slots--------------------
 
 private:

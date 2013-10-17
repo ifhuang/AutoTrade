@@ -3,6 +3,7 @@
 
 class OrderItem;
 class TradeItem;
+class Position;
 
 class IMainWindow
 {
