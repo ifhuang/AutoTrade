@@ -22,27 +22,18 @@
     <Filter Include="Source Files\data">
       <UniqueIdentifier>{701143c7-a66f-47e4-9253-64a5848ff595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\bison">
+      <UniqueIdentifier>{e801198e-abaa-4d92-8632-c1bb691c744d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bison">
+      <UniqueIdentifier>{447bfacc-4921-4fa6-8bd5-0dffa74f91e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lex.yy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="operator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="el.tab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ast.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="type.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="functions.cpp">
@@ -90,11 +81,26 @@
     <ClCompile Include="lex_impl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bison\ast.cpp">
+      <Filter>Source Files\bison</Filter>
+    </ClCompile>
+    <ClCompile Include="type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bison\tree.cpp">
+      <Filter>Source Files\bison</Filter>
+    </ClCompile>
+    <ClCompile Include="bison\el.tab.cpp">
+      <Filter>Source Files\bison</Filter>
+    </ClCompile>
+    <ClCompile Include="bison\lex.yy.cpp">
+      <Filter>Source Files\bison</Filter>
+    </ClCompile>
+    <ClCompile Include="type_checker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="el.tab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -114,9 +120,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="execution.h">
@@ -174,6 +177,24 @@
       <Filter>Header Files\interface</Filter>
     </ClInclude>
     <ClInclude Include="lex_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bison\bison.h">
+      <Filter>Header Files\bison</Filter>
+    </ClInclude>
+    <ClInclude Include="bison\el.tab.h">
+      <Filter>Header Files\bison</Filter>
+    </ClInclude>
+    <ClInclude Include="bison\static.h">
+      <Filter>Header Files\bison</Filter>
+    </ClInclude>
+    <ClInclude Include="bison\front.h">
+      <Filter>Header Files\bison</Filter>
+    </ClInclude>
+    <ClInclude Include="bison\lex.h">
+      <Filter>Header Files\bison</Filter>
+    </ClInclude>
+    <ClInclude Include="type_checker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,11 +26,6 @@ namespace lex {
         }
 
         RunTimeEnvironment *rte_ = nullptr;
-    private:
-        void SetUp();
-        std::vector<Value> exec_paras(asts_t idx);
-        Value exec_func(ast_t idx);
-
         const Program *program_;
         const SetUpEnviroment &sue_;
         const std::vector<std::string> &strVector_;
@@ -38,6 +33,11 @@ namespace lex {
         const VV<std::vector<stmt_t>> &astsV_;
         const VV<stmt> &stmtV_;
         const VV<std::vector<ast_t>> &stmtsV_;
+    private:
+        void SetUp();
+        std::vector<Value> exec_paras(asts_t idx);
+        std::string get_var(ast_t idx);
+        Value exec_func(ast_t idx);
 
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };

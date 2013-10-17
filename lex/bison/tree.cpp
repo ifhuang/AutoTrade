@@ -1,7 +1,13 @@
-#include "tree.h"
 
-#include <stdio.h>
+#include <cstdio>
+#include "../tree.h"
+#include "lex.h"
+#include "static.h"
+
 using namespace std;
+
+void astpre();
+void astpost();
 
 stmts_t root;
 

@@ -68,17 +68,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ast.cpp" />
+    <ClCompile Include="bison\ast.cpp" />
     <ClCompile Include="check_visitor.cpp" />
     <ClCompile Include="data\data.cpp" />
     <ClCompile Include="data\data_repository.cpp" />
-    <ClCompile Include="el.tab.cpp" />
+    <ClCompile Include="bison\el.tab.cpp" />
     <ClCompile Include="execution.cpp" />
     <ClCompile Include="executor.cpp" />
     <ClCompile Include="exec_visitor.cpp" />
     <ClCompile Include="exec_visitor_print.cpp" />
     <ClCompile Include="functions.cpp" />
-    <ClCompile Include="lex.yy.cpp" />
+    <ClCompile Include="bison\lex.yy.cpp" />
     <ClCompile Include="lex_factory.cpp" />
     <ClCompile Include="lex_impl.cpp" />
     <ClCompile Include="lex_runner.cpp" />
@@ -87,25 +87,28 @@
     <ClCompile Include="data\sqlite3.c" />
     <ClCompile Include="data\statements.cpp" />
     <ClCompile Include="table.cpp" />
-    <ClCompile Include="tree.cpp" />
+    <ClCompile Include="bison\tree.cpp" />
     <ClCompile Include="type.cpp" />
     <ClCompile Include="data\type_serialization.cpp" />
+    <ClCompile Include="type_checker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast.h" />
+    <ClInclude Include="bison\bison.h" />
     <ClInclude Include="data\ast_serialization.h" />
     <ClInclude Include="check_visitor.h" />
     <ClInclude Include="data\data.h" />
     <ClInclude Include="data\data_repository.h" />
-    <ClInclude Include="el.tab.h" />
+    <ClInclude Include="bison\el.tab.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="executor.h" />
     <ClInclude Include="exec_visitor.h" />
+    <ClInclude Include="bison\front.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="interface\lex_interface.h" />
     <ClInclude Include="interface\tc_bar_interface.h" />
-    <ClInclude Include="lex.h" />
+    <ClInclude Include="bison\lex.h" />
     <ClInclude Include="interface\lex_factory.h" />
     <ClInclude Include="lex_impl.h" />
     <ClInclude Include="lex_runner.h" />
@@ -114,11 +117,13 @@
     <ClInclude Include="run_time_environment.h" />
     <ClInclude Include="data\sqlite3.h" />
     <ClInclude Include="data\statements.h" />
+    <ClInclude Include="bison\static.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="data\tree_serialization.h" />
     <ClInclude Include="type.h" />
     <ClInclude Include="data\type_serialization.h" />
+    <ClInclude Include="type_checker.h" />
     <ClInclude Include="vv.h" />
   </ItemGroup>
   <ItemGroup>

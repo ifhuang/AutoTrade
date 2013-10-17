@@ -77,9 +77,9 @@ void exec_visitor::operator()(const print_stmt & ps) const
     if (~ps.list)
     {
         print_visitor pv;
-        for (ast_t item : astsV[ps.list])
+        for (ast_t item : exe_->astsV_[ps.list])
         {
-            ast &node = astV[item];
+            const ast &node = exe_->astV_[item];
             Value v = exe_->value(node.left);
             int n = get_n_m(node.mid);
             int m = get_n_m(node.right);
