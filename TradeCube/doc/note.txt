@@ -13,3 +13,4 @@
 
 7. Where should I display add/update positions?
 
+8. When close a swingtradedialog, price/order threads in dispatcher should be handled.

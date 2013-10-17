@@ -114,6 +114,7 @@ SwingTradeDialog::~SwingTradeDialog()
     delete swingright_modcon;
     delete swingright_remcon;
     delete swingright;
+//    std::cout<<"~SwingTradeDialog"<<std::endl;
 //    if(quoteItem != NULL)
 //    {
 //        delete quoteItem;
@@ -268,6 +269,7 @@ void SwingTradeDialog::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     }
+//    std::cout<<"closeEvent"<<std::endl;
 }
 
 QString SwingTradeDialog::getExchangeContract()
