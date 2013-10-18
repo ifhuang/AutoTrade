@@ -16,10 +16,14 @@ DEFINES += NOMINMAX
 INCLUDEPATH += $(BOOST_ROOT) \
     ../TC
 
-LIBS += $(BOOST_ROOT)/stage/lib/libboost_date_time-vc110-mt-gd-1_54.lib
+LIBPATH += $(BOOST_ROOT)/stage/lib/
 
 debug{
-LIBS += ../x64/Debug/TC.lib
+    contains(QMAKE_HOST.arch, x86_64) {
+        LIBS += ../x64/Debug/TC.lib
+    } else {
+        LIBS += ../Debug/TC.lib
+    }
 }
 
 SOURCES += main.cpp\
