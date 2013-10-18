@@ -2,10 +2,32 @@
 #define TC_STRING_PROCESSOR_H_
 
 #include <string>
+#include <vector>
 #include "OrderItem.h"
 #include "Position.h"
 #include "PriceItem.h"
 #include "TradeItem.h"
+
+class Spliter
+{
+public:
+    Spliter() {}
+    Spliter(std::string str, const char *s = ",");
+
+    //void CopyFrom(const Spliter &another);
+
+    bool Exists(size_t idx);
+
+    template<class T>
+    T Get(size_t idx);
+
+    Spliter Sub(size_t idx);
+
+private:
+    Spliter(std::vector<std::string> message_split);
+
+    std::vector<std::string> message_split_;
+};
 
 class StringProcessor
 {

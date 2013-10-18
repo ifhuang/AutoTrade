@@ -18,31 +18,37 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 using boost::tuple;
 
+Spliter::Spliter(string str, const char *s /*= ","*/)
+{
+    boost::split(message_split_, str, boost::is_any_of(s));
+}
+
+Spliter::Spliter(std::vector<std::string> message_split) : message_split_(message_split) {}
+
+//void Spliter::CopyFrom(const Spliter &another)
+//{
+//    message_split_ = another.message_split_;
+//}
+
+bool Spliter::Exists(size_t idx)
+{
+    return message_split_.size() > idx;
+}
+
+template<class T>
+T Spliter::Get(size_t idx)
+{
+    if (!Exists(idx))return T();
+    return lexical_cast<T>(message_split_[idx]);
+}
+
+Spliter Spliter::Sub(size_t idx)
+{
+    if (idx >= message_split_.size())return vector<string>();
+    return vector<string>(message_split_.begin() + idx, message_split_.end());
+}
+
 namespace{
-    class Spliter
-    {
-    public:
-        Spliter(string str, const char *s = ",")
-        {
-            boost::split(message_split, str, boost::is_any_of(s));
-        }
-
-        bool Exists(size_t idx)
-        {
-            return message_split.size() > idx;
-        }
-
-        template<class T>
-        T Get(size_t idx)
-        {
-            if (!Exists(idx))return T();
-            return lexical_cast<T>(message_split[idx]);
-        }
-
-    private:
-        vector<string> message_split;
-        DISALLOW_COPY_AND_ASSIGN(Spliter);
-    };
 
     class Joiner
     {

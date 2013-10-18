@@ -75,6 +75,9 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="socket_helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="socket_helper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

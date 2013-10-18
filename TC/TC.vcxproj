@@ -140,6 +140,7 @@
     <ClInclude Include="Position.h" />
     <ClInclude Include="PriceItem.h" />
     <ClInclude Include="QuoteItem.h" />
+    <ClInclude Include="socket_helper.h" />
     <ClInclude Include="SPTrader.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="string_processor.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="OrderItem.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PriceItem.cpp" />
+    <ClCompile Include="socket_helper.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="string_processor.cpp" />

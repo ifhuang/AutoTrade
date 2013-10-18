@@ -22,6 +22,7 @@ public:
 	map<int, OrderItem*>& getCurrentOrders();
 	void getPosition(Position& position);
 private:
+    int SetUp();
 	int login();
 	bool requestLinkState(LinkID linkID);
 	static DWORD WINAPI orderThreadAdapter(LPVOID lpParam);

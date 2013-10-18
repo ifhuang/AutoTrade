@@ -5,6 +5,7 @@
 #ifndef Q_MOC_RUN
 #include <boost/lexical_cast.hpp>
 #endif
+#include "socket_helper.h"
 #include "string_processor.h"
 
 using boost::lexical_cast;
@@ -16,6 +17,7 @@ SPTrader::SPTrader(PlatformInfo& platformInfo) :Dispatcher(platformInfo)
     hOrderThread = hPriceThread = hCheckConnectionThread = hTickerThread = INVALID_HANDLE_VALUE;
     quoteEvent = doneTradeEvent = curOrderEvent = NULL;
     timerInterval = 3;
+    SetUp();
     login();
     startOrderThread();
     startPriceThread();
@@ -37,7 +39,7 @@ bool SPTrader::requestLinkState(LinkID linkID)
     return true;
 }
 
-int SPTrader::login()
+int SPTrader::SetUp()
 {
     //starting socket library
     WORD wVersionRequested;
@@ -71,50 +73,32 @@ int SPTrader::login()
         cout << "connect failed, exit!" << endl;
         closesocket(orderSocket);
         //WSACleanup(); // the cleanup is change to the cleanup function
-        exit(1);
+        return 1;
     }
     else	{
         cout << "connect succeed!" << endl;
     }
-    //char * loginfo = NULL;
-    //loginfo = (char*)malloc(12+strlen(userid)+strlen(password)+strlen(server));
-    //sprintf(loginfo,"3101,0,%s,%s,%s\r\n",userid,password,server);
-    string loginfo = "3101,0," + platformInfo.accountNo + "," + platformInfo.password + "," + platformInfo.server + "\r\n";
+    return 0;
+}
+
+int SPTrader::login()
+{
+    string loginfo = "3101,0," + platformInfo.accountNo + "," + platformInfo.password
+        + "," + platformInfo.server + "\r\n";
     if (send(orderSocket, loginfo.c_str(), loginfo.length(), 0) < 0){
         cout << "Send login info error!" << endl;
     }
 
-    char buf[256] = "";
-    long number = 0;
-    int pkglen = 0;
-    while (true){
-        number++;
-        pkglen = recv(orderSocket, buf, sizeof(buf), 0);
-        if (pkglen < 0){
-            cout << "Server Socket closed, Exit!" << endl;
-            break;
-        }
-        else if (strstr(buf, "3101") >= 0 && strstr(buf, "OK")>0){
-            char *acc_no = NULL;
-            char *delims = ",";
-            //strcpy(priceinfo2,pricerecord.c_str());
-            acc_no = strtok(buf, delims);
-            int c = 0;
-            while (acc_no != NULL){
-                acc_no = strtok(NULL, delims);
-                c++;
-                if (c == 9) break;
-            }
-            //cout<<acc_no<<endl;
-            //account_no = (char*)malloc(strlen(acc_no)-2);
-            //strncpy(account_no,acc_no,strlen(acc_no)-2);
-            //account_no =((string)acc_no).substr(0,strlen(acc_no)-2);
+    SocketHelper order_socket_helper(orderSocket);
+    Message message = order_socket_helper.Get();
+    if (message.id == 3101){
+        int return_code = message.fileds.Get<int>(0);
+        if (return_code == 0){
             connectStatus = true;
-            break;
+            return 0;
         }
-        memset(buf, 0, sizeof(buf));
     }
-    return 0;
+    return -1;
 }
 
 HANDLE SPTrader::startOrderThread()
@@ -646,9 +630,9 @@ void SPTrader::processOrder()
                 string quoteID = pos->getQuoteId();
                 if (positionEvents.count(quoteID) > 0
                     && positionEvents[quoteID] != NULL) {
-                        this->positions[quoteID] = *pos;
-                        delete pos;
-                        SetEvent(positionEvents[quoteID]);
+                    this->positions[quoteID] = *pos;
+                    delete pos;
+                    SetEvent(positionEvents[quoteID]);
                 }
             }
             start = end + 2;
