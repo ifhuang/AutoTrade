@@ -1,10 +1,11 @@
 ﻿#include "SPTrader.h"
 
 #pragma comment(lib,"ws2_32.lib")
-
+#include <thread>
 #ifndef Q_MOC_RUN
 #include <boost/lexical_cast.hpp>
 #endif
+#include "asio_helper.h"
 #include "socket_helper.h"
 #include "string_processor.h"
 
@@ -14,7 +15,7 @@ using namespace boost::posix_time;
 // changed by xie, 非单例化
 SPTrader::SPTrader(PlatformInfo& platformInfo) :Dispatcher(platformInfo)
 {
-    hOrderThread = hPriceThread = hCheckConnectionThread = hTickerThread = INVALID_HANDLE_VALUE;
+    hOrderThread = hPriceThread = hCheckConnectionThread = INVALID_HANDLE_VALUE;
     quoteEvent = doneTradeEvent = curOrderEvent = NULL;
     timerInterval = 3;
     SetUp();
@@ -24,6 +25,11 @@ SPTrader::SPTrader(PlatformInfo& platformInfo) :Dispatcher(platformInfo)
     startCheckConnectionThread();
     startTickerThread();
     Sleep(3000);
+}
+
+SPTrader::~SPTrader()
+{
+
 }
 
 // added by xie
@@ -122,10 +128,13 @@ HANDLE SPTrader::startCheckConnectionThread()
 }
 
 // added by xie
-HANDLE SPTrader::startTickerThread()
+void SPTrader::startTickerThread()
 {
-    hTickerThread = CreateThread(NULL, 0, this->tickerThreadAdapter, this, 0, &tickerThreadId);
-    return hTickerThread;
+    tcp::resolver resolver(io_service_);
+    tcp::resolver::query query(platformInfo.server, to_string(platformInfo.tickPort));
+    auto endpoint_iterator = resolver.resolve(query);
+    ticker_ = new SPTraderTicker(io_service_, endpoint_iterator, *this);
+    ticker_thread_ = new std::thread([this](){ io_service_.run(); });
 }
 
 DWORD WINAPI SPTrader::orderThreadAdapter(LPVOID lpParam)
@@ -206,17 +215,6 @@ DWORD WINAPI SPTrader::checkConnectionThreadAdapter(LPVOID lpParam)
     return 0;
 }
 
-// added by xie
-DWORD WINAPI SPTrader::tickerThreadAdapter(LPVOID lpParam)
-{
-    SPTrader *spoi = (SPTrader *)lpParam;
-    if (spoi->initTickConnection() < 0) return 0;
-
-    spoi->processTickerMessage();
-
-    return 0;
-}
-
 void SPTrader::stopOrderThread()
 {
     if (TerminateThread(hOrderThread, 0) == 0){
@@ -243,7 +241,8 @@ int SPTrader::initPriceConnection()
     addr.sin_port = htons(platformInfo.pricePort);
 
     if (SOCKET_ERROR == connect(priceSocket, (sockaddr*)&addr, sizeof(addr))){
-        cout << "connecting to price 8089 port failed, exit!" << endl;
+        int ec = WSAGetLastError();
+        cout << "connecting to price 8089 port failed, exit!" << ec << endl;
         closesocket(priceSocket);
         return -1;
     }
@@ -253,37 +252,14 @@ int SPTrader::initPriceConnection()
     }
 }
 
-
-
 int SPTrader::initTickConnection()
 {
-    cout << "begin tick connection......" << endl;
-    tickSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (INVALID_SOCKET == tickSocket){
-        cout << "Creating price socket  failed, Exit!" << endl;
-        return -1;
-    }
-    sockaddr_in addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-
-    addr.sin_addr.s_addr = inet_addr(platformInfo.server.c_str());
-    addr.sin_port = htons(platformInfo.tickPort);
-
-    if (SOCKET_ERROR == connect(tickSocket, (sockaddr*)&addr, sizeof(addr))){
-        //cout<<"connecting to price 8089 port failed, exit!"<<endl;
-        LogHandler::getLogHandler().alert(3, "Socket error", "connecting to ticker port failed, exit!");
-        closesocket(tickSocket);
-        return -1;
-    }
-    else{
-        LogHandler::getLogHandler().log("establish tick connection  successfully!");
-        return 0;
-    }
-    /*if((len=send(tickerSocket,orderStr.c_str(),orderStr.length(),0))<0){
-            cout<<"Send ORDER orders error, please check the order socket!"<<endl;
-            //exit(-1);
-            }*/
+    //"begin tick connection......" << endl;
+    //"Creating price socket  failed, Exit!" << endl;
+    //connecting to price 8089 port failed, exit!"<<endl;
+    //LogHandler::getLogHandler().alert(3, "Socket error", "connecting to ticker port failed, exit!");
+    //LogHandler::getLogHandler().log("establish tick connection  successfully!");
+    //Send ORDER orders error, please check the order socket!"<<endl;
 }
 
 int SPTrader::addQuote(QuoteItem *pQuoteItem)
@@ -299,14 +275,11 @@ int SPTrader::addQuote(QuoteItem *pQuoteItem)
         cout << "Send price update msgid error, please check the connection to server!" << endl;
         return MY_ERROR;
     }
+
+    ticker_->Request(quoteId);
     // added by xie
-    quotemsg = "5107,0," + quoteId + "\r\n";		  // 5107 msg is to request the price 
-    // 这里为什么socket 会还是0呢？线程应该早就启动了
-    if (send(tickSocket, quotemsg.c_str(), quotemsg.length(), 0) < 0)
-    {
-        LogHandler::getLogHandler().alert(3, "Add quote", "Request tick price failed for new quote!");
-        return MY_ERROR;
-    }
+    //// 这里为什么socket 会还是0呢？线程应该早就启动了
+    //LogHandler::getLogHandler().alert(3, "Add quote", "Request tick price failed for new quote!");
     WaitForSingleObject(quoteEvent, INFINITE);
     CloseHandle(quoteEvent);
     LogHandler::getLogHandler().log("Quote is added:" + quoteId);
@@ -417,12 +390,8 @@ int SPTrader::deleteQuote(QuoteItem *pQuoteItem)
     }
 
     // added by xie
-    quotemsg = string("5108,0,") + quoteId + "\r\n";  // 4108 msg is to stop the price update
-    if (send(tickSocket, quotemsg.c_str(), quotemsg.length(), 0) < 0)
-    {
-        LogHandler::getLogHandler().alert(3, "Delete quote", "Cancel tick price failed!");
-        return -1;
-    }
+    ticker_->Release(quoteId);
+    //LogHandler::getLogHandler().alert(3, "Delete quote", "Cancel tick price failed!");
     WaitForSingleObject(quoteEvent, INFINITE);
     CloseHandle(quoteEvent);
     LogHandler::getLogHandler().log("Quote is deleted:" + quoteId);
@@ -447,6 +416,7 @@ map<int, OrderItem*>& SPTrader::getCurrentOrders()
 {
     curOrderEvent = CreateEvent(NULL, FALSE, FALSE, L"LOAD_ORDER_BOOK");
     string msg = "3186,0\r\n";
+    //string get = AsioHelper::Get(msg);
     if (send(orderSocket, msg.c_str(), msg.length(), 0) < 0) {
         LogHandler::getLogHandler().alert(3, "Load order book", "Load order book failed!");
         return currentOrders;
@@ -472,7 +442,7 @@ void SPTrader::getPosition(Position& position)
         LogHandler::getLogHandler().alert(3, "Load position", "Load position failed!");
         return;
     }
-
+    // string res = AsioHelper::Get(msg);
     WaitForSingleObject(positionEvents[quoteID], INFINITE);
     //LogHandler::getLogHandler().log("release position event(" + quoteID + ")");
     CloseHandle(positionEvents[quoteID]);
@@ -493,7 +463,7 @@ void SPTrader::processPrice()
         pkglen = recv(priceSocket, buff, sizeof(buff), 0);
         if (pkglen < 0){
             cout << "receive price data failed, exit!" << endl;
-            continue;
+            break;
         }
         buff[pkglen] = 0;
         //if price is correctly received, then reply to server  a 4102 message
@@ -642,79 +612,14 @@ void SPTrader::processOrder()
 
 void SPTrader::processTickerMessage()
 {
-    char* pstr = NULL;
-    while (true){
-        if (connectStatus == true){
-            char recvbuff[4096] = "";
-            int pkglen = recv(tickSocket, recvbuff, sizeof(recvbuff), 0);
-            if (pkglen < 0){
-                LogHandler::getLogHandler().alert(3, "Ticker error", "error occured when receive data from order socket!");
-            }
-            else if ((pstr = strstr(recvbuff, "5107,3")) != NULL) {
-                pstr = strtok(recvbuff, ",");
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                int retCode = atoi(pstr);
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                if (retCode == 0) {
-                    //LogHandler::getLogHandler().log(string(pstr) + " ticker request sucessfully!");
-                }
-                else {
-                    // todo: resend
-                    //this->addQuote(pstr);
-                    LogHandler::getLogHandler().alert(3, "Ticker error", string(pstr) + " ticker request failed");
-                }
-            }
-            else if ((pstr = strstr(recvbuff, "5108,3")) != NULL) {
-                pstr = strtok(recvbuff, ",");
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                int retCode = atoi(pstr);
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                if (retCode == 0) {
-                    LogHandler::getLogHandler().log(string(pstr) + " release ticker request sucessfully!");
-                }
-                else {
-                    // todo: resend
-                    //this->addQuote(pstr);
-                    LogHandler::getLogHandler().alert(3, "Ticker error", string(pstr) + " release ticker request failed");
-                }
-            }
-            else if ((pstr = strstr(recvbuff, "5102,3")) != NULL) {
-                pstr = strtok(recvbuff, ",");
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) continue;
-                PriceItem* pi = new PriceItem();
-                pi->quoteId = pstr;
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) {
-                    delete pi;
-                    continue;
-                }
-                pi->lastPrice1 = atof(pstr);
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) {
-                    delete pi;
-                    continue;
-                }
-                pi->lastQty1 = atoi(pstr);
-                pstr = strtok(NULL, ",");
-                if (pstr == NULL) {
-                    delete pi;
-                    continue;
-                }
-                pi->currentTime = from_time_t(atoi(pstr));
-                pi->tradePlatform = SPTRADER;
-                forwardTickPrice(pi);
-            }
-        }
-    }
+    //LogHandler::getLogHandler().alert(3, "Ticker error", "error occured when receive data from order socket!");
+    //5107,3")) != NULL) {
+    //LogHandler::getLogHandler().log(string(pstr) + " ticker request sucessfully!");
+    // todo: resend
+    //LogHandler::getLogHandler().alert(3, "Ticker error", string(pstr) + " ticker request failed");
+
+    //"5108,3")) != NULL) {
+    //LogHandler::getLogHandler().log(string(pstr) + " release ticker request sucessfully!");
+    // todo: resend
+    //LogHandler::getLogHandler().alert(3, "Ticker error", string(pstr) + " release ticker request failed");
 }

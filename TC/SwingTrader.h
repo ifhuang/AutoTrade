@@ -33,7 +33,7 @@ protected:
 
 private:
     virtual void processTickPrice(MSG& msg);
-    virtual void updateBars();
+    virtual void updateBars() override;
     virtual void processOrderAccepted(MSG& msg);
     virtual void processTradeDone(MSG& msg);
     virtual void processPrice(MSG& msg);

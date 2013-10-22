@@ -19,11 +19,6 @@ Message SocketHelper::Get()
     {
         throw - 1;
     }
-    Spliter spliter(message);
-    Message me;
-    if (!spliter.Exists(1))throw - 2;
-    me.id = spliter.Get<int>(0);
-    me.type = spliter.Get<int>(1);
-    me.fileds = spliter.Sub(2);
+    Message me(message);
     return me;
 }

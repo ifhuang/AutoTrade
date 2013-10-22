@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <string> 
-#include <windows.h>
 #include <sstream>
 #include <time.h>
 

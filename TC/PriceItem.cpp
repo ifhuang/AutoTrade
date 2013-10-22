@@ -5,12 +5,11 @@
 
 using std::string;
 using std::stringstream;
-using boost::date_time::not_a_date_time;
+using boost::posix_time::not_a_date_time;
 using boost::posix_time::to_iso_extended_string;
 
 void PriceItem::log() const
 {
-    string a;
     stringstream str;
     str << "Price Detail(" << quoteId << ")";
     str << " ask price: " << askPrice1 << "(" << askQty1 << ") "

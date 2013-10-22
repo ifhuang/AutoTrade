@@ -1,6 +1,9 @@
 ﻿#ifndef __SPTRADER__
 #define __SPTRADER__
 #include <list>
+#include <thread>
+#include <boost/asio.hpp>
+#include "sptrader/sptrader_ticker.h"
 #include "TradeCube.h"
 #include "Dispatcher.h" 
 
@@ -9,11 +12,12 @@ class SPTrader : public Dispatcher
 {
 public:
 	SPTrader(PlatformInfo& platformInfo);
+    ~SPTrader();
 	int addQuote(QuoteItem *pQuoteItem);
 	HANDLE startOrderThread();
 	HANDLE startPriceThread();
 	HANDLE startCheckConnectionThread();
-	HANDLE startTickerThread();
+	void startTickerThread();
 	void stopOrderThread();
 	int sendOrder(OrderItem* pOrderItem);
 	bool isSupport(int orderType);
@@ -28,7 +32,6 @@ private:
 	static DWORD WINAPI orderThreadAdapter(LPVOID lpParam);
 	static DWORD WINAPI priceThreadAdapter(LPVOID lpParam);
 	static DWORD WINAPI checkConnectionThreadAdapter(LPVOID lpParam);
-	static DWORD WINAPI tickerThreadAdapter(LPVOID lpParam);
 	int initTickConnection();
 	int initPriceConnection();
 	int confirmTradeInfo(int tradeRecordNo);
@@ -39,12 +42,16 @@ private:
 	void processPrice();
 	void processTickerMessage();
 	SOCKET orderSocket, priceSocket, tickSocket;
-	HANDLE hOrderThread, hPriceThread, hCheckConnectionThread, hTickerThread;
-	DWORD orderThreadId, priceThreadId, checkConnectionThreadId, tickerThreadId;
+	HANDLE hOrderThread, hPriceThread, hCheckConnectionThread;
+	DWORD orderThreadId, priceThreadId, checkConnectionThreadId;
 	HANDLE quoteEvent, doneTradeEvent, curOrderEvent;
 	map<string, HANDLE> positionEvents;
 	int timerInterval; // seconds
 	int currentTime;
 
+
+    boost::asio::io_service io_service_;
+    SPTraderTicker *ticker_;
+    std::thread *ticker_thread_;
 };
 #endif

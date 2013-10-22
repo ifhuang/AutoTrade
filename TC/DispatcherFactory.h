@@ -1,8 +1,8 @@
 #ifndef __DISPATCHER_FACTORY__
 #define __DISPATCHER_FACTORY__
 #include "TradeCube.h"
-#include "Dispatcher.h"
 #include "SPTrader.h"
+#include "Dispatcher.h"
 
 class DispatcherFactory
 {

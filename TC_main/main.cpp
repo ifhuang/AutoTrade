@@ -1,9 +1,10 @@
-﻿#include "../TC/Dispatcher.h"
-#include "../TC/SPTrader.h"
+﻿#include "../TC/SPTrader.h"
+#include "../TC/Dispatcher.h"
 #include "../TC/ComboTrader.h"
 #include "../TC/SwingTrader.h"
 #include "../TC/TradeCube.h"
 #include "../TC/DispatcherFactory.h"
+#include "../TC/asio_helper.h"
 
 int traderId = 1;
 
@@ -114,6 +115,8 @@ void testSwingTrader()
 
 void main()
 {
+    string request = "hi\r\n";
+    //string response = AsioHelper::Get(request);
 	//testComboTrader();
 	testSwingTrader();
 }

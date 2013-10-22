@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\sptrader">
+      <UniqueIdentifier>{8fde8ce8-f363-4480-b71b-5f3e356e3f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sptrader">
+      <UniqueIdentifier>{9c89d32d-9a1b-4ac7-b0ac-3ddbc570bef2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bar.h">
@@ -81,6 +87,18 @@
     <ClInclude Include="StrategyInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="asio_helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sptrader\sptrader_ticker.h">
+      <Filter>Header Files\sptrader</Filter>
+    </ClInclude>
+    <ClInclude Include="sptrader\message_processor.h">
+      <Filter>Header Files\sptrader</Filter>
+    </ClInclude>
+    <ClInclude Include="sptrader\socket_client.h">
+      <Filter>Header Files\sptrader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -136,6 +154,15 @@
     </ClCompile>
     <ClCompile Include="StrategyInterface.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asio_helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sptrader\socket_client.cpp">
+      <Filter>Source Files\sptrader</Filter>
+    </ClCompile>
+    <ClCompile Include="sptrader\sptrader_ticker.cpp">
+      <Filter>Source Files\sptrader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
