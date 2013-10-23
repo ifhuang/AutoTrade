@@ -14,9 +14,12 @@ TEMPLATE = app
 DEFINES += NOMINMAX
 
 INCLUDEPATH += $(BOOST_ROOT) \
-    ../TC
+    ../TC \
+    $(QWT_ROOT)/src
 
 LIBPATH += $(BOOST_ROOT)/stage/lib/
+
+LIBS += $(QWT_ROOT)/lib/qwtd.lib
 
 debug{
     contains(QMAKE_HOST.arch, x86_64) {

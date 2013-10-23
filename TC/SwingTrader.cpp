@@ -20,9 +20,15 @@ void SwingTrader::processTickPrice(MSG& msg) {
 }
 
 void SwingTrader::updateBars() {
-	if (tradeUnit != NULL) { 
-		tradeUnit->updateBars();
+	if (tradeUnit != NULL) { 		
+		Bar* newBar = tradeUnit->updateBars();
 		//LogHandler::getLogHandler().log("timer update bar(" + tradeUnit->getQuote()->getQuoteId() + ")");
+#ifdef UI_DEBUG
+		if(newBar)
+		{
+			iSwingTradeDialog->displayBar(newBar);
+		}
+#endif	
 	}
 }
 void SwingTrader::processOrderAccepted(MSG& msg) {

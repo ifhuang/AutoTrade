@@ -78,6 +78,12 @@ SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispa
     swingright_remcon->setEnabled(false);
     setPanelEnabled(false);
 
+    plot = new QwtPlot(this);
+    plot->setGeometry(0, 190, 240, 200);
+    curve = new QwtPlotTradingCurve;
+    curve->attach(plot);
+    curve->setVisible(true);
+
     connect(pb2, SIGNAL(clicked()), this, SLOT(on_trigger_pb2()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tab_customContextMenuRequested()));
     connect(swingright_addcon, SIGNAL(triggered()), this, SLOT(add_contract()));
@@ -322,4 +328,11 @@ void SwingTradeDialog::setPanelEnabled(bool enabled)
     ui->checkBox_sl->setEnabled(enabled);
     ui->doubleSpinBox_pt->setEnabled(enabled);
     ui->doubleSpinBox_sl->setEnabled(enabled);
+}
+
+void SwingTradeDialog::displayBar(Bar *bar)
+{
+    samples += QwtOHLCSample(samples.size() ,bar->getOpen(), bar->getHigh(), bar->getLow(), bar->getClose());
+    curve->setSamples(samples);
+    plot->replot();
 }

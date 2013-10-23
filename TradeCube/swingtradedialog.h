@@ -12,6 +12,9 @@
 #include "../TC/PriceItem.h"
 #include "../TC/SwingTrader.h"
 #include "../TC/Dispatcher.h"
+#include <qwt_plot.h>
+#include <qwt_plot_tradingcurve.h>
+#include "../TC/Bar.h"
 
 namespace Ui {
 class SwingTradeDialog;
@@ -31,6 +34,7 @@ public:
     virtual void displayPriceItem(PriceItem *priceItem) override;
     virtual void displayPosition(double position) override;
     virtual void displayProfit(double profit) override;
+    virtual void displayBar(Bar *bar) override;
 
 signals:
     // emit by add/modify/remove contract to flush toolbar
@@ -90,6 +94,10 @@ private:
     Dispatcher *disp;
     QuoteItem *quoteItem;
     TradeUnit *tradeUnit;
+
+    QwtPlot *plot;
+    QwtPlotTradingCurve *curve;
+    QVector<QwtOHLCSample> samples;
 
     void closeEvent(QCloseEvent *event);
     void setPanelEnabled(bool enabled);

@@ -136,7 +136,7 @@ void MainWindow::new_swing_trade()
 
     QMdiSubWindow *qMdiSubWindow = ui->mdiArea_swing->addSubWindow(swingTradeDialog);
     qMdiSubWindow->setAttribute(Qt::WA_DeleteOnClose);
-    qMdiSubWindow->setFixedSize(265, 220);
+    qMdiSubWindow->setFixedSize(265, 440);
     qMdiSubWindow->setWindowFlags(qMdiSubWindow->windowFlags()& ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint);
     qMdiSubWindow->setWindowTitle(contractName);
     qMdiSubWindow->show();
