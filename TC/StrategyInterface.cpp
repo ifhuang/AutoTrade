@@ -1,4 +1,4 @@
-#include "StrategyInterface.h"
+ï»¿#include "StrategyInterface.h"
 
 
 StrategyInterface::StrategyInterface(void)
@@ -178,7 +178,7 @@ int StrategyInterface::deleteOrder(long orderRefId)
 	return SUCCESS;
 }
 
-// ·Ö½â¶©µ¥
+// åˆ†è§£è®¢å•
 int StrategyInterface::decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi)
 {
 	if(poi->getOrderType() == MKT)
@@ -190,7 +190,7 @@ int StrategyInterface::decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* 
 		LogHandler::getLogHandler().log("Order decomposed by default");
 		//poi->log();
 		prc->log();
-		// ·Ö½â³É×îĞ¡µ¥Î»³É½»
+		// åˆ†è§£æˆæœ€å°å•ä½æˆäº¤
 		for(int i = minqty; i <=poi->getQty(); i+=minqty)
 		{
 			OrderItem* oiu = new OrderItem(*poi);
@@ -266,7 +266,7 @@ int StrategyInterface::decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi
 		stepTickNum = tradeUnit->getStepTickNum();
 	} else if (tradeUnit->getStepMoney() > 0) {
 
-		// ÕâĞ©ÖµÊÇÊ²Ã´£¿ bigPointValue ºÃÏñ»¹Ã»Éè
+		// è¿™äº›å€¼æ˜¯ä»€ä¹ˆï¼Ÿ bigPointValue å¥½åƒè¿˜æ²¡è®¾
 		stepTickNum = tradeUnit->getStepMoney() / (tradeUnit->getQuote()->getBigPointValue() * tradeUnit->getQuote()->getPriceScale());
 	} else {
 		LogHandler::getLogHandler().alert(1, "Order decomposition", "Order decomposition failed, step not set!");

@@ -1,4 +1,4 @@
-#include "sptrader_order.h"
+ï»¿#include "sptrader_order.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -45,7 +45,7 @@ private:
     {
         OrderItem* po = StringProcessor::StrintToOrderItem(fileds);
 
-        // ½ÓÊÕ¶©µ¥ORDER_ACCEPT_MSG
+        // æŽ¥æ”¶è®¢å•ORDER_ACCEPT_MSG
         sptrader_.returnOrder(po);
     }
 
@@ -54,10 +54,10 @@ private:
         TradeItem* ti = StringProcessor::StringToTradeItem(fileds);
         sptrader_.confirmTradeInfo(ti->getTradeNo());
         //ti->log();
-        // ¶©µ¥Íê³ÉTRADE_DONE_MSG
+        // è®¢å•å®ŒæˆTRADE_DONE_MSG
         sptrader_.returnTrade(ti);
 
-        // added by xie, ÄÚ´æÎÊÌâ£¬ ÔÚÄÄÀïÊÍ·ÅÒÔºóÒªµ÷ºÃ
+        // added by xie, å†…å­˜é—®é¢˜ï¼Œ åœ¨å“ªé‡Œé‡Šæ”¾ä»¥åŽè¦è°ƒå¥½
         //doneTrades[ti->getOrderNo()] = ti;
         //if (doneTrades.size() == doneTradeCount) {
         //    SetEvent(doneTradeEvent);
@@ -114,7 +114,7 @@ private:
             sptrader_.setConnectStatus(false);
             string link = fileds.Get<string>(0);
             LogHandler::getLogHandler().alert(3, "Connection status", link + " is broken!");
-            // Ê§È¥Á¬½Ó 
+            // å¤±åŽ»è¿žæŽ¥ 
             //LogHandler::getLogHandler().alert(3, "Lost Connection!", "Lost Connection!");
             sptrader_.loseConnection();
         }

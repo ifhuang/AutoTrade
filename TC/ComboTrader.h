@@ -1,4 +1,4 @@
-#ifndef __COMBO_TRADER__
+ï»¿#ifndef __COMBO_TRADER__
 #define __COMBO_TRADER__
 #include <list>
 #include <string> 
@@ -73,7 +73,7 @@ private:
 	bool double_divide(double divisor , double dividend);
 	ComboPosition* getComboPosition(int pos_ago);
 
-	// ÏÈÕâÑù°É£¬ÈÃËû±àÒëÍ¨¹ı£¬Õâ¸öĞèÒª¼Óµ½StrategyInterfaceÖĞµÄ
+	// å…ˆè¿™æ ·å§ï¼Œè®©ä»–ç¼–è¯‘é€šè¿‡ï¼Œè¿™ä¸ªéœ€è¦åŠ åˆ°StrategyInterfaceä¸­çš„
 	long ascOrderRefId;
 };
 #endif
