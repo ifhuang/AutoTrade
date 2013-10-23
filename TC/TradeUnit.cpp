@@ -12,7 +12,7 @@ TradeUnit::TradeUnit(QuoteItem* quote)
     price = NULL;
 
     // added by xie
-    barPeriod = 30; // unit=second
+    barPeriod = 3; // unit=second
     maxRefBarNum = 2;
     tickPrice = NULL;
     //barStartTime = 0;//time(0); 
@@ -256,9 +256,10 @@ bool TradeUnit::isBarsEnough()
 }
 
 // added by xie
-void TradeUnit::updateBars()
+Bar* TradeUnit::updateBars()
 {
-    if (tickPrice == NULL) return;
+	Bar* newBar = NULL;
+    if (tickPrice == NULL) return newBar;
 
     //priceItem->log();
 
@@ -276,7 +277,7 @@ void TradeUnit::updateBars()
         barStartTime = current;
         currentBar = new Bar(lastPrice, lastPrice, lastPrice, lastPrice, barPeriod);
         bars.push_back(currentBar);
-
+		newBar = currentBar;
         string start_time = to_iso_extended_string(barStartTime);
         LogHandler::getLogHandler().log("bar start time init:" + start_time);
 
@@ -295,6 +296,7 @@ void TradeUnit::updateBars()
         currentBar->setHigh(lastPrice);
     }
     currentBar->setClose(lastPrice);
+	return newBar;
 }
 
 void TradeUnit::setMaxRefBarNum(int num)

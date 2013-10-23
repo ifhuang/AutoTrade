@@ -34,7 +34,7 @@ public:
     void updatePrice(PriceItem* price);
     void updateTickPrice(PriceItem* price);
     int addTrade(TradeItem* tradeRecord);
-    void updateBars();
+    Bar* updateBars();
     int addPosition(Position* position);
     int addOrder(OrderItem* order);
     int updateOrder(OrderItem* oi);
