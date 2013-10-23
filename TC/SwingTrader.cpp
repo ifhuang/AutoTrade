@@ -1,6 +1,6 @@
 ﻿#include "SwingTrader.h"
 
-#define UI_DEBUG
+//#define UI_DEBUG
 
 SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog, IMainWindow* iMainWindow):Strategy(traderId)
 {
@@ -216,30 +216,6 @@ void SwingTrader::signal() {
 	//LogHandler::getLogHandler().log("signal:" + tradeUnit->getQuoteId());
 }
 
-int SwingTrader::deleteOrder(long orderRefId)
-{
-	OrderItem* oi = tradeUnit->getOrder(orderRefId);
-	if(oi != NULL)
-	{
-		if(dispatcher->isSupport(oi->getOrderType()))
-		{
-			oi->setAction(DEL_ACTION);
-			oi->setStatus(DELETING);
-			dispatcher->sendOrder(oi);
-		}
-		else
-		{
-			tradeUnit->deleteOrder(orderRefId);
-		}
-	}
-
-#ifdef UI_DEBUG
-    iMainWindow->displaySwingRemoveWorkingOrders(orderRefId);
-#endif
-
-	return SUCCESS;
-}
-
 int SwingTrader::setTradeUnit(TradeUnit* tradeUnit)
 {
 	int flag = -1;
@@ -261,125 +237,6 @@ int SwingTrader::deleteTradeUnit()
 	return 0;
 }
 
-
-long SwingTrader::createOrder(char buysell, string openclose, double submitPrice,
-    double qty, int orderType, int validType, int submitter)
-{	
-	int minqty = tradeUnit->getQuote()->getMinContractQty();
-	if(!double_divide(qty, minqty))
-	{
-		LogHandler::getLogHandler().alert(3, "Create Order Error",
-            "The quantity is not the integer multiples of the unit contract");
-		return MY_ERROR;
-	}
-
-	OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(),
-        tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
-	oi->setOrderRefId(ascOrderRefId++);
-	oi->setSubmitter(submitter);
-	oi->setStatus(ADDING);
-	oi->setTraderId(traderId);
-	if(orderType == MKT) // Market order
-	{						
-		if(buysell==BUY)
-			oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
-		else if(buysell==SELL)
-			oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-
-		// decompose large order into small ones to decrease impact cost
-		if(optimizeOrderFlow==OPTIMIZE_OFP && qty>tradeUnit->getQuote()->getMinContractQty())
-		{
-			tradeUnit->addOrder(oi);
-			decomposeOrder(tradeUnit, oi);
-		}
-		else
-		{
-			oi->setAction(ADD_ACTION);
-			tradeUnit->addOrder(oi);
-			dispatcher->sendOrder(oi);
-		}
-	}
-	else if(orderType != MKT ) 
-	{		
-		if(dispatcher->isSupport(orderType)) //Limit order
-		{
-			oi->setAction(ADD_ACTION);
-			oi->setStatus(ADDING);
-			tradeUnit->addOrder(oi);
-			dispatcher->sendOrder(oi);
-
-		}
-		else
-		{
-			oi->setAction(WAITING);
-			oi->setStatus(WAITING);
-			tradeUnit->addOrder(oi);
-		}
-	}	
-
-#ifdef UI_DEBUG
-    iMainWindow->displaySwingAddWorkingOrders(oi);
-#endif
-
-	return oi->getOrderRefId();
-}
-
-
-long SwingTrader::updateOrder( long orderRefId, char buysell, string openclose,
-    double submitPrice, double qty, int validType)
-{
-	OrderItem* oi = tradeUnit->getOrder(orderRefId);
-	oi->addCounter();
-	int tradePlatform = tradeUnit->getTradePlatform();
-	if(oi != NULL)
-	{
-		if(dispatcher->isSupport(oi->getOrderType()))
-		{				
-			oi->setValidType(validType);
-			oi->setBuySell(buysell);
-			oi->setQty(qty);
-			oi->setOpenClose(openclose);
-			if(oi->getOrderType() != MKT)
-			{
-				oi->setStatus(CHANGING);
-				oi->setAction(CHG_ACTION);
-				oi->setSubmitPrice(submitPrice);
-				dispatcher->sendOrder(oi); // transimit order 
-			}
-		}
-		else if(!dispatcher->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
-		{
-			if(oi->getOrderType() == MKT && oi->getParentRefId()!=0)
-			{				
-				oi->setBuySell(buysell);
-				oi->setQty(qty);
-				oi->setOpenClose(openclose);
-				oi->setStatus(CHANGING);
-				oi->setAction(CHG_ACTION);
-				if(buysell==BUY)
-					oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
-				else if(buysell==SELL)
-					oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-				dispatcher->sendOrder(oi); // transimit order 
-			}  // tradeplatform don't support original ordertype				
-			else	
-			{
-				oi->setValidType(validType);
-				oi->setBuySell(buysell);
-				oi->setQty(qty);
-				oi->setOpenClose(openclose);
-				oi->setSubmitPrice(submitPrice);			
-			}					
-		}
-	}
-
-#ifdef UI_DEBUG
-    iMainWindow->displaySwingUpdateWorkingOrders(orderRefId, oi);
-#endif
-
-	return orderRefId;
-}
-
 void SwingTrader::deleteStrategyOrder()
 {
 	map<long,OrderItem*>::iterator iter;
@@ -390,11 +247,11 @@ void SwingTrader::deleteStrategyOrder()
 		// ? 不理解这个counter的具体含义
 		if(oi->getOrderType() != MKT && oi->getCounter() != getCounter()) 
 		{
-			deleteOrder(oi->getOrderRefId());
+			strategyInterface->deleteOrder(oi->getOrderRefId());
 		}		
 	}
 }
-
+/*
 long SwingTrader::buy(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter)
 {
 	if(orderRefId == 0)
@@ -426,7 +283,7 @@ long SwingTrader::buytocover(long& orderRefId, double submitPrice, double qty, i
 	else
 		return updateOrder(orderRefId, BUY,CLOSE, submitPrice, qty, validType);
 }
-
+*/
 double SwingTrader::marketposition(int pos_ago)
 {
 	Position* pos = tradeUnit->getPosition(pos_ago);
@@ -478,7 +335,7 @@ void SwingTrader::triggerWaitingOrder()
 					{
 						oi->setStatus(ADDING);
 						oi->setOrderType(MKT);
-						decomposeOrder(tradeUnit, oi);
+						strategyInterface->decomposeOrder(tradeUnit, oi);
 					}
 					else
 					{
@@ -495,25 +352,6 @@ void SwingTrader::triggerWaitingOrder()
 			}	
 		}	
 	}
-}
-
-bool SwingTrader::double_divide(double divisor , double dividend)
-{
-	/*double result; 
-	char result_buf[1000],*tmp;	 
-	result = divisor/dividend;		
-	sprintf(result_buf,"%lf",result);
-	tmp = result_buf;
-	while (*tmp++ != '.')
-	 tmp++;
-	while (*tmp != '\0') 
-	{	 
-		 if(*tmp != '0')
-			return false;
-		tmp++;
-	 }	
-	return true;*/
-	return true;
 }
 
 void SwingTrader::executeStrategy()
@@ -566,9 +404,9 @@ void SwingTrader::closeAllPositions()
 	}
 	if (pos.netqty == 0) return;
 	else if (pos.netqty > 0) {
-		sell(testOrderID, price, pos.netqty, MKT, DAY, STRATEGY_SUBMITTER);
+		strategyInterface->sell(price, pos.netqty, MKT, DAY);
 	}else {
-		buytocover(testOrderID, price, -pos.netqty, MKT, DAY, STRATEGY_SUBMITTER);
+		strategyInterface->buytocover(price, -pos.netqty, MKT, DAY);
 	}
 }
 

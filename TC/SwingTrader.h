@@ -27,19 +27,8 @@ public:
     void closeAllPositions();
     void deleteStrategyOrder();
 
-    long createOrder(char buysell, string openclose, double submitPrice,
-        double qty, int orderType, int validType, int submitter);
-	long updateOrder(long orderRefId, char buysell, string openclose,
-        double submitPrice, double qty, int validType);
-	int deleteOrder(long orderRefId);
-
 protected:
     void triggerWaitingOrder();
-    bool double_divide(double divisor, double dividend);
-    long buy(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);
-    long sell(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);
-    long buytocover(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);
-    long sellshort(long& orderRefId, double submitPrice, double qty, int orderType, int validType, int submitter);
     double marketposition(int pos_ago);
 
 private:

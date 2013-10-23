@@ -65,7 +65,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>G:\自动交易\boost_1_54_0;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -143,6 +145,7 @@
     <ClInclude Include="socket_helper.h" />
     <ClInclude Include="SPTrader.h" />
     <ClInclude Include="Strategy.h" />
+    <ClInclude Include="StrategyInterface.h" />
     <ClInclude Include="string_processor.h" />
     <ClInclude Include="SwingTrader.h" />
     <ClInclude Include="TradeCube.h" />
@@ -162,6 +165,7 @@
     <ClCompile Include="socket_helper.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="Strategy.cpp" />
+    <ClCompile Include="StrategyInterface.cpp" />
     <ClCompile Include="string_processor.cpp" />
     <ClCompile Include="SwingTrader.cpp" />
     <ClCompile Include="TC.cpp" />

@@ -72,5 +72,8 @@ private:
 	void updateTradeUnitPosition(TradeUnit* tradeUnit, TradeItem* ti);
 	bool double_divide(double divisor , double dividend);
 	ComboPosition* getComboPosition(int pos_ago);
+
+	// 先这样吧，让他编译通过，这个需要加到StrategyInterface中的
+	long ascOrderRefId;
 };
 #endif

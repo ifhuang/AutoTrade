@@ -395,7 +395,7 @@ long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, string openclo
         if (optimizeOrderFlow == OPTIMIZE_OFP && qty > tradeUnit->getQuote()->getMinContractQty())
         {
             tradeUnit->addOrder(oi);
-            decomposeOrder(tradeUnit, oi);
+            strategyInterface->decomposeOrder(tradeUnit, oi);
         }
         else
         {
@@ -482,10 +482,6 @@ long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysel
     }
     return orderRefId;
 }
-
-
-
-
 
 double ComboTrader::marketposition(int quoteNo, int pos_ago)
 {
@@ -580,7 +576,6 @@ double ComboTrader::bidprice(int quoteNo)
     }
 }
 
-
 // 追价
 void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
 {
@@ -628,7 +623,7 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
                             oi->setStatus(ADDING);
                             oi->setOrderType(MKT);
 
-                            decomposeOrder(tradeUnit, oi);
+                            strategyInterface->decomposeOrder(tradeUnit, oi);
                         }
                         else
                         {

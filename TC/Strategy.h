@@ -3,6 +3,7 @@
 #include "TradeCube.h"
 #include "TradeUnit.h"
 #include "Dispatcher.h"
+#include "StrategyInterface.h"
 
 class Strategy
 {
@@ -13,10 +14,9 @@ public:
 		intraBarTrading = false;
 		autoTrading = false;
 		counter = 0;
-		this->ascOrderRefId = 1;
 		dispatcher = NULL;
-		this->traderId = traderId;
 		hTraderThread = NULL;
+		this->traderId = traderId;
 		this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
 	}
 	
@@ -80,11 +80,6 @@ public:
 	}
 
 	// reconstructed and tested by xie
-	long createOrder(char buysell, string openclose, double submitPrice,
-        double qty, int orderType, int validType, int submitter);
-	int decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi);
-	int decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi);
-	int decomposeOrder(TradeUnit* tradeUnit, OrderItem* poi);
 	DWORD startTraderThread();
 	DWORD startSignalThread();
 	static DWORD WINAPI traderThreadAdapter(LPVOID lpParam);
@@ -93,12 +88,12 @@ public:
 
 protected:
 	Dispatcher* dispatcher;
-	long ascOrderRefId;
-	int traderId;
-	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1
 	DWORD TraderThreadId;
 	DWORD signalThreadId;
 	map<int, int> doneTradeIDs;
+	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1
+	int traderId;
+	StrategyInterface* strategyInterface;
 private:
 	void process();
 	// 这是由服务器触发价格的处理函数，这个有些平台可能没有
