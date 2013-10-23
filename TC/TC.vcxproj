@@ -74,7 +74,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;BOOST_ASIO_ENABLE_HANDLER_TRACKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,7 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;BOOST_ASIO_ENABLE_HANDLER_TRACKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -148,6 +148,8 @@
     <ClInclude Include="sptrader\message_processor.h" />
     <ClInclude Include="sptrader\socket_client.h" />
     <ClInclude Include="sptrader\sptrader_ticker.h" />
+    <ClInclude Include="sptrader\sptrader_order.h" />
+    <ClInclude Include="sptrader\sptrader_task.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyInterface.h" />
     <ClInclude Include="string_processor.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="socket_helper.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="sptrader\socket_client.cpp" />
+    <ClCompile Include="sptrader\sptrader_order.cpp" />
     <ClCompile Include="sptrader\sptrader_ticker.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="StrategyInterface.cpp" />

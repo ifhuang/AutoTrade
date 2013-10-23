@@ -400,7 +400,7 @@ bool SwingTrader::isBarsEnough()
 void SwingTrader::closeAllPositions()
 {
 	Position pos;
-	pos.accountNo = dispatcher->getPlatformInfo().accountNo;
+	//pos.accountNo = dispatcher->getPlatformInfo().accountNo;
 	pos.setQuoteId(tradeUnit->getQuoteId());
 	dispatcher->getPosition(pos);
 	pos.log();

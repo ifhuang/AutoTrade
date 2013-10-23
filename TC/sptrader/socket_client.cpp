@@ -3,10 +3,14 @@
 using std::string;
 
 SocketClient::SocketClient(boost::asio::io_service& io_service,
-    tcp::resolver::iterator endpoint_iterator, MessageProcessor &mp)
+    MessageProcessor &mp)
     : io_service_(io_service), socket_(io_service), mp_(mp)
 {
-    do_connect(endpoint_iterator);
+}
+
+void SocketClient::connect(tcp::resolver::iterator endpoint_iterator)
+{
+    boost::asio::connect(socket_, endpoint_iterator);
 }
 
 void SocketClient::do_connect(tcp::resolver::iterator endpoint_iterator)
@@ -79,4 +83,19 @@ void SocketClient::do_write()
 void SocketClient::close()
 {
     io_service_.post([this]() { socket_.close(); });
+}
+
+void SocketClient::sync_write(const std::string &msg)
+{
+    boost::asio::write(socket_, boost::asio::buffer(msg));
+}
+
+std::string SocketClient::sync_read()
+{
+    boost::asio::streambuf b;
+    boost::asio::read_until(socket_, b, "\r\n");
+    std::istream is(&b);
+    std::string response;
+    std::getline(is, response, '\r');
+    return response;
 }

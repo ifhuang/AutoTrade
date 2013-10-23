@@ -19,7 +19,7 @@ struct quoteId_threadId
 class Dispatcher
 {
 public:
-    Dispatcher(PlatformInfo& platformInfo);
+    Dispatcher();
     virtual ~Dispatcher();
     virtual int addQuote(QuoteItem *pOuoteItem) = 0;
     virtual bool isSupport(int orderType) = 0;
@@ -35,7 +35,6 @@ public:
     void returnTrade(TradeItem* pTradeItem);
     void forwardPrice(PriceItem* pPriceItem);
     void forwardTickPrice(PriceItem* pPriceItem);
-    PlatformInfo& getPlatformInfo() const { return platformInfo; }
     /** 获取所有已经成交的定单 */
     virtual map<int, TradeItem*>& getDoneTrades() = 0;
     /** 获取当前所有未成交的定单 */
@@ -50,8 +49,6 @@ protected:
     map<int, OrderItem*> currentOrders;
     int doneTradeCount;
     int currentOrderCount;
-    map<string, Position> positions;
-    PlatformInfo& platformInfo;
 private:
     list<quoteId_threadId*> priceThreadIdQueue;
     DWORD UIThreadID;

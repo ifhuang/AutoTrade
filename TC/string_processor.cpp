@@ -146,22 +146,21 @@ PriceItem* StringProcessor::StringToPriceItem(std::string price_str)
     return pi;
 }
 
-Position* StringProcessor::StringToPosition(std::string order_str)
+Position* StringProcessor::StringToPosition(Spliter spliter)
 {
-    Spliter spliter(order_str);
     Position* pos = new Position();
     try
     {
-        pos->accountNo = spliter.Get<string>(2);
-        pos->setQuoteId(spliter.Get<string>(3));
-        pos->preqty = spliter.Get<int>(4);
-        pos->preavg = spliter.Get<double>(5);
-        pos->longqty = spliter.Get<int>(6);
-        pos->longavg = spliter.Get<double>(7);
-        pos->shortqty = spliter.Get<int>(8);
-        pos->shortavg = spliter.Get<double>(9);
-        pos->netqty = spliter.Get<int>(10);
-        pos->netavg = spliter.Get<double>(11);
+        pos->accountNo = spliter.Get<string>(0);
+        pos->setQuoteId(spliter.Get<string>(1));
+        pos->preqty = spliter.Get<int>(2);
+        pos->preavg = spliter.Get<double>(3);
+        pos->longqty = spliter.Get<int>(4);
+        pos->longavg = spliter.Get<double>(5);
+        pos->shortqty = spliter.Get<int>(6);
+        pos->shortavg = spliter.Get<double>(7);
+        pos->netqty = spliter.Get<int>(8);
+        pos->netavg = spliter.Get<double>(9);
     }
     catch (bad_lexical_cast &)
     {
@@ -171,38 +170,37 @@ Position* StringProcessor::StringToPosition(std::string order_str)
     return pos;
 }
 
-OrderItem* StringProcessor::StrintToOrderItem(string order_str)
+OrderItem* StringProcessor::StrintToOrderItem(Spliter spliter)
 {
-    Spliter spliter(order_str);
-    if (spliter.Get<string>(2) != "0")
+    if (spliter.Get<string>(0) != "0")
     {
         LogHandler::getLogHandler().alert(1, "",
             "order is not correctly processed by server! Maybe the order has been deleted or traded.("
-            + order_str + ")");
+              ")");
         return nullptr;
     }
     OrderItem* oi = new OrderItem();
     oi->setTradePlatform(SPTRADER);
     try
     {
-        oi->setReturnCode(spliter.Get<int>(2));
-        oi->setReturnMessage(spliter.Get<string>(3));
-        oi->setStatus(spliter.Get<int>(4));
-        oi->setAction(spliter.Get<int>(5));
-        oi->setAccount(spliter.Get<string>(6));
-        oi->setOrderNo(spliter.Get<int>(7));
-        oi->setQuoteId(spliter.Get<string>(8));
-        oi->setBuySell(spliter.Get<string>(9)[0]);
-        oi->setSubmitPrice(spliter.Get<double>(10));
-        oi->setQty(spliter.Get<double>(2));
-        oi->setOpenClose(spliter.Get<string>(12));
-        oi->setValidType(spliter.Get<int>(14));
-        string ref = spliter.Get<string>(16);
+        oi->setReturnCode(spliter.Get<int>(0));
+        oi->setReturnMessage(spliter.Get<string>(1));
+        oi->setStatus(spliter.Get<int>(2));
+        oi->setAction(spliter.Get<int>(3));
+        oi->setAccount(spliter.Get<string>(4));
+        oi->setOrderNo(spliter.Get<int>(5));
+        oi->setQuoteId(spliter.Get<string>(6));
+        oi->setBuySell(spliter.Get<string>(7)[0]);
+        oi->setSubmitPrice(spliter.Get<double>(8));
+        oi->setQty(spliter.Get<double>(9));
+        oi->setOpenClose(spliter.Get<string>(10));
+        oi->setValidType(spliter.Get<int>(12));
+        string ref = spliter.Get<string>(14);
         auto tuple = ParseRef(ref);
         oi->setTraderId(tuple.get<0>());
         oi->setOrderRefId(tuple.get<1>());
-        oi->setOriginalPrice(spliter.Get<double>(17));
-        oi->setOriginalQty(spliter.Get<double>(18));
+        oi->setOriginalPrice(spliter.Get<double>(15));
+        oi->setOriginalQty(spliter.Get<double>(16));
     }
     catch (bad_lexical_cast &)
     {
@@ -226,30 +224,29 @@ std::string StringProcessor::OrderItemToString(OrderItem* po, const std::string 
     return order_str;
 }
 
-TradeItem* StringProcessor::StringToTradeItem(std::string trade_str)
+TradeItem* StringProcessor::StringToTradeItem(Spliter spliter)
 {
-    Spliter spliter(trade_str);
     TradeItem* ti = new TradeItem();
     ti->setTradePlatform(SPTRADER);
     try
     {
-        ti->setTradeRecordNo(spliter.Get<int>(2));
-        ti->setAccount(spliter.Get<string>(3));
-        ti->setOrderNo(spliter.Get<int>(4));
-        ti->setQuoteId(spliter.Get<string>(5));
-        ti->setBuySell(spliter.Get<string>(6)[0]);
-        ti->setTradePrice(spliter.Get<double>(7));
-        ti->setQty(spliter.Get<int>(8));
-        ti->setOpenClose(spliter.Get<string>(9));
-        string ref = spliter.Get<string>(10);
+        ti->setTradeRecordNo(spliter.Get<int>(0));
+        ti->setAccount(spliter.Get<string>(1));
+        ti->setOrderNo(spliter.Get<int>(2));
+        ti->setQuoteId(spliter.Get<string>(3));
+        ti->setBuySell(spliter.Get<string>(4)[0]);
+        ti->setTradePrice(spliter.Get<double>(5));
+        ti->setQty(spliter.Get<int>(6));
+        ti->setOpenClose(spliter.Get<string>(7));
+        string ref = spliter.Get<string>(8);
         auto tuple = ParseRef(ref);
         ti->setTraderId(tuple.get<0>());
         ti->setOrderRefId(tuple.get<1>());
 
-        ti->setTradeNo(spliter.Get<int>(13));
-        ti->setStatus(spliter.Get<int>(14));
-        ti->setPositionSize(spliter.Get<int>(15));
-        ti->setTradeTime(boost::posix_time::from_time_t(spliter.Get<time_t>(16)));
+        ti->setTradeNo(spliter.Get<int>(11));
+        ti->setStatus(spliter.Get<int>(12));
+        ti->setPositionSize(spliter.Get<int>(13));
+        ti->setTradeTime(boost::posix_time::from_time_t(spliter.Get<time_t>(14)));
     }
     catch (bad_lexical_cast &)
     {

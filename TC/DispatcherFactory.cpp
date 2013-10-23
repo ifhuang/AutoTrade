@@ -13,8 +13,8 @@ DispatcherFactory::~DispatcherFactory(void)
 Dispatcher* DispatcherFactory::createDispatcher(PlatformInfo& platformInfo)
 {
 	if (platformInfo.platformName == SPTRADER) {
-		static SPTrader sptrader(platformInfo);
-		return &sptrader;
+		SPTrader *sptrader = SPTrader::GetSPTrader(platformInfo);
+		return sptrader;
 	}
-	return NULL;
+	return nullptr;
 }

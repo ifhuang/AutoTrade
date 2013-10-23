@@ -43,13 +43,13 @@ public:
     ///
     /// <param name="order_str">    The order string. </param>
     /// <returns>   null if it fails, else a Position*. </returns>
-    static Position* StringToPosition(std::string order_str);
+    static Position* StringToPosition(Spliter spliter);
 
     /// <summary>   3103 strint to order item. </summary>
     ///
     /// <param name="order_str">    The order string. </param>
     /// <returns>   null if it fails, else an OrderItem*. </returns>
-    static OrderItem* StrintToOrderItem(std::string order_str);
+    static OrderItem* StrintToOrderItem(Spliter spliter);
 
     static std::string OrderItemToString(OrderItem* po, const std::string &account_no);
 
@@ -57,7 +57,7 @@ public:
     ///
     /// <param name="trade_str">    The trade string. </param>
     /// <returns>   null if it fails, else a TradeItem*. </returns>
-    static TradeItem* StringToTradeItem(std::string trade_str);
+    static TradeItem* StringToTradeItem(Spliter spliter);
 };
 
 #endif  // TC_STRING_PROCESSOR_H_

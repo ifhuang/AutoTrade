@@ -11,9 +11,14 @@ class SocketClient
 {
 public:
     SocketClient(boost::asio::io_service& io_service,
-        tcp::resolver::iterator endpoint_iterator,
         MessageProcessor &mp);
 
+    void connect(tcp::resolver::iterator endpoint_iterator);
+    void sync_write(const std::string &msg);
+    std::string sync_read();
+
+    void do_connect(tcp::resolver::iterator endpoint_iterator);
+    void do_read();
     void write(const std::string &msg);
 
     void close();
@@ -21,8 +26,6 @@ public:
 private:
     typedef std::deque<std::string> message_queue;
 
-    void do_connect(tcp::resolver::iterator endpoint_iterator);
-    void do_read();
     void do_write();
 
     boost::asio::io_service& io_service_;

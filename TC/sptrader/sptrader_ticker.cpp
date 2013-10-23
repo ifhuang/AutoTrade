@@ -35,8 +35,9 @@ SPTraderTicker::SPTraderTicker(boost::asio::io_service& io_service,
     tcp::resolver::iterator endpoint_iterator, Dispatcher &dispatcher)
     : io_service_(io_service),
     mp_(new TickerMessageProcessor(dispatcher)),
-    sc_(io_service, endpoint_iterator, *mp_)
+    sc_(io_service, *mp_)
 {
+    sc_.do_connect(endpoint_iterator);
 }
 
 SPTraderTicker::~SPTraderTicker()
@@ -48,7 +49,7 @@ void SPTraderTicker::Request(string product)
 {
     string quote_msg = "5107,0," + product + "\r\n";
     io_service_.post(
-        [this, &quote_msg]()
+        [this, quote_msg]()
     {
         sc_.write(quote_msg);
     });
@@ -58,7 +59,7 @@ void SPTraderTicker::Release(std::string product)
 {
     string quote_msg = "5108,0," + product + "\r\n";
     io_service_.post(
-        [this, &quote_msg]()
+        [this, quote_msg]()
     {
         sc_.write(quote_msg);
     });

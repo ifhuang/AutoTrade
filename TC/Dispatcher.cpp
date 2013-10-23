@@ -1,6 +1,6 @@
 ﻿#include "Dispatcher.h" 
 
-Dispatcher::Dispatcher(PlatformInfo& platformInfo) : platformInfo(platformInfo), connectStatus(false), doneTradeCount(0), currentOrderCount(0)
+Dispatcher::Dispatcher() : connectStatus(false), doneTradeCount(0), currentOrderCount(0)
 {
 }
 

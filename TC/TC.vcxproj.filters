@@ -99,6 +99,12 @@
     <ClInclude Include="sptrader\socket_client.h">
       <Filter>Header Files\sptrader</Filter>
     </ClInclude>
+    <ClInclude Include="sptrader\sptrader_order.h">
+      <Filter>Header Files\sptrader</Filter>
+    </ClInclude>
+    <ClInclude Include="sptrader\sptrader_task.h">
+      <Filter>Header Files\sptrader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -162,6 +168,9 @@
       <Filter>Source Files\sptrader</Filter>
     </ClCompile>
     <ClCompile Include="sptrader\sptrader_ticker.cpp">
+      <Filter>Source Files\sptrader</Filter>
+    </ClCompile>
+    <ClCompile Include="sptrader\sptrader_order.cpp">
       <Filter>Source Files\sptrader</Filter>
     </ClCompile>
   </ItemGroup>
