@@ -38,7 +38,6 @@ private:
     virtual void processTradeDone(MSG& msg);
     virtual void processPrice(MSG& msg);
     virtual void signal();
-    void executeStrategy();
     bool isBarsEnough();
 
     TradeUnit* tradeUnit;

@@ -48,7 +48,6 @@ private:
 	virtual void processOrderAccepted(MSG& msg);
 	virtual void processTradeDone(MSG& msg); 
 	virtual void processPrice(MSG& msg); 
-	void executeStrategy();
 	bool isBarsEnough();
 
 	void triggerWaitingOrder(TradeUnit* tradeUnit);

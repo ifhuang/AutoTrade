@@ -184,7 +184,6 @@ void SwingTrader::processPrice(MSG& msg) {
     if (tradeUnit != NULL) {
         tradeUnit->updatePrice(pi);
         triggerWaitingOrder();
-        PostThreadMessage(signalThreadId, PRICE_MSG, 0, 0);
     }
     else {
         LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
@@ -358,36 +357,6 @@ void SwingTrader::triggerWaitingOrder()
                     }
                 }
             }
-        }
-    }
-}
-
-void SwingTrader::executeStrategy()
-{
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0)) {
-
-        // 在这里控制策略的执行与否
-        if (!getAutoTrading()) {
-            LogHandler::getLogHandler().alert(3, "Strategy", "Strategy is tentatively stopped!");
-            continue;
-        }
-
-        switch (msg.message) {
-
-            // 价格更新 k线内交易
-        case PRICE_MSG:
-            if (getIntraBarTrading()) {
-                addCounter();
-                signal();
-            }
-            break;
-        case STRATEGY_MSG:
-            if (!getIntraBarTrading()) {
-                addCounter();
-                signal();
-            }
-            break;
         }
     }
 }

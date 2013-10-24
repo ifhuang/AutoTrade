@@ -1,6 +1,6 @@
 ﻿#include "ComboTrader.h"
 
-ComboTrader::ComboTrader(int traderId) :Strategy(traderId)
+ComboTrader::ComboTrader(int traderId) : Strategy(traderId)
 {
     this->ss_orderId = 0;
     this->buy_orderId = 0;
@@ -96,8 +96,6 @@ void ComboTrader::processTradeDone(MSG& msg) {
                             // 订单分解
                             if (parent_oi->getTradedQty() == parent_oi->getQty()) // all child orders are traded, then update combo position
                             {
-                                if (pco->getOrderRank() != NO_RANK)
-                                    PostThreadMessage(signalThreadId, ORDER_UNIT_TRADED, 0, (LPARAM)parent_oi);
                                 OrderUnit* ou = pco->getOrderUnit(parent_oi->getOrderRefId());
                                 ou->setStatus(ALLTRADED);
                                 pco->updateStatus();
@@ -113,8 +111,6 @@ void ComboTrader::processTradeDone(MSG& msg) {
                         oi->addTradedQty(ti->getQty());
                         if (oi->getTradedQty() == oi->getQty())
                         {
-                            if (pco->getOrderRank() != NO_RANK)
-                                PostThreadMessage(signalThreadId, ORDER_UNIT_TRADED, 0, (LPARAM)oi);
                             OrderUnit* ou = pco->getOrderUnit(oi->getOrderRefId());
                             ou->setStatus(ALLTRADED);
                             pco->updateStatus();
@@ -219,7 +215,6 @@ void ComboTrader::processPrice(MSG& msg) {
         tu->updatePrice(pi);
         //pi->log();
         triggerWaitingOrder(tu);
-        PostThreadMessage(signalThreadId, PRICE_MSG, 0, 0);
     }
     else
     {
@@ -642,62 +637,62 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
     }
 }
 
-void ComboTrader::executeStrategy()
-{
-    MSG msg;
-    while (GetMessage(&msg, NULL, WM_USER + 4, WM_USER + 6))
-    {
-        // 在这里控制策略的执行与否
-        if (!getAutoTrading()) {
-            LogHandler::getLogHandler().alert(3, "Strategy", "Strategy is tentatively stopped!");
-            continue;
-        }
-        //LogHandler::getLogHandler().log("Strategy executed!");
-        switch (msg.message)
-        {
-            // 某一个品种成交之后
-        case ORDER_UNIT_TRADED:
-            {
-                // 成交下一个
-                OrderItem* oi = (OrderItem*)msg.lParam;
-                ComboOrder* pco = comboOrderTable[oi->getComboRefId()];
-                if (pco->getOrderRank() != NO_RANK)
-                {
-                    submitComboOrder(pco);
-                }
-                else
-                    cout << "error: in NO_RANK order model but ORDER_UNIT_TRADED message is received" << endl;
-                break;
-                              }
-            // 价格更新 k线内交易
-        case PRICE_MSG:
-            {
-
-                // 其实这里也判断了是否是自动交易
-                //cout<<"Signal Thread: PRICE_MSG"<<endl;
-                if (getIntraBarTrading())
-                {
-                    //cout<<"Signal run times: "<<getCounter()<<endl;
-                    addCounter();
-                    signal();
-                    //deleteStrategyOrder();
-                }
-                break;
-                      }
-            // 定时器
-        case STRATEGY_MSG:
-            {
-                if (!getIntraBarTrading())
-                {
-                    addCounter();
-                    signal();
-                    //deleteStrategyOrder();
-                }
-                break;
-                         }
-        }
-    }
-}
+//void ComboTrader::executeStrategy()
+//{
+//    MSG msg;
+//    while (GetMessage(&msg, NULL, WM_USER + 4, WM_USER + 6))
+//    {
+//        // 在这里控制策略的执行与否
+//        if (!getAutoTrading()) {
+//            LogHandler::getLogHandler().alert(3, "Strategy", "Strategy is tentatively stopped!");
+//            continue;
+//        }
+//        //LogHandler::getLogHandler().log("Strategy executed!");
+//        switch (msg.message)
+//        {
+//            // 某一个品种成交之后
+//        case ORDER_UNIT_TRADED:
+//            {
+//                // 成交下一个
+//                OrderItem* oi = (OrderItem*)msg.lParam;
+//                ComboOrder* pco = comboOrderTable[oi->getComboRefId()];
+//                if (pco->getOrderRank() != NO_RANK)
+//                {
+//                    submitComboOrder(pco);
+//                }
+//                else
+//                    cout << "error: in NO_RANK order model but ORDER_UNIT_TRADED message is received" << endl;
+//                break;
+//                              }
+//            // 价格更新 k线内交易
+//        case PRICE_MSG:
+//            {
+//
+//                // 其实这里也判断了是否是自动交易
+//                //cout<<"Signal Thread: PRICE_MSG"<<endl;
+//                if (getIntraBarTrading())
+//                {
+//                    //cout<<"Signal run times: "<<getCounter()<<endl;
+//                    addCounter();
+//                    signal();
+//                    //deleteStrategyOrder();
+//                }
+//                break;
+//                      }
+//            // 定时器
+//        case STRATEGY_MSG:
+//            {
+//                if (!getIntraBarTrading())
+//                {
+//                    addCounter();
+//                    signal();
+//                    //deleteStrategyOrder();
+//                }
+//                break;
+//                         }
+//        }
+//    }
+//}
 
 int ComboTrader::createOrderTemplate(int num, int quoteNo[], double qty[], char buysell[], int rankId[])
 {

@@ -154,6 +154,7 @@
     <ClInclude Include="StrategyInterface.h" />
     <ClInclude Include="string_processor.h" />
     <ClInclude Include="SwingTrader.h" />
+    <ClInclude Include="tc_bar.h" />
     <ClInclude Include="TradeCube.h" />
     <ClInclude Include="TradeItem.h" />
     <ClInclude Include="TradeUnit.h" />
@@ -179,8 +180,14 @@
     <ClCompile Include="string_processor.cpp" />
     <ClCompile Include="SwingTrader.cpp" />
     <ClCompile Include="TC.cpp" />
+    <ClCompile Include="tc_bar.cpp" />
     <ClCompile Include="TradeItem.cpp" />
     <ClCompile Include="TradeUnit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lex\lex.vcxproj">
+      <Project>{145349d7-b049-47b8-b38b-89854ee3a566}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

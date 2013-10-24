@@ -81,15 +81,12 @@ public:
 
 	// reconstructed and tested by xie
 	DWORD startTraderThread();
-	DWORD startSignalThread();
 	static DWORD WINAPI traderThreadAdapter(LPVOID lpParam);
-	static DWORD WINAPI signalThreadAdapter(LPVOID lpParam);
 	void turnOnStrategy();
 
 protected:
 	Dispatcher* dispatcher;
 	DWORD TraderThreadId;
-	DWORD signalThreadId;
 	map<int, int> doneTradeIDs;
 	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1
 	int traderId;
@@ -103,7 +100,6 @@ private:
 	virtual void processOrderAccepted(MSG& msg) = 0;
 	virtual void processTradeDone(MSG& msg) = 0; 
 	virtual void processPrice(MSG& msg) = 0; 
-	virtual void executeStrategy() = 0;
 	virtual bool isBarsEnough() = 0;
 
 	/** 策略执行函数 */

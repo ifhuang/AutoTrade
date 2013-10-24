@@ -7,24 +7,10 @@ DWORD Strategy::startTraderThread()
 
 }
 
-DWORD Strategy::startSignalThread()
-{
-    hSignalThread = CreateThread(NULL, 0, signalThreadAdapter, this, 0, &signalThreadId);
-    return signalThreadId;
-}
-
 DWORD WINAPI Strategy::traderThreadAdapter(LPVOID lpParam)
 {
     Strategy* pct = (Strategy*)lpParam;
     pct->process();
-    return 0;
-}
-
-DWORD WINAPI Strategy::signalThreadAdapter(LPVOID lpParam)
-{
-    Strategy* pct = (Strategy*)lpParam;
-
-    pct->executeStrategy();
     return 0;
 }
 
@@ -40,7 +26,6 @@ void Strategy::turnOnStrategy()
             return;
         }
     }
-    startSignalThread();
 }
 
 // added by xie

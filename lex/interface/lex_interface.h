@@ -42,7 +42,8 @@ public:
     virtual std::vector<LexStudy> ListStudies() = 0;
     virtual void Compiler(std::string study_name) = 0;
     virtual LexSignalDetail GetSignalDetail(std::string signal_name) = 0;
-    virtual LexRunnerInterface* New(std::string signal_name, LexSignalDetail details, TCBarInterface *tc_bar) = 0;
+    virtual LexRunnerInterface* New(std::string signal_name, LexSignalDetail details,
+        TCBarInterface *tc_bar) = 0;
 };
 
 #endif  // LEX_INTERFACE_LEX_INTERFACE_H_

@@ -105,6 +105,9 @@
     <ClInclude Include="sptrader\sptrader_task.h">
       <Filter>Header Files\sptrader</Filter>
     </ClInclude>
+    <ClInclude Include="tc_bar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="sptrader\sptrader_order.cpp">
       <Filter>Source Files\sptrader</Filter>
+    </ClCompile>
+    <ClCompile Include="tc_bar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
