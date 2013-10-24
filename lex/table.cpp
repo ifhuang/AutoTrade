@@ -14,9 +14,13 @@ namespace{
 }
 
 namespace lex{
-    unordered_map<string, const StdFunction *> const funcTable = {
-        { "numtostr", &s_numtostr },
-    };
+    unordered_map<string, const StdFunction *> funcTable;
+
+    void init_table()
+    {
+        funcTable.insert(make_pair("numtostr", &s_numtostr));
+    }
+
     unordered_map<string, Input> inputTable;
     unordered_map<string, Variable> varTable;
 

@@ -25,13 +25,13 @@ namespace lex{
 
     class StdFunction{
     public:
-        StdFunction(VType result, std::vector<VType> paras) : result(result), paras(paras) {}
+        StdFunction(VType result, std::vector<VType> paras) : result(result), paras(paras), min(-1) {}
 
         virtual Value call(int bar, std::vector<Value> ps) const = 0;
 
         VType result;
         std::vector<VType> paras;
-        int min = -1;
+        int min;
     private:
         DISALLOW_COPY_AND_ASSIGN(StdFunction);
     };
@@ -41,10 +41,11 @@ namespace lex{
         int position;
     };
 
-    extern std::unordered_map<std::string, const StdFunction *> const funcTable;
+    extern std::unordered_map<std::string, const StdFunction *> funcTable;
     extern std::unordered_map<std::string, Input> inputTable;
     extern std::unordered_map<std::string, Variable> varTable;
 
+    void init_table();
     VSource find_name(std::string name);
     void declare_var(std::string name, int postion, VType type);
 

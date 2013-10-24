@@ -24,13 +24,13 @@ namespace lex{
         sqlite3 *db;
 
         static const char *insert_study_query_;
-        Statements insert_study_stmt_{ insert_study_query_ };
+        Statements insert_study_stmt_;
 
         static const char *select_study_query_;
-        Statement select_study_stmt_{ select_study_query_ };
+        Statement select_study_stmt_;
 
         static const char *select_studies_query_;
-        Statement select_studies_stmt_{ select_studies_query_ };
+        Statement select_studies_stmt_;
     };
 }
 #endif  // LEX_DATA_H_

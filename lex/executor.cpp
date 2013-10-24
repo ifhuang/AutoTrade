@@ -10,7 +10,7 @@ using namespace std;
 
 namespace lex{
 
-    Executor::Executor(const Program *program) : program_(program),
+    Executor::Executor(const Program *program) : rte_(NULL), program_(program),
         sue_(*program->sue), strVector_(*program->strVector),
         astV_(*program->astV), astsV_(*program->astsV),
         stmtV_(*program->stmtV), stmtsV_(*program->stmtsV) {}

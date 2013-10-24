@@ -25,7 +25,7 @@ namespace lex {
             return boost::get<T>(value(idx));
         }
 
-        RunTimeEnvironment *rte_ = nullptr;
+        RunTimeEnvironment *rte_;
         const Program *program_;
         const SetUpEnviroment &sue_;
         const std::vector<std::string> &strVector_;

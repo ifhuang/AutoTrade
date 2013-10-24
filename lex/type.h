@@ -29,13 +29,13 @@ namespace lex{
 
     class SetUpEnviroment{
     public:
-        SetUpEnviroment() {}
+        SetUpEnviroment() : num_variables(0) {}
         int ReserveSpace(ast_t exp, int size = 1);
 
         std::vector<Input> inputs;
         std::vector<Initialize> initialize_list;
     private:
-        int num_variables = 0;
+        int num_variables;
 
         DISALLOW_COPY_AND_ASSIGN(SetUpEnviroment);
     };
@@ -53,11 +53,11 @@ namespace lex{
     class SemanticError : public std::exception
     {
     public:
-        SemanticError() {}
+        SemanticError() : loc_(nullptr) {}
         SemanticError(const char * const & message, const YYLTYPE * const loc)
             : exception(message), loc_(loc) {}
 
-        const YYLTYPE * const loc_ = nullptr;
+        const YYLTYPE * const loc_;
     };
 
     struct InvalidTypeOperation : SemanticError{

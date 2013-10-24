@@ -118,29 +118,29 @@ namespace lex
         switch (source)
         {
         case VSource::StdFunction: {
-            const StdFunction *function = funcTable.at(name);
-            check_paras(function, func.right, loc, is_input);
-            return function->result;
-                                   }
+                                       const StdFunction *function = funcTable.at(name);
+                                       check_paras(function, func.right, loc, is_input);
+                                       return function->result;
+        }
         case VSource::Input: {
-            if (is_input)throw SemanticError("input cannot contain input", loc);
-            if (func.right != -2)throw SemanticError("not a function, is input", loc);
-            Input input = inputTable[name];
-            idx = input.exp;
-            return input.type;
-                             }
+                                 if (is_input)throw SemanticError("input cannot contain input", loc);
+                                 if (func.right != -2)throw SemanticError("not a function, is input", loc);
+                                 Input input = inputTable[name];
+                                 idx = input.exp;
+                                 return input.type;
+        }
         case VSource::Variable:	{
-            if (is_input)throw SemanticError("input cannot contain variable", loc);
-            if (func.right != -2)throw SemanticError("not a function, is variable", loc);
-            Variable variable = varTable[name];
-            func.type = NodeType::VAR;
-            func.idx = variable.position;
-            return variable.type;
-                                }
+                                    if (is_input)throw SemanticError("input cannot contain variable", loc);
+                                    if (func.right != -2)throw SemanticError("not a function, is variable", loc);
+                                    Variable variable = varTable[name];
+                                    func.type = NodeType::VAR;
+                                    func.idx = variable.position;
+                                    return variable.type;
+        }
         case VSource::Undefined: {
-            string es = "'" + name + "' : undeclared identifier";
-            throw SemanticError(es.c_str(), loc);
-                                 }
+                                     string es = "'" + name + "' : undeclared identifier";
+                                     throw SemanticError(es.c_str(), loc);
+        }
         default:
             throw SemanticError();
         }
@@ -211,7 +211,7 @@ namespace lex
                 throw SemanticError("this word has already been defined", loc);
             }
             VType type = get_type(input.right, true);
-            Input in{ name, type, input.right };
+            Input in = { name, type, input.right };
             //in.name = name;
             //in.type = type;
             //in.exp = input.right;

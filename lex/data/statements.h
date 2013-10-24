@@ -31,7 +31,7 @@ namespace lex{
     class Statements
     {
     public:
-        Statements(const char *query) : query_(query) {}
+        Statements(const char *query) : query_(query), initialized_(false) {}
         ~Statements();
 
         void Reset(sqlite3 *db);
@@ -43,7 +43,7 @@ namespace lex{
         void Initialize();
 
         const char *query_;
-        bool initialized_ = false;
+        bool initialized_;
         std::vector<Statement*> stmts_;
         DISALLOW_COPY_AND_ASSIGN(Statements);
     };

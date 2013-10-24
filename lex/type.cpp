@@ -7,8 +7,6 @@
 
 namespace lex
 {
-    
-
     int SetUpEnviroment::ReserveSpace(ast_t exp, int size /*= 1*/)
     {
         int position = num_variables;
@@ -22,7 +20,7 @@ namespace lex
 
     void init()
     {
-        
+        init_table();
     }
 
     void storage(TypeChecker &checker)

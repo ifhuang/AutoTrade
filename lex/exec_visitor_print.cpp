@@ -15,7 +15,7 @@ int exec_visitor::get_n_m(ast_t idx) const
 class print_visitor : public boost::static_visitor<int>
 {
 public:
-    print_visitor() {}
+    print_visitor() : buffp(buff), remain(256) {}
 
     void Print(Value v, int n, int m)
     {
@@ -68,8 +68,8 @@ public:
 private:
     int n_, m_;
     char buff[256];
-    char *buffp = buff;
-    size_t remain = 256;
+    char *buffp;
+    size_t remain;
 };
 
 void exec_visitor::operator()(const print_stmt & ps) const

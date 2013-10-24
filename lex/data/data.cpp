@@ -23,11 +23,17 @@ namespace lex{
     }
 
     Data::Data(const char *database_file)
+        : insert_study_stmt_(insert_study_query_),
+        select_study_stmt_(select_study_query_),
+        select_studies_stmt_(select_studies_query_)
     {
         Open(database_file);
     }
 
     Data::Data()
+        : insert_study_stmt_(insert_study_query_),
+        select_study_stmt_(select_study_query_),
+        select_studies_stmt_(select_studies_query_)
     {
         Open("lex.db");
     }
@@ -56,7 +62,7 @@ namespace lex{
     {
         select_study_stmt_.Reset(db);
         select_study_stmt_.Bind(1, "test");
-        if(!select_study_stmt_.Step())return nullptr;
+        if (!select_study_stmt_.Step())return nullptr;
         return select_study_stmt_.ColumnText(0);
     }
 
@@ -69,7 +75,7 @@ namespace lex{
         vector<tuple<string, bool> > studies;
         while (stmt.Step())
         {
-            tuple<string, bool> study{ stmt.ColumnText(0), stmt.ColumnBool(1) };
+            tuple<string, bool> study(stmt.ColumnText(0), stmt.ColumnBool(1));
             studies.push_back(study);
         }
         return studies;

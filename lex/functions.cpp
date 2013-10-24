@@ -6,7 +6,6 @@ using namespace lex;
 
 namespace Func
 {
-
     Value SNumToStr::call(int bar, vector<Value> ps) const
     {
         double num = boost::get<double>(ps[0]);
@@ -18,6 +17,10 @@ namespace Func
         return ss.str();
     }
 
-    SNumToStr::SNumToStr() : StdFunction(VType::TEXT, { VType::NUMERIC, VType::NUMERIC }) {}
+    SNumToStr::SNumToStr() : StdFunction(VType::TEXT, vector<VType>())
+    {
+        paras.push_back(VType::NUMERIC);
+        paras.push_back(VType::NUMERIC);
+    }
 
 }

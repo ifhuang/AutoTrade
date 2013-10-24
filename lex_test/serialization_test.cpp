@@ -49,7 +49,8 @@ namespace lex_test
         TEST_METHOD(TestSetUpEnviroment)
         {
             SetUpEnviroment sue;
-            sue.initialize_list.push_back(Initialize{ 0, 1 });
+            Initialize ini = { 0, 1 };
+            sue.initialize_list.push_back(ini);
             ofstream ofs("test1");
             boost::archive::text_oarchive oa(ofs);
             oa << sue;
