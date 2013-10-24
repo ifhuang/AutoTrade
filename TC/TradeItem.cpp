@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "LogHandler.h"
+#include "string_processor.h"
 using std::stringstream;
 
 void TradeItem::log()
@@ -27,4 +28,13 @@ void TradeItem::log()
         << "tradeRecordNo(" << tradeRecordNo << ") "
         << "tradeTime(" << tradeTime << ")";
     LogHandler::getLogHandler().log(str.str());
+}
+
+std::string TradeItem::ToString()
+{
+    Joiner joiner("\t");
+    joiner.Put(quoteId).Put(tradeNo).Put(to_iso_extended_string(tradeTime));
+    joiner.Put(buysell).Put(tradePrice).Put(qty);
+    joiner.Put(submitPrice).Put(openclose);
+    return joiner.Join();
 }

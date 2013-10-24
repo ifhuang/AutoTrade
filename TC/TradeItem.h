@@ -222,5 +222,6 @@ public:
 	}
 
 	void log();
+    std::string ToString();
 };
 #endif

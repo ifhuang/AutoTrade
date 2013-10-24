@@ -91,11 +91,8 @@ void TradeUnit::updatePrice(PriceItem* priceItem)
             price->askPrice1, price->askPrice2, price->askPrice3, price->askPrice4, price->askPrice5);
 
         delete this->price;
-        this->price = priceItem;
     }
-    else {
-        this->price = priceItem;
-    }
+    this->price = priceItem;
 }
 
 void TradeUnit::updateTickPrice(PriceItem* pi) {
@@ -219,10 +216,7 @@ int TradeUnit::saveTradeRecord()
     for (auto pair : tradeQueue)
     {
         TradeItem* ti = pair.second;
-        string datetime = to_iso_extended_string(ti->getTradeTime());
-        fprintf(tradefp, "%s\t%d\t%s\t%s\t%f\t%d\t%f\t%s", ti->getQuoteId(),
-            ti->getTradeNo(), datetime.c_str(), ti->getBuySell(),
-            ti->getTradePrice(), ti->getQty(), ti->getSubmitPrice(), ti->getOpenClose());
+        fprintf(tradefp, "%s", ti->ToString().c_str());
     }
     fclose(tradefp);
     tradeQueue.clear();
@@ -248,7 +242,7 @@ bool TradeUnit::isBarsEnough()
 // added by xie
 Bar* TradeUnit::updateBars()
 {
-	Bar* newBar = NULL;
+    Bar* newBar = NULL;
     if (tickPrice == NULL) return newBar;
 
     //priceItem->log();
@@ -267,7 +261,7 @@ Bar* TradeUnit::updateBars()
         barStartTime = current;
         currentBar = new Bar(lastPrice, lastPrice, lastPrice, lastPrice, barPeriod);
         bars.push_back(currentBar);
-		newBar = currentBar;
+        newBar = currentBar;
         string start_time = to_iso_extended_string(barStartTime);
         LogHandler::getLogHandler().log("bar start time init:" + start_time);
 
@@ -286,7 +280,7 @@ Bar* TradeUnit::updateBars()
         currentBar->setHigh(lastPrice);
     }
     currentBar->setClose(lastPrice);
-	return newBar;
+    return newBar;
 }
 
 void TradeUnit::setMaxRefBarNum(int num)

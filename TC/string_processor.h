@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <boost/lexical_cast.hpp>
+#include "global.h"
 #include "OrderItem.h"
 #include "Position.h"
 #include "PriceItem.h"
@@ -27,6 +29,26 @@ private:
     Spliter(std::vector<std::string> message_split);
 
     std::vector<std::string> message_split_;
+};
+
+class Joiner
+{
+public:
+    Joiner(std::string str) : str_(str) {}
+
+    template<class T>
+    Joiner& Put(T item)
+    {
+        items_.push_back(boost::lexical_cast<std::string>(item));
+        return *this;
+    }
+
+    std::string Join() const;
+
+private:
+    std::vector<std::string> items_;
+    std::string str_;
+    DISALLOW_COPY_AND_ASSIGN(Joiner);
 };
 
 class StringProcessor

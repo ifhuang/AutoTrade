@@ -5,11 +5,9 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/tuple/tuple.hpp>
 #endif
 #include "constants.h"
-#include "global.h"
 #include "LogHandler.h"
 
 using std::string;
@@ -48,31 +46,12 @@ Spliter Spliter::Sub(size_t idx)
     return vector<string>(message_split_.begin() + idx, message_split_.end());
 }
 
+string Joiner::Join() const
+{
+    return boost::join(items_, str_);
+}
+
 namespace{
-
-    class Joiner
-    {
-    public:
-        Joiner(string str) : str_(str) {}
-
-        template<class T>
-        Joiner& Put(T item)
-        {
-            items_.push_back(lexical_cast<string>(item));
-            return *this;
-        }
-
-        string Join() const
-        {
-            return boost::join(items_, str_);
-        }
-
-    private:
-        vector<string> items_;
-        string str_;
-        DISALLOW_COPY_AND_ASSIGN(Joiner);
-    };
-
     tuple<int, int> ParseRef(string ref)
     {
         Spliter spliter(ref, ":");
