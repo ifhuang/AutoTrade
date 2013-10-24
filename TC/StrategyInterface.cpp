@@ -14,6 +14,50 @@ StrategyInterface::~StrategyInterface(void)
 
 void StrategyInterface::buy(double submitPrice, double qty, int orderType, int validType)
 {
+	OrderItem* orderItem = NULL;
+	for (; orderListPointer < strategyOrderList.size(); orderListPointer++) {
+		OrderItem* orderItem = strategyOrderList[orderListPointer];
+
+		/* -1, 初始化列表项 */
+		if (orderItem->getStrategyStatus() == INIT) {
+			orderItem->init(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), 
+				submitPrice, qty, BUY, orderType, validType, OPEN);
+			long OrderRefID = createOrder(BUY, OPEN, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
+			orderItem->setOrderRefId(OrderRefID);
+			orderListPointer++;
+			return;
+		} 
+		/* 0, 不满足条件，命令不执行*/
+		else if (orderItem->getStrategyStatus() == NOT_EXECUTED) {
+
+			/* 删除定单失败，证明定单已成交，需要平仓 */
+			if (deleteOrder(orderItem->getOrderRefId()) == MY_ERROR) {
+
+				/* 此时买单更新为卖单 */
+				long OrderRefID = createOrder(SELL, CLOSE, getCurrentPriceItem()->lastPrice1, 
+					orderItem->getQty(), orderItem->getOrderType(), orderItem->getValidType(), STRATEGY_SUBMITTER);
+				orderItem->init(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), 
+					getCurrentPriceItem()->lastPrice1, orderItem->getQty(), SELL, orderItem->getOrderType(), 
+					orderItem->getValidType(), CLOSE);
+				orderItem->setOrderRefId(OrderRefID);
+			}
+		} 
+		/* 1, 命令是执行的*/
+		else if (orderItem->getStrategyStatus() == EXECUTED) {
+			/* 如果遇到卖单，无论这个卖单成交与否，需要先将这个卖单删掉，然后再新建一个买单，否则就更新当前买单 */
+			if (orderItem->getBuySell() == SELL) {
+				deleteOrder(orderItem->getOrderRefId());
+				orderItem->init(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), 
+					submitPrice, qty, BUY, orderType, validType, OPEN);
+				long OrderRefID = createOrder(BUY, OPEN, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
+				orderItem->setOrderRefId(OrderRefID);
+			} else {
+				updateOrder(orderItem->getOrderRefId(), BUY, OPEN, submitPrice, qty, validType);
+			}
+			orderListPointer++;
+			return;
+		}
+	}
 }
 
 void StrategyInterface::sell(double submitPrice, double qty, int orderType, int validType)
@@ -157,25 +201,23 @@ long StrategyInterface::updateOrder( long orderRefId, char buysell, string openc
 int StrategyInterface::deleteOrder(long orderRefId)
 {
 	OrderItem* oi = tradeUnit->getOrder(orderRefId);
-	if(oi != NULL)
-	{
-		if(dispatcher->isSupport(oi->getOrderType()))
-		{
+	if(oi != NULL) {
+		if(dispatcher->isSupport(oi->getOrderType())) {
 			oi->setAction(DEL_ACTION);
 			oi->setStatus(DELETING);
 			dispatcher->sendOrder(oi);
-		}
-		else
-		{
+		} else {
 			tradeUnit->deleteOrder(orderRefId);
 		}
+		return SUCCESS;
+	} else {
+		return MY_ERROR;
 	}
 
 #ifdef UI_DEBUG
     iMainWindow->displaySwingRemoveWorkingOrders(orderRefId);
 #endif
 
-	return SUCCESS;
 }
 
 // 分解订单

@@ -8,6 +8,12 @@ using namespace std;
 OrderItem::OrderItem(int tradePlatform, string quoteId, double submitPrice,
     double qty, char buysell, int orderType, int validType, string openclose)
 {
+	this->init(tradePlatform, quoteId, submitPrice, qty, buysell, orderType, validType, openclose);
+}
+
+void OrderItem::init(int tradePlatform, string quoteId, double submitPrice,
+    double qty, char buysell, int orderType, int validType, string openclose) 
+{
     this->tradePlatform = tradePlatform;
     this->quoteId = quoteId;
     this->submitPrice = submitPrice;

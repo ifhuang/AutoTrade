@@ -2,7 +2,12 @@
 #define __ORDERITEM__
 
 #include <string> 
-
+using std::string;
+enum StrategyStatus {
+	INIT = -1, 
+	NOT_EXECUTED = 0, 
+	EXECUTED = 1
+};
 class OrderItem
 {
 private:
@@ -30,7 +35,7 @@ private:
     int traderId;
     std::string account;
     time_t validTime;
-
+	StrategyStatus strategyStatus;
 
 public:
 
@@ -38,7 +43,8 @@ public:
 
     OrderItem(int tradePlatform, std::string quoteId, double submitPrice, double qty,
         char buysell, int orderType, int validType, std::string openclose);
-
+	void init(int tradePlatform, string quoteId, double submitPrice,
+		double qty, char buysell, int orderType, int validType, string openclose); 
     void setAccount(std::string account)
     {
         this->account = account;
@@ -272,6 +278,14 @@ public:
     void setValidTime(time_t t) {
         this->validTime = t;
     }
+
+	StrategyStatus getStrategyStatus() const {
+		return this->strategyStatus;
+	}
+
+	void setStrategyStatus(StrategyStatus s) {
+		this->strategyStatus = s;
+	}
 
     void log() const;
 };
