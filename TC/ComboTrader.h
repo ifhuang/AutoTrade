@@ -60,7 +60,7 @@ private:
         string openclose, double submitPrice, double qty, int validType);
 
 	TradeUnit* getTradeUnit(int quoteNo);
-	TradeUnit* getTradeUnit(int tradePlatform, string quoteId);
+	TradeUnit* getTradeUnit(string quoteId);
 	int submitComboOrder(ComboOrder* comboOrder);
 
 	int createComboOrder(long& comboRefId,  char buysell, string openclose,

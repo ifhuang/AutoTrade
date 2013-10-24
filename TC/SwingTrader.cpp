@@ -224,14 +224,14 @@ void SwingTrader::signal() {
 
 int SwingTrader::setTradeUnit(TradeUnit* tradeUnit)
 {
-	int flag = -1;
+    int flag = -1;
 
-	if(dispatcher!=NULL && dispatcher->addQuote(tradeUnit->getQuote()))
-	{
-		this->tradeUnit = tradeUnit;
-		flag = 0;
-	}
-	return flag;
+    if (dispatcher != NULL && dispatcher->addQuote(tradeUnit->getQuote()))
+    {
+        this->tradeUnit = tradeUnit;
+        flag = 0;
+    }
+    return flag;
 }
 
 int SwingTrader::deleteTradeUnit()

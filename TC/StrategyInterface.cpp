@@ -91,8 +91,8 @@ long StrategyInterface::createOrder(char buysell, string openclose, double submi
 {	
 	int minqty = tradeUnit->getQuote()->getMinContractQty();
 
-	OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(),
-        tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
+	OrderItem* oi = new OrderItem(tradeUnit->getQuoteId(), submitPrice, qty,
+        buysell, orderType, validType, openclose);
 	oi->setOrderRefId(ascOrderRefId++);
 	oi->setSubmitter(submitter);
 	oi->setStatus(ADDING);
@@ -148,7 +148,6 @@ long StrategyInterface::updateOrder( long orderRefId, char buysell, string openc
 {
 	OrderItem* oi = tradeUnit->getOrder(orderRefId);
 	oi->addCounter();
-	int tradePlatform = tradeUnit->getTradePlatform();
 	if(oi != NULL)
 	{
 		if(dispatcher->isSupport(oi->getOrderType()))

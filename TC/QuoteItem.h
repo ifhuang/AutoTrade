@@ -15,14 +15,7 @@ public:
 	{
 		return this->minContractQty;
 	}
-	void setTradePlatform(int tradePlatform)
-	{
-		this->tradePlatform = tradePlatform;
-	}
-	int getTradePlatform()
-	{
-		return this->tradePlatform;
-	}
+
 	void setQuoteId(string quoteId)
 	{
 		this->quoteId = quoteId;
@@ -66,7 +59,6 @@ public:
 		return this->bigPointValue;
 	}
 private:
-	int tradePlatform;
 	string quoteId;
 	string exchange;
 	double margin;

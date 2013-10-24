@@ -185,8 +185,6 @@ int SPTrader::initPriceConnection()
 
 int SPTrader::addQuote(QuoteItem *pQuoteItem)
 {
-    if (pQuoteItem->getTradePlatform() != SPTRADER) return -1;
-
     string quoteId = pQuoteItem->getQuoteId();
 
     quoteEvent = CreateEvent(NULL, FALSE, FALSE, L"ADD_QUOTE");
@@ -286,7 +284,6 @@ OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
 
 int SPTrader::deleteQuote(QuoteItem *pQuoteItem)
 {
-    if (pQuoteItem->getTradePlatform() != SPTRADER) return -1;
     string quoteId = pQuoteItem->getQuoteId();
 
     quoteEvent = CreateEvent(NULL, FALSE, FALSE, L"DELETE_QUOTE");

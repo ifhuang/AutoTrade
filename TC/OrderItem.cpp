@@ -5,16 +5,15 @@
 #include "LogHandler.h"
 using namespace std;
 
-OrderItem::OrderItem(int tradePlatform, string quoteId, double submitPrice,
+OrderItem::OrderItem(string quoteId, double submitPrice,
     double qty, char buysell, int orderType, int validType, string openclose)
 {
-	this->init(tradePlatform, quoteId, submitPrice, qty, buysell, orderType, validType, openclose);
+    this->init(quoteId, submitPrice, qty, buysell, orderType, validType, openclose);
 }
 
-void OrderItem::init(int tradePlatform, string quoteId, double submitPrice,
-    double qty, char buysell, int orderType, int validType, string openclose) 
+void OrderItem::init(string quoteId, double submitPrice, double qty,
+    char buysell, int orderType, int validType, string openclose)
 {
-    this->tradePlatform = tradePlatform;
     this->quoteId = quoteId;
     this->submitPrice = submitPrice;
     this->qty = qty;

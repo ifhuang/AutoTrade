@@ -84,7 +84,6 @@ PriceItem* StringProcessor::StringToPriceItem(std::string price_str)
 {
     Spliter spliter(price_str);
     PriceItem* pi = new PriceItem();
-    pi->tradePlatform = SPTRADER;
     try
     {
         pi->quoteId           = spliter.Get<string>(2);
@@ -180,7 +179,6 @@ OrderItem* StringProcessor::StrintToOrderItem(Spliter spliter)
         return nullptr;
     }
     OrderItem* oi = new OrderItem();
-    oi->setTradePlatform(SPTRADER);
     try
     {
         oi->setReturnCode(spliter.Get<int>(0));

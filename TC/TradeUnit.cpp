@@ -112,11 +112,6 @@ void TradeUnit::updateTickPrice(PriceItem* pi) {
     updateBars();
 }
 
-void TradeUnit::setQuote(QuoteItem* quote)
-{
-    this->quote = quote;
-}
-
 QuoteItem* TradeUnit::getQuote()
 {
     return this->quote;
@@ -142,11 +137,6 @@ TradeItem* TradeUnit::getTrade(int tradeNo)
 string TradeUnit::getQuoteId()
 {
     return quote->getQuoteId();
-}
-
-int TradeUnit::getTradePlatform()
-{
-    return quote->getTradePlatform();
 }
 
 map<long, OrderItem*>& TradeUnit::getOrderQueue()

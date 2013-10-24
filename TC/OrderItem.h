@@ -11,7 +11,6 @@ enum StrategyStatus {
 class OrderItem
 {
 private:
-    int tradePlatform;
     std::string quoteId;
     int action;
     double submitPrice;
@@ -41,9 +40,9 @@ public:
 
     OrderItem() {}
 
-    OrderItem(int tradePlatform, std::string quoteId, double submitPrice, double qty,
+    OrderItem(std::string quoteId, double submitPrice, double qty,
         char buysell, int orderType, int validType, std::string openclose);
-	void init(int tradePlatform, string quoteId, double submitPrice,
+	void init(string quoteId, double submitPrice,
 		double qty, char buysell, int orderType, int validType, string openclose); 
     void setAccount(std::string account)
     {
@@ -153,16 +152,6 @@ public:
     double getOriginalQty()
     {
         return this->originalQty;
-    }
-
-    void setTradePlatform(int tradePlatform)
-    {
-        this->tradePlatform = tradePlatform;
-    }
-
-    int getTradePlatform()
-    {
-        return this->tradePlatform;
     }
 
     void setQuoteId(std::string quoteId)

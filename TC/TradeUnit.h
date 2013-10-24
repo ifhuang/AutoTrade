@@ -25,12 +25,10 @@ public:
     Bar* getBar(int pos_ago);
     QuoteItem* getQuote();
     string getQuoteId();
-    int getTradePlatform();
     PriceItem* getPrice();
     bool isBarsEnough();
     map<long, OrderItem*>& getOrderQueue();
 
-    void setQuote(QuoteItem* quote);
     void updatePrice(PriceItem* price);
     void updateTickPrice(PriceItem* price);
     int addTrade(TradeItem* tradeRecord);

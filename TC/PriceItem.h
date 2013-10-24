@@ -13,7 +13,6 @@ public:
 
     void log() const;
 
-	int tradePlatform;
 	std::string quoteId;
     std::string quoteName;
 	int qouteType; // Futures=1; Options=2; Spreads=3;

@@ -1,4 +1,4 @@
-﻿#ifndef __DISPATCHER__
+﻿﻿#ifndef __DISPATCHER__
 #define __DISPATCHER__
 #include <iostream>
 #include <string>    
@@ -11,7 +11,6 @@ using namespace std;
 
 struct quoteId_threadId
 {
-    int tradePlatform;
     string quoteId;
     DWORD threadId;
 };
@@ -29,7 +28,7 @@ public:
     virtual int sendOrder(OrderItem* pOrderItem) = 0;
     virtual int deleteQuote(QuoteItem *pOuoteItem) = 0;
     int addOrderThreadId(int traderId, DWORD traderThreadId);
-    int addPriceThreadId(int tradePlatform, string quoteId, DWORD traderThreadId);
+    int addPriceThreadId(string quoteId, DWORD traderThreadId);
     void addUIThreadId(DWORD UIThreadID);
     void returnOrder(OrderItem* pOrderItem);
     void returnTrade(TradeItem* pTradeItem);

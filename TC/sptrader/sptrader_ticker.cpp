@@ -19,7 +19,6 @@ public:
                        pi->lastPrice1 = msg.fileds.Get<double>(1);
                        pi->lastQty1 = msg.fileds.Get<int>(2);
                        pi->currentTime = boost::posix_time::from_time_t(msg.fileds.Get<time_t>(3));
-                       pi->tradePlatform = SPTRADER;
                        dispatcher_.forwardTickPrice(pi);
                        break;
         }

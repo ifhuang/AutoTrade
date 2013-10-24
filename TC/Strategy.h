@@ -62,7 +62,7 @@ public:
 	void turnOffStrategy() 
 	{
 		autoTrading = false;
-	};
+	}
 
 	int getTraderId()
 	{

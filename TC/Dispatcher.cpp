@@ -33,11 +33,11 @@ int Dispatcher::addOrderThreadId(int traderId, DWORD traderThreadId)
     return 0;
 }
 
-int Dispatcher::addPriceThreadId(int tradePlatform, string quoteId, DWORD traderThreadId)
+int Dispatcher::addPriceThreadId(string quoteId, DWORD traderThreadId)
 {
     for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if (qt->quoteId == quoteId && qt->threadId == traderThreadId && qt->tradePlatform == tradePlatform)
+        if (qt->quoteId == quoteId && qt->threadId == traderThreadId)
         {
             cout << "This quote has been registered." << endl;
             return SUCCESS;
@@ -46,7 +46,6 @@ int Dispatcher::addPriceThreadId(int tradePlatform, string quoteId, DWORD trader
     quoteId_threadId* qtid = new quoteId_threadId;
     qtid->quoteId = quoteId;
     qtid->threadId = traderThreadId;
-    qtid->tradePlatform = tradePlatform;
     priceThreadIdQueue.push_front(qtid);
     return SUCCESS;
 }
@@ -68,8 +67,9 @@ void Dispatcher::returnTrade(TradeItem* ti)
 void Dispatcher::returnOrder(OrderItem* po)
 {
     int traderId = po->getTraderId();
-    if (orderThreadIdTable.find(traderId) != orderThreadIdTable.end()) {
-        DWORD traderThreadId = orderThreadIdTable[traderId];
+    auto it = orderThreadIdTable.find(traderId);
+    if (it != orderThreadIdTable.end()) {
+        DWORD traderThreadId = it->second;
         PostThreadMessage(traderThreadId, ORDER_ACCEPT_MSG, 0, (LPARAM)po);
     }
 }
@@ -77,10 +77,9 @@ void Dispatcher::returnOrder(OrderItem* po)
 void Dispatcher::forwardPrice(PriceItem* pPriceItem)
 {
     string quoteId = pPriceItem->quoteId;
-    int tradePlatform = pPriceItem->tradePlatform;
     for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if (qt->quoteId == quoteId && qt->tradePlatform == tradePlatform) {
+        if (qt->quoteId == quoteId) {
             PostThreadMessage(qt->threadId, PRICE_MSG, 0, (LPARAM)pPriceItem);
 
             // 在UI上更新价格数据
@@ -95,10 +94,9 @@ void Dispatcher::forwardPrice(PriceItem* pPriceItem)
 void Dispatcher::forwardTickPrice(PriceItem* pPriceItem)
 {
     string quoteId = pPriceItem->quoteId;
-    int tradePlatform = pPriceItem->tradePlatform;
     for (quoteId_threadId *qt : priceThreadIdQueue)
     {
-        if (qt->quoteId == quoteId && qt->tradePlatform == tradePlatform) {
+        if (qt->quoteId == quoteId) {
             PostThreadMessage(qt->threadId, TICK_PRICE, 0, (LPARAM)pPriceItem);
         }
     }

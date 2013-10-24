@@ -29,7 +29,6 @@ void testComboTrader()
 	DWORD tbtid = cmb_trader->startTraderThread();  // 交易线程启动，等待消息
 
 	QuoteItem* qi1 = new QuoteItem();
-	qi1->setTradePlatform(SPTRADER);
 	qi1->setQuoteId("NQZ3");
 	qi1->setExchange("CBOT");
 	qi1->setMinContractQty(1);
@@ -39,13 +38,12 @@ void testComboTrader()
 	// 在这里会添加品种，进而开启价格线程和订单线程
 	cmb_trader->addTradeUnit(tu1);
 
-	disp->addPriceThreadId(qi1->getTradePlatform(), qi1->getQuoteId(),tbtid);
+	disp->addPriceThreadId(qi1->getQuoteId(),tbtid);
 
 	disp->addOrderThreadId(cmb_trader->getTraderId(), tbtid);
 	//Todo: add ui thread id
 
 	QuoteItem* qi2 = new QuoteItem();
-	qi2->setTradePlatform(SPTRADER);
 	qi2->setQuoteId("YMZ3");
 	qi2->setExchange("CBOT");
 	qi2->setMinContractQty(1);
@@ -53,7 +51,7 @@ void testComboTrader()
 	TradeUnit* tu2 =  new TradeUnit(qi2);
 	cmb_trader->addTradeUnit(tu2);
 
-	disp->addPriceThreadId(qi2->getTradePlatform(), qi2->getQuoteId(),tbtid);
+	disp->addPriceThreadId(qi2->getQuoteId(),tbtid);
 
 	//cmb_trader->setOptimizeOrderFlow(NO_OPTIMIZE_OFP);
 	cmb_trader->setOptimizeOrderFlow(OPTIMIZE_OFP);
@@ -96,7 +94,6 @@ void testSwingTrader()
 	DWORD tbtid = swingTrader->startTraderThread();  // 交易线程启动，等待消息
 
 	QuoteItem* qi1 = new QuoteItem();
-	qi1->setTradePlatform(SPTRADER);
 	qi1->setQuoteId("NQZ3");
 	qi1->setExchange("CBOT");
 	qi1->setMinContractQty(1);
@@ -106,7 +103,7 @@ void testSwingTrader()
 	// 在这里会添加品种，进而开启价格线程和订单线程
 	swingTrader->setTradeUnit(tu1);
 
-	disp->addPriceThreadId(qi1->getTradePlatform(), qi1->getQuoteId(),tbtid);
+	disp->addPriceThreadId(qi1->getQuoteId(),tbtid);
 	disp->addOrderThreadId(swingTrader->getTraderId(), tbtid);
 
 	swingTrader->turnOnStrategy();

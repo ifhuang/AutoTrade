@@ -16,7 +16,7 @@ void ComboTrader::processTickPrice(MSG& msg) {
     PriceItem* pi = (PriceItem*)msg.lParam;
     LogHandler::getLogHandler().log("Tick price");
     pi->log();
-    TradeUnit* tu = getTradeUnit(pi->tradePlatform, pi->quoteId);
+    TradeUnit* tu = getTradeUnit(pi->quoteId);
     if (tu != NULL) {
         tu->updateTickPrice(pi);
     }
@@ -32,7 +32,7 @@ void ComboTrader::updateBars() {
 
 void ComboTrader::processOrderAccepted(MSG& msg) {
     OrderItem* new_oi = (OrderItem*)msg.lParam;
-    TradeUnit* tu = getTradeUnit(new_oi->getTradePlatform(), new_oi->getQuoteId());
+    TradeUnit* tu = getTradeUnit(new_oi->getQuoteId());
     LogHandler::getLogHandler().log("Order accepted");
     new_oi->log();
     if (tu != NULL)
@@ -66,7 +66,7 @@ void ComboTrader::processOrderAccepted(MSG& msg) {
 
 void ComboTrader::processTradeDone(MSG& msg) {
     TradeItem* ti = (TradeItem*)msg.lParam;
-    TradeUnit* tu = getTradeUnit(ti->getTradePlatform(), ti->getQuoteId());
+    TradeUnit* tu = getTradeUnit(ti->getQuoteId());
     if (tu != NULL)
     {
         OrderItem* oi = tu->getOrder(ti->getOrderRefId());
@@ -213,7 +213,7 @@ void ComboTrader::processTradeDone(MSG& msg) {
 void ComboTrader::processPrice(MSG& msg) {
     PriceItem* pi = (PriceItem*)msg.lParam;
     //cout<<"receive "<<pi->quoteId<<" price"<<endl;
-    TradeUnit* tu = getTradeUnit(pi->tradePlatform, pi->quoteId);
+    TradeUnit* tu = getTradeUnit(pi->quoteId);
     if (tu != NULL)
     {
         tu->updatePrice(pi);
@@ -339,14 +339,14 @@ TradeUnit* ComboTrader::getTradeUnit(int quoteNo)
     return tu;
 }
 
-TradeUnit* ComboTrader::getTradeUnit(int tradePlatform, string quoteId)
+TradeUnit* ComboTrader::getTradeUnit(string quoteId)
 {
     TradeUnit* tu = NULL;
     list<TradeUnit*>::iterator iter = tradeUnitList.begin();
     for (; iter != tradeUnitList.end(); iter++)
     {
         tu = *iter;
-        if (tu->getTradePlatform() == tradePlatform && tu->getQuoteId() == quoteId)
+        if (tu->getQuoteId() == quoteId)
             break;
     }
     return tu;
@@ -378,7 +378,7 @@ long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, string openclo
     double submitPrice, double qty, int orderType, int validType, int submitter, long comboRefId)
 {
     TradeUnit* tradeUnit = getTradeUnit(orderUnit->getQuoteNo());
-    OrderItem* oi = new OrderItem(tradeUnit->getQuote()->getTradePlatform(), tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
+    OrderItem* oi = new OrderItem(tradeUnit->getQuoteId(), submitPrice, qty, buysell, orderType, validType, openclose);
     oi->setOrderRefId(ascOrderRefId++);
     oi->setComboRefId(comboRefId);
     oi->setSubmitter(submitter);
@@ -437,7 +437,6 @@ long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysel
     TradeUnit* tradeUnit = getTradeUnit(orderUnit->getQuoteNo());
     OrderItem* oi = tradeUnit->getOrder(orderRefId);
     oi->addCounter();
-    int tradePlatform = tradeUnit->getTradePlatform();
     if (oi != NULL)
     {
         if (dispatcher->isSupport(oi->getOrderType()))
@@ -921,7 +920,7 @@ bool ComboTrader::double_divide(double divisor, double dividend)
     double result;
     char result_buf[20], *tmp;
     result = divisor / dividend;
-    sprintf(result_buf, "%.15lf", result);
+    sprintf(result_buf, "%.15f", result);
     tmp = result_buf;
     //cout<<tmp<<endl;
     while (*tmp != '.')
