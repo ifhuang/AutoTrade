@@ -3,11 +3,10 @@
 #include <list>
 #include <string> 
 #include <windows.h>
-#include <tchar.h>
+#include "Dispatcher.h"
+#include "Strategy.h"
 #include "TradeCube.h"
 #include "TradeUnit.h"
-#include "Strategy.h"
-#include "Dispatcher.h"
 
 using namespace std; 
 

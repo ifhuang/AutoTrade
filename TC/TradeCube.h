@@ -3,14 +3,6 @@
 
 #include "constants.h"
 
-#include <stdio.h>
-#include <iostream>
-#include <string> 
-#include <sstream>
-#include <time.h>
-
-using namespace std; 
-
 #include "Bar.h"
 #include "PlatformInfo.h"
 #include "QuoteItem.h"
@@ -20,6 +12,5 @@ using namespace std;
 #include "Position.h"
 #include "ComboOrder.h"
 #include "LogHandler.h"
-
 
 #endif  

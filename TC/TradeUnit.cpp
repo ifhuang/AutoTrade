@@ -1,5 +1,8 @@
 ﻿#include "TradeUnit.h"
 
+#include <direct.h>
+#include <io.h>
+
 using boost::posix_time::ptime;
 using boost::posix_time::second_clock;
 using boost::posix_time::seconds;

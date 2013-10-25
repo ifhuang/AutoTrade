@@ -1,5 +1,25 @@
 ﻿#include "Strategy.h"
 
+Strategy::Strategy(int traderId)
+{
+    maxRefBarNum = 50;
+    intraBarTrading = false;
+    autoTrading = false;
+    counter = 0;
+    dispatcher = NULL;
+    hTraderThread = NULL;
+    this->traderId = traderId;
+    this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
+    this->strategyInterface = new StrategyInterface(traderId, optimizeOrderFlow);
+}
+
+Strategy::~Strategy()
+{
+    if (strategyInterface != NULL) {
+        delete strategyInterface;
+    }
+}
+
 DWORD Strategy::startTraderThread()
 {
     hTraderThread = CreateThread(NULL, 0, traderThreadAdapter, this, 0, &TraderThreadId);

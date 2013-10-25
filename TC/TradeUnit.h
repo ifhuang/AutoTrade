@@ -1,12 +1,8 @@
 #ifndef __TRADE_UNIT__
 #define __TRADE_UNIT__
-#include <tchar.h>
-#include <iostream>
 #include <map>
 #include <string> 
 #include <vector>
-#include <direct.h>
-#include <io.h>
 #include <windows.h>
 #ifndef Q_MOC_RUN
 #include <boost/date_time/posix_time/posix_time.hpp>

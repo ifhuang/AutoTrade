@@ -8,25 +8,9 @@
 class Strategy
 {
 public:
-	Strategy(int traderId)
-	{
-		maxRefBarNum = 50;
-		intraBarTrading = false;
-		autoTrading = false;
-		counter = 0;
-		dispatcher = NULL;
-		hTraderThread = NULL;
-		this->traderId = traderId;
-		this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
-		this->strategyInterface = new StrategyInterface(traderId, optimizeOrderFlow);
-	}
+    Strategy(int traderId);
 
-	virtual ~Strategy() 
-	{
-		if (strategyInterface != NULL) {
-			delete strategyInterface;
-		}
-	}
+	virtual ~Strategy();
 	
 	void addCounter()
 	{

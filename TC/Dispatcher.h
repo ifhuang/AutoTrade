@@ -1,9 +1,9 @@
 ﻿#ifndef __DISPATCHER__
 #define __DISPATCHER__
-#include <iostream>
-#include <string>    
 #include <list>
+#include <iostream>
 #include <map>
+#include <string>    
 #include <windows.h>
 #include "TradeCube.h"
 

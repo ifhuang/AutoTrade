@@ -1,11 +1,10 @@
 ﻿#ifndef __SPTRADER__
 #define __SPTRADER__
-#include <list>
 #include <thread>
 #include <boost/asio.hpp>
 #include "global.h"
-#include "TradeCube.h"
 #include "Dispatcher.h" 
+#include "TradeCube.h"
 
 class SPTraderOrder;
 class SPTraderTicker;

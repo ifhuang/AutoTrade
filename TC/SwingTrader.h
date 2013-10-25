@@ -1,15 +1,11 @@
 #ifndef __SWINGTRADER__
 #define __SWINGTRADER__
-#include <time.h>
-#include <iostream>
 #include <string> 
 #include <windows.h>
-#include <sstream>
-#include <tchar.h>
-#include "TradeCube.h"
-#include "Strategy.h"
-#include "TradeUnit.h"
 #include "Dispatcher.h"
+#include "Strategy.h"
+#include "TradeCube.h"
+#include "TradeUnit.h"
 #include "../TradeCube/iswingtradedialog.h"
 #include "../TradeCube/imainwindow.h"
 
