@@ -7,10 +7,9 @@
 class StrategyInterface
 {
 public:
-	StrategyInterface(int traderId, int optimizeOrderFlow);
+	StrategyInterface(int traderId, int optimizeOrderFlow, Dispatcher *disp);
 	~StrategyInterface(void);
 	void setTradeUnit(TradeUnit* tradeUnit);
-	void setDispatcher(Dispatcher* dispatcher);
 	void setOptimizeOrderFlow(int pattern);
 	void setMainWindow(IMainWindow* iMainWindow) { this->iMainWindow = iMainWindow; }
 	vector<OrderItem*>& getOrderList() { return this->strategyOrderList;}
@@ -35,7 +34,7 @@ private:
 	vector<OrderItem*> strategyOrderList;
 	TradeUnit* tradeUnit;
     IMainWindow* iMainWindow;
-	Dispatcher* dispatcher;
+	Dispatcher* dispatcher_;
 	long ascOrderRefId;
 	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1
 	int traderId;

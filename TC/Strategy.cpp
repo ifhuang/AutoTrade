@@ -1,16 +1,15 @@
 ﻿#include "Strategy.h"
 
-Strategy::Strategy(int traderId)
+Strategy::Strategy(int traderId, Dispatcher *disp) : dispatcher_(disp)
 {
     maxRefBarNum = 50;
     intraBarTrading = false;
     autoTrading = false;
     counter = 0;
-    dispatcher = NULL;
     hTraderThread = NULL;
     this->traderId = traderId;
     this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
-    this->strategyInterface = new StrategyInterface(traderId, optimizeOrderFlow);
+    this->strategyInterface = new StrategyInterface(traderId, optimizeOrderFlow, disp);
 }
 
 Strategy::~Strategy()
@@ -22,8 +21,8 @@ Strategy::~Strategy()
 
 DWORD Strategy::startTraderThread()
 {
-    hTraderThread = CreateThread(NULL, 0, traderThreadAdapter, this, 0, &TraderThreadId);
-    return TraderThreadId;
+    hTraderThread = CreateThread(NULL, 0, traderThreadAdapter, this, 0, &trader_thread_id_);
+    return trader_thread_id_;
 
 }
 

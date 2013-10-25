@@ -1,13 +1,12 @@
 ﻿#include "SwingTrader.h"
 
-//#define UI_DEBUG
-
-SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog,
-    IMainWindow* iMainWindow) : Strategy(traderId)
+SwingTrader::SwingTrader(int traderId, Dispatcher *disp,
+    ISwingTradeDialog* iSwingTradeDialog,
+    IMainWindow* iMainWindow) : Strategy(traderId, disp)
 {
     this->iSwingTradeDialog = iSwingTradeDialog;
     this->iMainWindow = iMainWindow;
-	this->strategyInterface->setMainWindow(iMainWindow);
+    this->strategyInterface->setMainWindow(iMainWindow);
     tradeUnit = NULL;
     testOrderID = 0;
 }
@@ -25,11 +24,12 @@ void SwingTrader::updateBars() {
     if (tradeUnit != NULL) {
         Bar* newBar = tradeUnit->updateBars();
         //LogHandler::getLogHandler().log("timer update bar(" + tradeUnit->getQuote()->getQuoteId() + ")");
-        if(newBar) {
-			signal();
-#ifdef UI_DEBUG
-            iSwingTradeDialog->displayBar(newBar);
-#endif	
+        if (newBar) {
+            signal();
+            if (iSwingTradeDialog)
+            {
+                iSwingTradeDialog->displayBar(newBar);
+            }
         }
     }
 }
@@ -174,10 +174,10 @@ void SwingTrader::processTradeDone(MSG& msg) {
         }
     }
 
-#ifdef UI_DEBUG
-    iMainWindow->displaySwingAddOrderHistory(ti);
-#endif
-
+    if (iMainWindow)
+    {
+        iMainWindow->displaySwingAddOrderHistory(ti);
+    }
 }
 
 void SwingTrader::processPrice(MSG& msg) {
@@ -190,10 +190,10 @@ void SwingTrader::processPrice(MSG& msg) {
         LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
     }
 
-#ifdef UI_DEBUG
-    iSwingTradeDialog->displayPriceItem(pi);
-#endif
-
+    if (iSwingTradeDialog)
+    {
+        iSwingTradeDialog->displayPriceItem(pi);
+    }
 }
 
 void SwingTrader::signal() {
@@ -228,19 +228,21 @@ int SwingTrader::setTradeUnit(TradeUnit* tradeUnit)
 {
     int flag = -1;
 
-    if (dispatcher != NULL && dispatcher->addQuote(tradeUnit->getQuote()))
+    if (dispatcher_ != NULL && dispatcher_->addQuote(tradeUnit->getQuote()))
     {
         this->tradeUnit = tradeUnit;
         flag = 0;
     }
-	strategyInterface->setTradeUnit(tradeUnit);
+    strategyInterface->setTradeUnit(tradeUnit);
+    dispatcher_->addPriceThreadId(tradeUnit->getQuoteId(), trader_thread_id_);
+    dispatcher_->addOrderThreadId(getTraderId(), trader_thread_id_);
     return flag;
 }
 
 int SwingTrader::deleteTradeUnit()
 {
     /** Clear all order and save trade record before delete the quote**/
-    dispatcher->deleteQuote(tradeUnit->getQuote());
+    dispatcher_->deleteQuote(tradeUnit->getQuote());
     delete tradeUnit;
     tradeUnit = NULL;
     return 0;
@@ -318,7 +320,7 @@ void SwingTrader::triggerWaitingOrder()
     for (auto &pair : tradeUnit->getOrderQueue())
     {
         OrderItem* oi = pair.second;
-        if (!dispatcher->isSupport(oi->getOrderType()))
+        if (!dispatcher_->isSupport(oi->getOrderType()))
         {
             if (oi->getOrderType() == MKT && oi->getParentRefId() != 0)
             {
@@ -332,7 +334,7 @@ void SwingTrader::triggerWaitingOrder()
                         oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                     else if (oi->getBuySell() == SELL)
                         oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                    dispatcher->sendOrder(oi);
+                    dispatcher_->sendOrder(oi);
                 }
             }
             else if (oi->getOrderType() == STP || oi->getOrderType() == MIT)
@@ -355,7 +357,7 @@ void SwingTrader::triggerWaitingOrder()
                             oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                         else if (oi->getBuySell() == SELL)
                             oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                        dispatcher->sendOrder(oi);
+                        dispatcher_->sendOrder(oi);
                     }
                 }
             }
@@ -375,7 +377,7 @@ void SwingTrader::closeAllPositions()
     Position pos;
     //pos.accountNo = dispatcher->getPlatformInfo().accountNo;
     pos.setQuoteId(tradeUnit->getQuoteId());
-    dispatcher->getPosition(pos);
+    dispatcher_->getPosition(pos);
     pos.log();
     double price = 0;
     if (tradeUnit != NULL) {

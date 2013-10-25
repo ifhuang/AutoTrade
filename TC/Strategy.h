@@ -8,7 +8,7 @@
 class Strategy
 {
 public:
-    Strategy(int traderId);
+    Strategy(int traderId, Dispatcher *disp);
 
 	virtual ~Strategy();
 	
@@ -46,12 +46,6 @@ public:
 		return this->autoTrading;
 	}
 
-	void setDispatcher(Dispatcher* dispatcher)
-	{
-		this->dispatcher = dispatcher;
-		this->strategyInterface->setDispatcher(dispatcher);
-	}
-
 	void turnOffStrategy() 
 	{
 		autoTrading = false;
@@ -79,8 +73,8 @@ public:
 	void turnOnStrategy();
 
 protected:
-	Dispatcher* dispatcher;
-	DWORD TraderThreadId;
+	Dispatcher* dispatcher_;
+	DWORD trader_thread_id_;
 	map<int, int> doneTradeIDs;
 	int optimizeOrderFlow; // NO_OPTIMIZE_OFP=0, OPTIMIZE_OFP=1
 	int traderId;

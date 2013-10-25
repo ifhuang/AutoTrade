@@ -15,7 +15,8 @@ class IMainWindow;
 class SwingTrader : public Strategy
 {
 public:
-    SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog, IMainWindow* iMainWindow);
+    SwingTrader(int traderId, Dispatcher *disp,
+        ISwingTradeDialog* iSwingTradeDialog, IMainWindow* iMainWindow);
     virtual ~SwingTrader();
     int setTradeUnit(TradeUnit* tradeUnit);
     TradeUnit* getTradeUnit();

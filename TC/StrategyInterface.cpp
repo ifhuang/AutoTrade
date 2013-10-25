@@ -1,12 +1,12 @@
 ﻿#include "StrategyInterface.h"
 
 
-StrategyInterface::StrategyInterface(int traderId, int optimizeOrderFlow)
+StrategyInterface::StrategyInterface(int traderId, int optimizeOrderFlow
+    , Dispatcher *disp) : dispatcher_(disp)
 {
-    dispatcher = NULL;
     this->ascOrderRefId = 1;
-	this->traderId = traderId;
-	this->optimizeOrderFlow = optimizeOrderFlow;
+    this->traderId = traderId;
+    this->optimizeOrderFlow = optimizeOrderFlow;
 }
 
 StrategyInterface::~StrategyInterface(void)
@@ -15,7 +15,7 @@ StrategyInterface::~StrategyInterface(void)
 
 void StrategyInterface::setOptimizeOrderFlow(int pattern)
 {
-	this->optimizeOrderFlow = pattern;
+    this->optimizeOrderFlow = pattern;
 }
 
 void StrategyInterface::buy(double submitPrice, double qty, int orderType, int validType)
@@ -86,11 +86,6 @@ void StrategyInterface::setTradeUnit(TradeUnit* tradeUnit)
     this->tradeUnit = tradeUnit;
 }
 
-void StrategyInterface::setDispatcher(Dispatcher* dispatcher) 
-{
-	this->dispatcher = dispatcher;
-}
-
 Bar* StrategyInterface::getBar(int position)
 {
     if (tradeUnit != NULL) {
@@ -129,17 +124,17 @@ long StrategyInterface::createOrder(char buysell, string openclose, double submi
         {
             oi->setAction(ADD_ACTION);
             tradeUnit->addOrder(oi);
-            dispatcher->sendOrder(oi);
+            dispatcher_->sendOrder(oi);
         }
     }
     else if (orderType != MKT)
     {
-        if (dispatcher->isSupport(orderType)) //Limit order
+        if (dispatcher_->isSupport(orderType)) //Limit order
         {
             oi->setAction(ADD_ACTION);
             oi->setStatus(ADDING);
             tradeUnit->addOrder(oi);
-            dispatcher->sendOrder(oi);
+            dispatcher_->sendOrder(oi);
 
         }
         else
@@ -165,7 +160,7 @@ long StrategyInterface::updateOrder(long orderRefId, char buysell, string opencl
     oi->addCounter();
     if (oi != NULL)
     {
-        if (dispatcher->isSupport(oi->getOrderType()))
+        if (dispatcher_->isSupport(oi->getOrderType()))
         {
             oi->setValidType(validType);
             oi->setBuySell(buysell);
@@ -176,10 +171,10 @@ long StrategyInterface::updateOrder(long orderRefId, char buysell, string opencl
                 oi->setStatus(CHANGING);
                 oi->setAction(CHG_ACTION);
                 oi->setSubmitPrice(submitPrice);
-                dispatcher->sendOrder(oi); // transimit order 
+                dispatcher_->sendOrder(oi); // transimit order 
             }
         }
-        else if (!dispatcher->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
+        else if (!dispatcher_->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
         {
             if (oi->getOrderType() == MKT && oi->getParentRefId() != 0)
             {
@@ -192,7 +187,7 @@ long StrategyInterface::updateOrder(long orderRefId, char buysell, string opencl
                     oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                 else if (buysell == SELL)
                     oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                dispatcher->sendOrder(oi); // transimit order 
+                dispatcher_->sendOrder(oi); // transimit order 
             }  // tradeplatform don't support original ordertype				
             else
             {
@@ -216,10 +211,10 @@ int StrategyInterface::deleteOrder(long orderRefId)
 {
     OrderItem* oi = tradeUnit->getOrder(orderRefId);
     if (oi != NULL) {
-        if (dispatcher->isSupport(oi->getOrderType())) {
+        if (dispatcher_->isSupport(oi->getOrderType())) {
             oi->setAction(DEL_ACTION);
             oi->setStatus(DELETING);
-            dispatcher->sendOrder(oi);
+            dispatcher_->sendOrder(oi);
         }
         else {
             tradeUnit->deleteOrder(orderRefId);
@@ -291,7 +286,7 @@ int StrategyInterface::decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* 
             }
             tradeUnit->addOrder(oiu);
 
-            if (dispatcher->sendOrder(oiu) == MY_ERROR)
+            if (dispatcher_->sendOrder(oiu) == MY_ERROR)
                 return MY_ERROR;
         }
         return SUCCESS;
@@ -355,7 +350,7 @@ int StrategyInterface::decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi
         oiu->setSubmitPrice(price);
 
         tradeUnit->addOrder(oiu);
-        if (dispatcher->sendOrder(oiu) == MY_ERROR) {
+        if (dispatcher_->sendOrder(oiu) == MY_ERROR) {
             LogHandler::getLogHandler().alert(1, "Order decomposition", "Send decomposed order failed!");
             return MY_ERROR;
         }

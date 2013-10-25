@@ -13,7 +13,7 @@ using namespace std;
 class ComboTrader: public Strategy
 {
 public:
-	ComboTrader(int traderId);
+	ComboTrader(int traderId, Dispatcher *disp);
 	virtual ~ComboTrader();
 	int addTradeUnit(TradeUnit* tradeUnit);
 	int deleteTradeUnit(int quoteNo);

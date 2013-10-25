@@ -21,11 +21,10 @@ void testComboTrader()
 
 	Dispatcher* disp = DispatcherFactory::createDispatcher(platformInfo);
 
-	ComboTrader* cmb_trader =  new ComboTrader(traderId++);
+	ComboTrader* cmb_trader =  new ComboTrader(traderId++, disp);
 
 	// 应该在启动线程前设置
 	cmb_trader->setIntraBarTrading(true);
-	cmb_trader->setDispatcher(disp);
 	DWORD tbtid = cmb_trader->startTraderThread();  // 交易线程启动，等待消息
 
 	QuoteItem* qi1 = new QuoteItem();
@@ -86,11 +85,10 @@ void testSwingTrader()
 
 	Dispatcher* disp = DispatcherFactory::createDispatcher(platformInfo);
 
-    SwingTrader* swingTrader =  new SwingTrader(traderId++, NULL, NULL);
+    SwingTrader* swingTrader =  new SwingTrader(traderId++, disp, NULL, NULL);
 
 	// 应该在启动线程前设置
 	swingTrader->setIntraBarTrading(true);
-	swingTrader->setDispatcher(disp);
 	DWORD tbtid = swingTrader->startTraderThread();  // 交易线程启动，等待消息
 
 	QuoteItem* qi1 = new QuoteItem();
@@ -102,9 +100,6 @@ void testSwingTrader()
 
 	// 在这里会添加品种，进而开启价格线程和订单线程
 	swingTrader->setTradeUnit(tu1);
-
-	disp->addPriceThreadId(qi1->getQuoteId(),tbtid);
-	disp->addOrderThreadId(swingTrader->getTraderId(), tbtid);
 
 	swingTrader->turnOnStrategy();
 	Sleep(10000000);

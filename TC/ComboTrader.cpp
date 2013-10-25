@@ -1,6 +1,6 @@
 ﻿#include "ComboTrader.h"
 
-ComboTrader::ComboTrader(int traderId) : Strategy(traderId)
+ComboTrader::ComboTrader(int traderId, Dispatcher *disp) : Strategy(traderId, disp)
 {
     this->ss_orderId = 0;
     this->buy_orderId = 0;
@@ -318,7 +318,7 @@ void ComboTrader::updateTradeUnitPosition(TradeUnit* tradeUnit, TradeItem* ti)
 int ComboTrader::addTradeUnit(TradeUnit* tradeUnit)
 {
 
-    if (dispatcher != NULL && dispatcher->addQuote(tradeUnit->getQuote()))
+    if (dispatcher_ != NULL && dispatcher_->addQuote(tradeUnit->getQuote()))
     {
         this->tradeUnitList.push_back(tradeUnit);
         return SUCCESS;
@@ -362,7 +362,7 @@ int ComboTrader::deleteTradeUnit(int quoteNo)
             iter++;
         }
         TradeUnit* tu = *iter;
-        dispatcher->deleteQuote(tu->getQuote());
+        dispatcher_->deleteQuote(tu->getQuote());
         delete tu;
         tradeUnitList.erase(iter);
         return 0;
@@ -405,18 +405,18 @@ long ComboTrader::createOrder(OrderUnit* orderUnit, char buysell, string openclo
                 oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
             oi->setAction(ADD_ACTION);
             tradeUnit->addOrder(oi);
-            dispatcher->sendOrder(oi);
+            dispatcher_->sendOrder(oi);
         }
     }
     else if (orderType != MKT)
     {
-        if (dispatcher->isSupport(orderType))
+        if (dispatcher_->isSupport(orderType))
         {
             oi->setSubmitPrice(submitPrice);
             oi->setAction(ADD_ACTION);
             oi->setStatus(ADDING);
             tradeUnit->addOrder(oi);
-            dispatcher->sendOrder(oi);
+            dispatcher_->sendOrder(oi);
         }
         else
         {
@@ -439,7 +439,7 @@ long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysel
     oi->addCounter();
     if (oi != NULL)
     {
-        if (dispatcher->isSupport(oi->getOrderType()))
+        if (dispatcher_->isSupport(oi->getOrderType()))
         {
             oi->setValidType(validType);
             oi->setBuySell(buysell);
@@ -450,11 +450,11 @@ long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysel
                 oi->setStatus(CHANGING);
                 oi->setAction(CHG_ACTION);
                 oi->setSubmitPrice(submitPrice);
-                dispatcher->sendOrder(oi); // transimit order 
+                dispatcher_->sendOrder(oi); // transimit order 
             }
 
         }
-        else if (!dispatcher->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
+        else if (!dispatcher_->isSupport(oi->getOrderType()))// tradeplatform don't support new ordertype
         {
             if (oi->getOrderType() == MKT && oi->getParentRefId() != 0)
             {
@@ -467,7 +467,7 @@ long ComboTrader::updateOrder(OrderUnit* orderUnit, long orderRefId, char buysel
                     oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                 else if (buysell == SELL)
                     oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                dispatcher->sendOrder(oi); // transimit order 
+                dispatcher_->sendOrder(oi); // transimit order 
             }  // tradeplatform don't support original ordertype				
             else
             {
@@ -593,7 +593,7 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
             // 订单如果已经成交了
             if (oi->getStatus() == ALLTRADED) continue;
 
-            if (!dispatcher->isSupport(oi->getOrderType()))
+            if (!dispatcher_->isSupport(oi->getOrderType()))
             {
                 if (oi->getOrderType() == MKT)
                 {
@@ -608,7 +608,7 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
                                 oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                             else if (oi->getBuySell() == SELL)
                                 oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                            dispatcher->sendOrder(oi);
+                            dispatcher_->sendOrder(oi);
                         }
                     }
                 }
@@ -633,7 +633,7 @@ void ComboTrader::triggerWaitingOrder(TradeUnit* tradeUnit)
                                 oi->setSubmitPrice(tradeUnit->getPrice()->askPrice1);
                             else if (oi->getBuySell() == SELL)
                                 oi->setSubmitPrice(tradeUnit->getPrice()->bidPrice1);
-                            dispatcher->sendOrder(oi);
+                            dispatcher_->sendOrder(oi);
                         }
                     }
                 }
