@@ -7,6 +7,7 @@ SwingTrader::SwingTrader(int traderId, ISwingTradeDialog* iSwingTradeDialog,
 {
     this->iSwingTradeDialog = iSwingTradeDialog;
     this->iMainWindow = iMainWindow;
+	this->strategyInterface->setMainWindow(iMainWindow);
     tradeUnit = NULL;
     testOrderID = 0;
 }
@@ -24,12 +25,12 @@ void SwingTrader::updateBars() {
     if (tradeUnit != NULL) {
         Bar* newBar = tradeUnit->updateBars();
         //LogHandler::getLogHandler().log("timer update bar(" + tradeUnit->getQuote()->getQuoteId() + ")");
+        if(newBar) {
+			signal();
 #ifdef UI_DEBUG
-        if(newBar)
-        {
             iSwingTradeDialog->displayBar(newBar);
-        }
 #endif	
+        }
     }
 }
 void SwingTrader::processOrderAccepted(MSG& msg) {
@@ -232,6 +233,7 @@ int SwingTrader::setTradeUnit(TradeUnit* tradeUnit)
         this->tradeUnit = tradeUnit;
         flag = 0;
     }
+	strategyInterface->setTradeUnit(tradeUnit);
     return flag;
 }
 

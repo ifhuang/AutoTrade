@@ -7,9 +7,12 @@
 class StrategyInterface
 {
 public:
-	StrategyInterface(void);
+	StrategyInterface(int traderId, int optimizeOrderFlow);
 	~StrategyInterface(void);
 	void setTradeUnit(TradeUnit* tradeUnit);
+	void setDispatcher(Dispatcher* dispatcher);
+	void setOptimizeOrderFlow(int pattern);
+	void setMainWindow(IMainWindow* iMainWindow) { this->iMainWindow = iMainWindow; }
 	vector<OrderItem*>& getOrderList() { return this->strategyOrderList;}
 	void resetStrategyOrdersPointer() { this->orderListPointer = 0; }
 	PriceItem* getCurrentPriceItem() const { return this->tradeUnit->getPrice();}
@@ -20,11 +23,11 @@ public:
 	Bar* getBar(int position);
 	int decomposeOrder(TradeUnit* tradeUnit, OrderItem* poi);
 	int deleteOrder(long orderRefId);
-private:
     long createOrder(char buysell, string openclose, double submitPrice,
         double qty, int orderType, int validType, int submitter);
 	long updateOrder(long orderRefId, char buysell, string openclose,
         double submitPrice, double qty, int validType);
+private:
 	int decomposeOrderByDefault(TradeUnit* tradeUnit, OrderItem* poi);
 	int decomposeOrderByStep(TradeUnit* tradeUnit, OrderItem* poi);
 

@@ -1,15 +1,21 @@
 ﻿#include "StrategyInterface.h"
 
 
-StrategyInterface::StrategyInterface(void)
+StrategyInterface::StrategyInterface(int traderId, int optimizeOrderFlow)
 {
     dispatcher = NULL;
     this->ascOrderRefId = 1;
-    this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
+	this->traderId = traderId;
+	this->optimizeOrderFlow = optimizeOrderFlow;
 }
 
 StrategyInterface::~StrategyInterface(void)
 {
+}
+
+void StrategyInterface::setOptimizeOrderFlow(int pattern)
+{
+	this->optimizeOrderFlow = pattern;
 }
 
 void StrategyInterface::buy(double submitPrice, double qty, int orderType, int validType)
@@ -78,6 +84,11 @@ void StrategyInterface::sellshort(double submitPrice, double qty, int orderType,
 void StrategyInterface::setTradeUnit(TradeUnit* tradeUnit)
 {
     this->tradeUnit = tradeUnit;
+}
+
+void StrategyInterface::setDispatcher(Dispatcher* dispatcher) 
+{
+	this->dispatcher = dispatcher;
 }
 
 Bar* StrategyInterface::getBar(int position)

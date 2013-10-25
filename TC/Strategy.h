@@ -18,6 +18,14 @@ public:
 		hTraderThread = NULL;
 		this->traderId = traderId;
 		this->optimizeOrderFlow = NO_OPTIMIZE_OFP;
+		this->strategyInterface = new StrategyInterface(traderId, optimizeOrderFlow);
+	}
+
+	virtual ~Strategy() 
+	{
+		if (strategyInterface != NULL) {
+			delete strategyInterface;
+		}
 	}
 	
 	void addCounter()
@@ -57,6 +65,7 @@ public:
 	void setDispatcher(Dispatcher* dispatcher)
 	{
 		this->dispatcher = dispatcher;
+		this->strategyInterface->setDispatcher(dispatcher);
 	}
 
 	void turnOffStrategy() 
@@ -77,6 +86,7 @@ public:
 	void setOptimizeOrderFlow(int pattern)
 	{
 		this->optimizeOrderFlow = pattern;
+		this->strategyInterface->setOptimizeOrderFlow(pattern);
 	}
 
 	// reconstructed and tested by xie
