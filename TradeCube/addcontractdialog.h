@@ -22,18 +22,18 @@ private slots:
     void on_click_add();
 
 private:
-    Ui::AddContractDialog *ui;
+    Ui::AddContractDialog *ui_;
 
-    static const QStringList cbot;
-    static const QStringList cme;
-    static const QStringList hkif;
-    static const QStringList lme;
-    static const QStringList nybot;
-    static const QStringList nymex;
-    static const QStringList tocom;
+    static const QStringList cbot_;
+    static const QStringList cme_;
+    static const QStringList hkif_;
+    static const QStringList lme_;
+    static const QStringList nybot_;
+    static const QStringList nymex_;
+    static const QStringList tocom_;
 
-    QString *exchange;
-    QString *contract;
+    QString *exchange_;
+    QString *contract_;
 };
 
 #endif // ADDCONTRACTDIALOG_H

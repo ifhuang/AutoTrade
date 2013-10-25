@@ -1,7 +1,7 @@
-#include "mainwindow.h"
 #include <windows.h>
 #include <QApplication>
 #include <QSplashScreen>
+#include "mainwindow.h"
 
 const char *PROGRAM_NAME = "TradeCube";
 

@@ -2,6 +2,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+
 #include "../TC/PlatformInfo.h"
 
 namespace Ui {
@@ -21,9 +22,9 @@ private slots:
     void on_click_login();
 
 private:
-    Ui::LogInDialog *ui;
+    Ui::LogInDialog *ui_;
 
-    PlatformInfo *platforminfo;
+    PlatformInfo *platforminfo_;
 };
 
 #endif // LOGINDIALOG_H

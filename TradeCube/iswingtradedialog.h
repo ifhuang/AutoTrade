@@ -1,8 +1,8 @@
 #ifndef ISWINGTRADEDIALOG_H
 #define ISWINGTRADEDIALOG_H
 
-class PriceItem;
 class Bar;
+class PriceItem;
 
 class ISwingTradeDialog
 {

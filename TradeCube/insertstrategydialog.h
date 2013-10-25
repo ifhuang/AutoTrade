@@ -2,6 +2,7 @@
 #define INSERTSTRATEGYDIALOG_H
 
 #include <QDialog>
+
 #include <QStandardItemModel>
 
 namespace Ui {
@@ -21,10 +22,12 @@ private slots:
     void on_click_insert();
 
 private:
-    Ui::InsertStrategyDialog *ui;
+    Ui::InsertStrategyDialog *ui_;
     // Name and Ready Status
-    QStandardItemModel *strategymodel;
-    QString *name;
+    QStandardItemModel *strategymodel_;
+    QString *name_;
+
+    void setupStrategyModel();
 };
 
 #endif // INSERTSTRATEGYDIALOG_H

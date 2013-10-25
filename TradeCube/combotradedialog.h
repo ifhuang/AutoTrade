@@ -2,11 +2,12 @@
 #define COMBOTRADEDIALOG_H
 
 #include <QDialog>
-#include <QToolBar>
+
+#include <QComboBox>
+#include <QLabel>
 #include <QMenu>
 #include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
+#include <QToolBar>
 
 namespace Ui {
 class ComboTradeDialog;
@@ -27,29 +28,34 @@ private slots:
     void on_trigger_pb2();
 
 private:
-    Ui::ComboTradeDialog *ui;
+    Ui::ComboTradeDialog *ui_;
 
-    QToolBar *toolbar;
-    QMenu *pb2_menu;
-    QMenu *comboright;
-    QPushButton *pb1;
-    QLabel *label_strategy;
-    QPushButton *pb2;
-    QLabel *label_blank;
-    QPushButton *pb3;
-    QPushButton *pb4;
-    QPushButton *pb5;
-    QAction *pb2_menu_open;
-    QAction *pb2_menu_attr;
-    QAction *pb2_menu_auto;
-    QAction *pb2_menu_warn;
-    QAction *comboright_setwin;
-    QAction *comboright_insstr;
-    QAction *comboright_setstr;
-    QAction *comboright_remstr;
-    QAction *comboright_addcon;
-    QAction *comboright_modcon;
-    QAction *comboright_remcon;
+    QToolBar *toolbar_;
+    QMenu *pb2_menu_;
+    QMenu *comboright_;
+    QPushButton *pb1_;
+    QLabel *label_strategy_;
+    QPushButton *pb2_;
+    QLabel *label_blank_;
+    QPushButton *pb3_;
+    QPushButton *pb4_;
+    QPushButton *pb5_;
+    QAction *pb2_menu_open_;
+    QAction *pb2_menu_attr_;
+    QAction *pb2_menu_auto_;
+    QAction *pb2_menu_warn_;
+    QAction *comboright_setwin_;
+    QAction *comboright_insstr_;
+    QAction *comboright_setstr_;
+    QAction *comboright_remstr_;
+    QAction *comboright_addcon_;
+    QAction *comboright_modcon_;
+    QAction *comboright_remcon_;
+
+    void setupToolbar();
+    void setupStrategyButton();
+    void setupRightPopup();
+    void setupConnect();
 };
 
 #endif // COMBOTRADEDIALOG_H

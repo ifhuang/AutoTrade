@@ -1,20 +1,21 @@
 #ifndef SWINGTRADEDIALOG_H
 #define SWINGTRADEDIALOG_H
 
-#include <QDialog>
 #include "iswingtradedialog.h"
-#include <QToolBar>
+#include <QDialog>
+
+#include <QCloseEvent>
+#include <QComboBox>
+#include <QLabel>
 #include <QMenu>
 #include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QCloseEvent>
-#include "../TC/PriceItem.h"
-#include "../TC/SwingTrader.h"
-#include "../TC/Dispatcher.h"
+#include <QToolBar>
 #include <qwt_plot.h>
 #include <qwt_plot_tradingcurve.h>
 #include "../TC/Bar.h"
+#include "../TC/Dispatcher.h"
+#include "../TC/PriceItem.h"
+#include "../TC/SwingTrader.h"
 
 namespace Ui {
 class SwingTradeDialog;
@@ -22,7 +23,7 @@ class SwingTradeDialog;
 
 class SwingTrader;
 
-class SwingTradeDialog : public QDialog, public ISwingTradeDialog
+class SwingTradeDialog : public ISwingTradeDialog, public QDialog
 {
     Q_OBJECT
 
@@ -62,42 +63,48 @@ private slots:
     void on_click_sellask();
 
 private:
-    Ui::SwingTradeDialog *ui;
+    Ui::SwingTradeDialog *ui_;
 
-    QToolBar *toolbar;
-    QMenu *pb2_menu;
-    QMenu *swingright;
-    QPushButton *pb1;
-    QLabel *label_strategy;
-    QPushButton *pb2;
-    QComboBox *cb;
-    QPushButton *pb3;
-    QPushButton *pb4;
-    QAction *pb2_menu_open;
-    QAction *pb2_menu_attr;
-    QAction *pb2_menu_auto;
-    QAction *pb2_menu_warn;
-    QAction *swingright_setwin;
-    QAction *swingright_insstr;
-    QAction *swingright_setstr;
-    QAction *swingright_remstr;
-    QAction *swingright_addcon;
-    QAction *swingright_modcon;
-    QAction *swingright_remcon;
+    QToolBar *toolbar_;
+    QMenu *pb2_menu_;
+    QMenu *swingright_;
+    QPushButton *pb1_;
+    QLabel *label_strategy_;
+    QPushButton *pb2_;
+    QComboBox *cb_;
+    QPushButton *pb3_;
+    QPushButton *pb4_;
+    QAction *pb2_menu_open_;
+    QAction *pb2_menu_attr_;
+    QAction *pb2_menu_auto_;
+    QAction *pb2_menu_warn_;
+    QAction *swingright_setwin_;
+    QAction *swingright_insstr_;
+    QAction *swingright_setstr_;
+    QAction *swingright_remstr_;
+    QAction *swingright_addcon_;
+    QAction *swingright_modcon_;
+    QAction *swingright_remcon_;
 
-    QString exchange_contract;
-    QString exchange;
-    QString contract;
+    QString exchange_contract_;
+    QString exchange_;
+    QString contract_;
 
-    SwingTrader *swingtrader;
-    DWORD tbtid;
-    Dispatcher *disp;
-    QuoteItem *quoteItem;
-    TradeUnit *tradeUnit;
+    SwingTrader *swingtrader_;
+    DWORD tbtid_;
+    Dispatcher *disp_;
+    QuoteItem *quoteItem_;
+    TradeUnit *tradeUnit_;
 
-    QwtPlot *plot;
-    QwtPlotTradingCurve *curve;
-    QVector<QwtOHLCSample> samples;
+    QwtPlot *plot_;
+    QwtPlotTradingCurve *curve_;
+    QVector<QwtOHLCSample> samples_;
+
+    void setupToolbar();
+    void setupStrategyButton();
+    void setupRightPopup();
+    void setupPlot();
+    void setupConnect();
 
     void closeEvent(QCloseEvent *event);
     void setPanelEnabled(bool enabled);

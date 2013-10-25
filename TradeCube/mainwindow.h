@@ -1,23 +1,24 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "imainwindow.h"
+#include <QMainWindow>
+
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStandardItemModel>
-#include "../TC/Position.h"
-#include "../TC/OrderItem.h"
-#include "../TC/TradeItem.h"
 #include "../TC/Dispatcher.h"
+#include "../TC/OrderItem.h"
 #include "../TC/PlatformInfo.h"
+#include "../TC/Position.h"
+#include "../TC/TradeItem.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow, public IMainWindow
+class MainWindow : public IMainWindow, public QMainWindow
 {
     Q_OBJECT
 
@@ -57,31 +58,39 @@ private slots:
     // --------------------test slots--------------------
 
 private:
-    Ui::MainWindow *ui;    
+    Ui::MainWindow *ui_;
 
-    QComboBox *selcon;
-    QComboBox *ordertype;
-    QLineEdit *qty;
-    QLineEdit *price;
-    QComboBox *valid;
-    QPushButton *buy;
-    QPushButton *sell;
-    QMenu *swingmdiright;
-    QMenu *combomdiright;
-    QAction *insertswing;
-    QAction *insertcombo;
+    QComboBox *selcon_;
+    QComboBox *ordertype_;
+    QLineEdit *qty_;
+    QLineEdit *price_;
+    QComboBox *valid_;
+    QPushButton *buy_;
+    QPushButton *sell_;
+    QMenu *swingmdiright_;
+    QMenu *combomdiright_;
+    QAction *insertswing_;
+    QAction *insertcombo_;
     // counter for swing/combo trade dialog
-    int swing_counter;
-    int combo_counter;
+    int swing_counter_;
+    int combo_counter_;
     // tree model for positions tab in swing trade tab
-    QStandardItemModel *swingpositionsmodel;
+    QStandardItemModel *swingpositionsmodel_;
     // table model for working orders / order history tab in swing trade tab
-    QStandardItemModel *swingworkingordersmodel;
-    QStandardItemModel *swingorderhistorymodel;
+    QStandardItemModel *swingworkingordersmodel_;
+    QStandardItemModel *swingorderhistorymodel_;
 
-    PlatformInfo platforminfo;
-    Dispatcher *disp;
+    PlatformInfo platforminfo_;
+    Dispatcher *disp_;
 
+    void showMaximized();
+    void setupToolbar();
+    void setupSwingRightPopup();
+    void setupComboRightPopup();
+    void setupPositionsTab();
+    void setupWorkingOrdersTab();
+    void setupOrderHistoryTab();
+    void setupConnect();
     // resize components when resize mainwindow
     void resizeEvent(QResizeEvent *event);
     void closeEvent(QCloseEvent *event);

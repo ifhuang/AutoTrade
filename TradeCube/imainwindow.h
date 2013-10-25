@@ -2,8 +2,8 @@
 #define IMAINWINDOW_H
 
 class OrderItem;
-class TradeItem;
 class Position;
+class TradeItem;
 
 class IMainWindow
 {
