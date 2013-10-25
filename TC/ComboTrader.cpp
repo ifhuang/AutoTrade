@@ -96,6 +96,8 @@ void ComboTrader::processTradeDone(MSG& msg) {
                             // 订单分解
                             if (parent_oi->getTradedQty() == parent_oi->getQty()) // all child orders are traded, then update combo position
                             {
+                                //if (pco->getOrderRank() != NO_RANK)
+                                //    PostThreadMessage(signalThreadId, ORDER_UNIT_TRADED, 0, (LPARAM)parent_oi);
                                 OrderUnit* ou = pco->getOrderUnit(parent_oi->getOrderRefId());
                                 ou->setStatus(ALLTRADED);
                                 pco->updateStatus();
@@ -111,6 +113,8 @@ void ComboTrader::processTradeDone(MSG& msg) {
                         oi->addTradedQty(ti->getQty());
                         if (oi->getTradedQty() == oi->getQty())
                         {
+                            //if (pco->getOrderRank() != NO_RANK)
+                            //    PostThreadMessage(signalThreadId, ORDER_UNIT_TRADED, 0, (LPARAM)oi);
                             OrderUnit* ou = pco->getOrderUnit(oi->getOrderRefId());
                             ou->setStatus(ALLTRADED);
                             pco->updateStatus();
@@ -215,6 +219,7 @@ void ComboTrader::processPrice(MSG& msg) {
         tu->updatePrice(pi);
         //pi->log();
         triggerWaitingOrder(tu);
+        //PostThreadMessage(signalThreadId, PRICE_MSG, 0, 0);
     }
     else
     {
