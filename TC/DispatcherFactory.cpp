@@ -1,5 +1,6 @@
 #include "DispatcherFactory.h"
 
+#include "SPTrader.h"
 
 DispatcherFactory::DispatcherFactory(void)
 {

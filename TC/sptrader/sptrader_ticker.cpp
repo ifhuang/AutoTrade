@@ -31,35 +31,23 @@ private:
 };
 
 SPTraderTicker::SPTraderTicker(boost::asio::io_service& io_service,
-    tcp::resolver::iterator endpoint_iterator, Dispatcher &dispatcher)
-    : io_service_(io_service),
-    mp_(new TickerMessageProcessor(dispatcher)),
-    sc_(io_service, *mp_)
+    Dispatcher &dispatcher)
+    : SocketClient(io_service, *new TickerMessageProcessor(dispatcher))
 {
-    sc_.do_connect(endpoint_iterator);
 }
 
 SPTraderTicker::~SPTraderTicker()
 {
-    delete mp_;
 }
 
 void SPTraderTicker::Request(string product)
 {
     string quote_msg = "5107,0," + product + "\r\n";
-    io_service_.post(
-        [this, quote_msg]()
-    {
-        sc_.write(quote_msg);
-    });
+    write(quote_msg);
 }
 
 void SPTraderTicker::Release(std::string product)
 {
     string quote_msg = "5108,0," + product + "\r\n";
-    io_service_.post(
-        [this, quote_msg]()
-    {
-        sc_.write(quote_msg);
-    });
+    write(quote_msg);
 }

@@ -11,26 +11,22 @@
 
 class OrderMessageProcessor;
 
-class SPTraderOrder
+class SPTraderOrder : public SocketClient
 {
 public:
     SPTraderOrder(boost::asio::io_service& io_service,
-        tcp::resolver::iterator endpoint_iterator,
         SPTrader &sptrader);
 
     ~SPTraderOrder();
 
     int Login(std::string user_id, std::string password, std::string server);
-    void Do();
     void RequestLinkState(int link_id);
     void Send(std::string msg);
     Position GetPosition(std::string quote_id, std::string acc_no);
 
 private:
     friend OrderMessageProcessor;
-    boost::asio::io_service& io_service_;
-    MessageProcessor *mp_;
-    SocketClient sc_;
+    bool started_;
     SPTraderTask<Position> postion_task_;
     DISALLOW_COPY_AND_ASSIGN(SPTraderOrder);
 };

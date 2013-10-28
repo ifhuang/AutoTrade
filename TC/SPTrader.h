@@ -7,6 +7,7 @@
 #include "TradeCube.h"
 
 class SPTraderOrder;
+class SPTraderPrice;
 class SPTraderTicker;
 class OrderMessageProcessor;
 
@@ -30,31 +31,26 @@ private:
     friend OrderMessageProcessor;
     SPTrader(PlatformInfo& platformInfo);
 	int login();
-    void startOrderThread();
-    HANDLE startPriceThread();
+    bool startPriceThread();
     void startCheckConnection();
     void HitCheckConnection();
 	void checkConnection();
-	static DWORD WINAPI priceThreadAdapter(LPVOID lpParam);
-    void startTickerThread();
-	int initPriceConnection();
+    bool startTickerThread();
 	int confirmTradeInfo(int tradeRecordNo);
 	int confirmPriceInfo(string quoteId);
 	
 	OrderItem* str2UpdatedOrder(string orderStr);
-	void processOrder();
-	void processPrice();
+
+    boost::asio::ip::tcp::resolver::iterator Resolve(int port);
 
     PlatformInfo platformInfo_;
-	SOCKET priceSocket;
-	HANDLE hPriceThread;
-	DWORD priceThreadId;
-	HANDLE quoteEvent, doneTradeEvent, curOrderEvent;
 	int timerInterval; // seconds
 
     boost::asio::io_service io_service_;
+    boost::asio::ip::tcp::resolver resolver_;
     boost::asio::deadline_timer check_timer_;
     SPTraderOrder *order_;
+    SPTraderPrice *price_;
     SPTraderTicker *ticker_;
     std::thread *io_service_thread_;
 

@@ -6,6 +6,7 @@
 #include <string>    
 #include <windows.h>
 #include "TradeCube.h"
+#include "global.h"
 
 using namespace std;
 
@@ -51,6 +52,7 @@ protected:
 private:
     list<quoteId_threadId*> priceThreadIdQueue;
     DWORD UIThreadID;
+    DISALLOW_COPY_AND_ASSIGN(Dispatcher);
 };
 
 #endif

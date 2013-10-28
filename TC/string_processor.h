@@ -59,7 +59,7 @@ public:
     ///
     /// <param name="price_str"> The 4102 string. </param>
     /// <returns>   null if it fails, else a PriceItem*. </returns>
-    static PriceItem* StringToPriceItem(std::string price_str);
+    static PriceItem* StringToPriceItem(Spliter spliter);
 
     /// <summary>   9901 string to position. </summary>
     ///

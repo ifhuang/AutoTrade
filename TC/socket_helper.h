@@ -21,15 +21,4 @@ struct Message
     Spliter fileds;
 };
 
-class SocketHelper
-{
-public:
-    SocketHelper(int socket_no);
-    Message Get();
-
-private:
-    int socket_no_;
-    char buf_[4096];
-};
-
 #endif  // TC_SOCKET_HELPER_H_

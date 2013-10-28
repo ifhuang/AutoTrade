@@ -4,28 +4,28 @@ using std::string;
 
 SocketClient::SocketClient(boost::asio::io_service& io_service,
     MessageProcessor &mp)
-    : io_service_(io_service), socket_(io_service), mp_(mp)
+    : io_service_(io_service), socket_(io_service), mp_(mp),
+    connected_(false), ready_(false)
 {
 }
 
-void SocketClient::connect(tcp::resolver::iterator endpoint_iterator)
+SocketClient::~SocketClient()
 {
-    boost::asio::connect(socket_, endpoint_iterator);
+    close();
 }
 
-void SocketClient::do_connect(tcp::resolver::iterator endpoint_iterator)
+bool SocketClient::Connect(tcp::resolver::iterator endpoint_iterator)
 {
-    boost::asio::async_connect(socket_, endpoint_iterator,
-        [this](boost::system::error_code ec, tcp::resolver::iterator)
+    boost::system::error_code ec;
+    boost::asio::connect(socket_, endpoint_iterator, ec);
+    if (ec)
     {
-        if (!ec)
-        {
-            do_read();
-        }
-    });
+        return false;
+    }
+    return connected_ = true;
 }
 
-void SocketClient::do_read()
+void SocketClient::DoRead()
 {
     boost::asio::async_read_until(socket_, b_, "\r\n",
         [this](boost::system::error_code ec, std::size_t bt)
@@ -37,7 +37,7 @@ void SocketClient::do_read()
             std::getline(is, line, '\r');
             b_.consume(1);
             mp_.Processor(line);
-            do_read();
+            DoRead();
         }
         else
         {
@@ -82,7 +82,27 @@ void SocketClient::do_write()
 
 void SocketClient::close()
 {
-    io_service_.post([this]() { socket_.close(); });
+    puts("...closing...");
+    if (!connected_)return;
+    io_service_.post([this]()
+    {
+        std::unique_lock<std::mutex> _(mutex_);
+        socket_.close();
+        ready_ = true;
+        connected_ = false;
+        cond_.notify_one();
+    });
+    std::unique_lock<std::mutex> lock(mutex_);
+    while (!ready_)
+    {
+        cond_.wait(lock);
+    }
+}
+
+void SocketClient::sync_close()
+{
+    if (!connected_)return;
+    socket_.close();
 }
 
 void SocketClient::sync_write(const std::string &msg)

@@ -65,16 +65,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>G:\自动交易\boost_1_54_0;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;BOOST_ASIO_ENABLE_HANDLER_TRACKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_WIN32_WINDOWS=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -129,7 +126,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="asio_helper.h" />
     <ClInclude Include="Bar.h" />
     <ClInclude Include="ComboOrder.h" />
     <ClInclude Include="ComboTrader.h" />
@@ -150,6 +146,7 @@
     <ClInclude Include="sptrader\sptrader_ticker.h" />
     <ClInclude Include="sptrader\sptrader_order.h" />
     <ClInclude Include="sptrader\sptrader_task.h" />
+    <ClInclude Include="sptrader\sptrader_price.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyInterface.h" />
     <ClInclude Include="string_processor.h" />
@@ -160,7 +157,6 @@
     <ClInclude Include="TradeUnit.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="asio_helper.cpp" />
     <ClCompile Include="Bar.cpp" />
     <ClCompile Include="ComboOrder.cpp" />
     <ClCompile Include="ComboTrader.cpp" />
@@ -170,10 +166,10 @@
     <ClCompile Include="OrderItem.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PriceItem.cpp" />
-    <ClCompile Include="socket_helper.cpp" />
     <ClCompile Include="SPTrader.cpp" />
     <ClCompile Include="sptrader\socket_client.cpp" />
     <ClCompile Include="sptrader\sptrader_order.cpp" />
+    <ClCompile Include="sptrader\sptrader_price.cpp" />
     <ClCompile Include="sptrader\sptrader_ticker.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="StrategyInterface.cpp" />

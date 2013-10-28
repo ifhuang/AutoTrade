@@ -19,6 +19,9 @@
     <Filter Include="Source Files\sptrader">
       <UniqueIdentifier>{9c89d32d-9a1b-4ac7-b0ac-3ddbc570bef2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\interface">
+      <UniqueIdentifier>{a2690536-c1ad-4404-b80c-b92f0bc7694a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bar.h">
@@ -87,9 +90,6 @@
     <ClInclude Include="StrategyInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="asio_helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sptrader\sptrader_ticker.h">
       <Filter>Header Files\sptrader</Filter>
     </ClInclude>
@@ -107,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="tc_bar.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sptrader\sptrader_price.h">
+      <Filter>Header Files\sptrader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,13 +161,7 @@
     <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="socket_helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StrategyInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_helper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sptrader\socket_client.cpp">
@@ -178,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="tc_bar.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sptrader\sptrader_price.cpp">
+      <Filter>Source Files\sptrader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

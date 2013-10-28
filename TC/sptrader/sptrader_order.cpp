@@ -12,7 +12,7 @@ public:
         SPTraderOrder &order)
         : sptrader_(sptrader), order_(order) {}
 
-    virtual void Processor(Message &msg)
+    virtual void Processor(Message &msg) override
     {
         switch (msg.id)
         {
@@ -44,7 +44,7 @@ private:
     void Process3103(Spliter &fileds)
     {
         OrderItem* po = StringProcessor::StrintToOrderItem(fileds);
-
+        if (!po)return;
         // 接收订单ORDER_ACCEPT_MSG
         sptrader_.returnOrder(po);
     }
@@ -61,7 +61,7 @@ private:
         //doneTrades[ti->getOrderNo()] = ti;
         //if (doneTrades.size() == doneTradeCount) {
         //    SetEvent(doneTradeEvent);
-       // }
+        // }
     }
 
     void Process3119(Spliter &fileds)
@@ -95,11 +95,11 @@ private:
         int s = orderStr.find(",", 7);
         int e = orderStr.length();
         if (s != string::npos) {
-            currentOrderCount = atoi(orderStr.substr(s + 1, e - s - 1).c_str());
-            cout << "order count:" << currentOrderCount << endl;
-            if (currentOrderCount == 0) {
-                SetEvent(curOrderEvent);
-            }
+        currentOrderCount = atoi(orderStr.substr(s + 1, e - s - 1).c_str());
+        cout << "order count:" << currentOrderCount << endl;
+        if (currentOrderCount == 0) {
+        SetEvent(curOrderEvent);
+        }
         }*/
     }
 
@@ -135,39 +135,34 @@ private:
 };
 
 SPTraderOrder::SPTraderOrder(boost::asio::io_service& io_service,
-    tcp::resolver::iterator endpoint_iterator, SPTrader &sptrader)
-    : io_service_(io_service),
-    mp_(new OrderMessageProcessor(sptrader, *this)),
-    sc_(io_service, *mp_)
+    SPTrader &sptrader)
+    : SocketClient(io_service, *new OrderMessageProcessor(sptrader, *this)),
+    started_(false)
 {
-    sc_.connect(endpoint_iterator);
+
 }
 
 SPTraderOrder::~SPTraderOrder()
 {
-    sc_.close();
-    io_service_.post(
-        [this]()
-    {
-        delete mp_;
-    });
+
+}
+
+void SPTraderOrder::Send(std::string msg)
+{
+    write(msg);
 }
 
 void SPTraderOrder::RequestLinkState(int link_id)
 {
     string msg = "9000," + to_string(link_id) + "\r\n";
-    io_service_.post(
-        [this, msg]()
-    {
-        sc_.write(msg);
-    });
+    write(msg);
 }
 
 int SPTraderOrder::Login(string user_id, string password, string server)
 {
     string login_info = "3101,0," + user_id + "," + password + "," + server + "\r\n";
-    sc_.sync_write(login_info);
-    string msg = sc_.sync_read();
+    sync_write(login_info);
+    string msg = sync_read();
     Message message(msg);
     if (message.id == 3101){
         int return_code = message.fileds.Get<int>(0);
@@ -176,21 +171,11 @@ int SPTraderOrder::Login(string user_id, string password, string server)
     return -1;
 }
 
-void SPTraderOrder::Do()
-{
-    sc_.do_read();
-}
-
-void SPTraderOrder::Send(std::string msg)
-{
-    sc_.write(msg);
-}
-
 Position SPTraderOrder::GetPosition(std::string quote_id, std::string acc_no)
 {
     string msg = "9901,0," + acc_no + "," + acc_no + "\r\n";
     boost::posix_time::ptime current = postion_task_.GetTime();
-    sc_.write(msg);
+    write(msg);
     Position item;
     postion_task_.Wait(quote_id, current, item);
     return item;

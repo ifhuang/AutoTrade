@@ -1,12 +1,10 @@
 ﻿#include "SPTrader.h"
 
-#pragma comment(lib,"ws2_32.lib")
 #ifndef Q_MOC_RUN
 #include <boost/lexical_cast.hpp>
 #endif
-#include "asio_helper.h"
-#include "socket_helper.h"
 #include "sptrader/sptrader_order.h"
+#include "sptrader/sptrader_price.h"
 #include "sptrader/sptrader_ticker.h"
 #include "string_processor.h"
 
@@ -17,10 +15,9 @@ using namespace boost::posix_time;
 // changed by xie, 非单例化
 SPTrader::SPTrader(
     PlatformInfo& platformInfo)
-    : Dispatcher(), platformInfo_(platformInfo), check_timer_(io_service_)
+    : Dispatcher(), platformInfo_(platformInfo), check_timer_(io_service_),
+    resolver_(io_service_)
 {
-    hPriceThread = INVALID_HANDLE_VALUE;
-    quoteEvent = doneTradeEvent = curOrderEvent = NULL;
     timerInterval = 3;
 
     order_ = nullptr;
@@ -40,17 +37,19 @@ SPTrader::~SPTrader()
 SPTrader* SPTrader::GetSPTrader(PlatformInfo& platformInfo)
 {
     SPTrader *sp_trader = new SPTrader(platformInfo);
-    sp_trader->startOrderThread();
     int return_code = sp_trader->login();
     if (return_code != 0)
     {
         delete sp_trader;
         return nullptr;
     }
-    sp_trader->order_->Do();
+    sp_trader->order_->DoRead();
     sp_trader->startCheckConnection();
-    sp_trader->startPriceThread();
-    sp_trader->startTickerThread();
+    if (!sp_trader->startPriceThread() || !sp_trader->startTickerThread())
+    {
+        delete sp_trader;
+        return nullptr;
+    }
     return sp_trader;
 }
 
@@ -62,23 +61,26 @@ SPTrader* SPTrader::GetSPTrader(PlatformInfo& platformInfo)
 
 int SPTrader::login()
 {
+    auto endpoint_iterator = Resolve(platformInfo_.orderPort);
+    order_ = new SPTraderOrder(io_service_, *this);
+    if (!order_->Connect(endpoint_iterator))
+    {
+        return -1;
+    }
     int return_code = order_->Login(platformInfo_.accountNo, platformInfo_.password, platformInfo_.server);
     return return_code;
 }
 
-void SPTrader::startOrderThread()
+bool SPTrader::startPriceThread()
 {
-    tcp::resolver resolver(io_service_);
-    tcp::resolver::query query(platformInfo_.server, to_string(platformInfo_.orderPort));
-    auto endpoint_iterator = resolver.resolve(query);
-    order_ = new SPTraderOrder(io_service_, endpoint_iterator, *this);
-}
-
-HANDLE SPTrader::startPriceThread()
-{
-    initPriceConnection();
-    hPriceThread = CreateThread(NULL, 0, this->priceThreadAdapter, this, 0, &priceThreadId);
-    return hPriceThread;
+    auto endpoint_iterator = Resolve(platformInfo_.pricePort);
+    price_ = new SPTraderPrice(io_service_, *this);
+    if (!price_->Connect(endpoint_iterator))
+    {
+        return false;
+    }
+    price_->DoRead();
+    return true;
 }
 
 // added by xie
@@ -124,53 +126,26 @@ void SPTrader::checkConnection()
 }
 
 // added by xie
-void SPTrader::startTickerThread()
+bool SPTrader::startTickerThread()
 {
-    tcp::resolver resolver(io_service_);
-    tcp::resolver::query query(platformInfo_.server, to_string(platformInfo_.tickPort));
-    auto endpoint_iterator = resolver.resolve(query);
-    ticker_ = new SPTraderTicker(io_service_, endpoint_iterator, *this);
-    io_service_thread_ = new std::thread([this](){ io_service_.run(); });
-}
-
-DWORD WINAPI SPTrader::priceThreadAdapter(LPVOID lpParam)
-{
-    SPTrader *spoi = (SPTrader *)lpParam;
-    spoi->processPrice();
-    return 0;
+    auto endpoint_iterator = Resolve(platformInfo_.tickPort);
+    ticker_ = new SPTraderTicker(io_service_, *this);
+    if (!ticker_->Connect(endpoint_iterator))
+    {
+        return false;
+    }
+    ticker_->DoRead();
+    io_service_thread_ = new std::thread([this]()
+    {
+        io_service_.run();
+    });
+    return true;
 }
 
 void SPTrader::stopOrderThread()
 {
     delete order_;
     order_ = nullptr;
-}
-
-int SPTrader::initPriceConnection()
-{
-    cout << "begin price connection......" << endl;
-    priceSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (INVALID_SOCKET == priceSocket){
-        cout << "Creating price socket  failed, Exit!" << endl;
-        return -1;
-    }
-    sockaddr_in addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-
-    addr.sin_addr.s_addr = inet_addr(platformInfo_.server.c_str());
-    addr.sin_port = htons(platformInfo_.pricePort);
-
-    if (SOCKET_ERROR == connect(priceSocket, (sockaddr*)&addr, sizeof(addr))){
-        int ec = WSAGetLastError();
-        cout << "connecting to price 8089 port failed, exit!" << ec << endl;
-        closesocket(priceSocket);
-        return -1;
-    }
-    else{
-        cout << "establish price connection  successfully!" << endl;
-        return 0;
-    }
 }
 
 //int SPTrader::initTickConnection()
@@ -186,21 +161,16 @@ int SPTrader::initPriceConnection()
 int SPTrader::addQuote(QuoteItem *pQuoteItem)
 {
     string quoteId = pQuoteItem->getQuoteId();
-
-    quoteEvent = CreateEvent(NULL, FALSE, FALSE, L"ADD_QUOTE");
-    string quotemsg = "4107,0," + quoteId + "\r\n";		  // 4107 msg is to request the price 
-    if (send(priceSocket, quotemsg.c_str(), quotemsg.length(), 0) < 0)
-    {
-        cout << "Send price update msgid error, please check the connection to server!" << endl;
-        return MY_ERROR;
-    }
+    price_->Request(quoteId);
+    //quoteEvent = CreateEvent(NULL, FALSE, FALSE, L"ADD_QUOTE");
+    //cout << "Send price update msgid error, please check the connection to server!" << endl;
 
     ticker_->Request(quoteId);
     // added by xie
     //// 这里为什么socket 会还是0呢？线程应该早就启动了
     //LogHandler::getLogHandler().alert(3, "Add quote", "Request tick price failed for new quote!");
-    WaitForSingleObject(quoteEvent, INFINITE);
-    CloseHandle(quoteEvent);
+    //WaitForSingleObject(quoteEvent, INFINITE);
+    //CloseHandle(quoteEvent);
     LogHandler::getLogHandler().log("Quote is added:" + quoteId);
     return SUCCESS;
 }
@@ -233,15 +203,6 @@ int SPTrader::confirmTradeInfo(int tradeRecordNo)
         cout << "Connection to SPTrader is not established or broken!" << endl;
     }
     return len;
-}
-
-int SPTrader::confirmPriceInfo(string quoteId)
-{
-    string priceRep = "4102,3," + quoteId + ",0\r\n";
-    order_->Send(priceRep);
-    //        LogHandler::getLogHandler().alert(3, "Price request", 
-    //        "Send price reply error, please check the connection to server!");
-    return 0;
 }
 
 bool SPTrader::isSupport(int orderType)
@@ -285,49 +246,40 @@ OrderItem* SPTrader::str2UpdatedOrder(string orderStr)
 int SPTrader::deleteQuote(QuoteItem *pQuoteItem)
 {
     string quoteId = pQuoteItem->getQuoteId();
-
-    quoteEvent = CreateEvent(NULL, FALSE, FALSE, L"DELETE_QUOTE");
-    string quotemsg = string("4108,0,") + quoteId + "\r\n";  // 4108 msg is to stop the price update
-    if (send(priceSocket, quotemsg.c_str(), quotemsg.length(), 0) < 0)
-    {
-        cout << "Send price release msgid error, please check the connection to server!" << endl;
-        return -1;
-    }
-
+    price_->Release(quoteId);
+    //cout << "Send price release msgid error, please check the connection to server!" << endl;
     // added by xie
     ticker_->Release(quoteId);
     //LogHandler::getLogHandler().alert(3, "Delete quote", "Cancel tick price failed!");
-    WaitForSingleObject(quoteEvent, INFINITE);
-    CloseHandle(quoteEvent);
     LogHandler::getLogHandler().log("Quote is deleted:" + quoteId);
     return 0;
 }
 
 map<int, TradeItem*>& SPTrader::getDoneTrades()
 {
-    doneTradeEvent = CreateEvent(NULL, FALSE, FALSE, L"GET_TRADE_DONE_LIST");
+    //doneTradeEvent = CreateEvent(NULL, FALSE, FALSE, L"GET_TRADE_DONE_LIST");
     string msg = "3181,0\r\n";
     order_->Send(msg);
     //        LogHandler::getLogHandler().alert(3, "Load done trade", "Load done trade failed!");
     return doneTrades;
-    WaitForSingleObject(doneTradeEvent, INFINITE);
-    CloseHandle(doneTradeEvent);
-    doneTradeEvent = NULL;
+    //WaitForSingleObject(doneTradeEvent, INFINITE);
+    //CloseHandle(doneTradeEvent);
+    //doneTradeEvent = NULL;
     return doneTrades;
 }
 
 map<int, OrderItem*>& SPTrader::getCurrentOrders()
 {
-    curOrderEvent = CreateEvent(NULL, FALSE, FALSE, L"LOAD_ORDER_BOOK");
+    //curOrderEvent = CreateEvent(NULL, FALSE, FALSE, L"LOAD_ORDER_BOOK");
     string msg = "3186,0\r\n";
     //string get = AsioHelper::Get(msg);
     //if (send(orderSocket, msg.c_str(), msg.length(), 0) < 0) {
     LogHandler::getLogHandler().alert(3, "Load order book", "Load order book failed!");
     return currentOrders;
     //}
-    WaitForSingleObject(curOrderEvent, INFINITE);
-    CloseHandle(curOrderEvent);
-    curOrderEvent = NULL;
+    //WaitForSingleObject(curOrderEvent, INFINITE);
+    //CloseHandle(curOrderEvent);
+    //curOrderEvent = NULL;
     return currentOrders;
 }
 
@@ -340,65 +292,15 @@ void SPTrader::getPosition(Position& position)
     //LogHandler::getLogHandler().log("release position event(" + quoteID + ")");
 }
 
-void SPTrader::processPrice()
+//void SPTrader::processOrder()
+//LogHandler::getLogHandler().alert(2, "Processing order", "error occured when receive data from order socket!");
+/** decode ordermsg string to an order instance and forward to OrderItem Dispatcher Thread **/
+
+boost::asio::ip::tcp::resolver::iterator SPTrader::Resolve(int port)
 {
-    char buff[300] = "";
-    int pkglen = 0;
-    string rmd = "", priceStr = "";
-    while (true)
-    {
-        if (connectStatus != true){
-            continue;
-        }
-        pkglen = recv(priceSocket, buff, sizeof(buff), 0);
-        if (pkglen < 0){
-            cout << "receive price data failed, exit!" << endl;
-            break;
-        }
-        buff[pkglen] = 0;
-        //if price is correctly received, then reply to server  a 4102 message
-        int start = 0;
-        priceStr = "";
-        string tmp(buff);
-        while (true)
-        {
-            int end = tmp.find("\r\n", start);
-            if (end == string::npos){
-                rmd = tmp.substr(start, pkglen - start);
-                break;
-            }
-            priceStr = tmp.substr(start, end - start);
-
-            if (start == 0)
-                priceStr = rmd + priceStr;
-
-            if (priceStr.find("4107,3", 0) != string::npos && quoteEvent != NULL)
-            {
-                //LogHandler::getLogHandler().log("Quote is added");
-                SetEvent(quoteEvent);
-            }
-            else if (priceStr.find("4108,3", 0) != string::npos &&  quoteEvent != NULL)
-            {
-                //LogHandler::getLogHandler().log("Quote is deleted");
-                SetEvent(quoteEvent);
-            }
-            else if (priceStr.find("4102,0", 0) != string::npos)
-            {
-                PriceItem* pi = StringProcessor::StringToPriceItem(priceStr);
-                //LogHandler::getLogHandler().log(priceStr);
-                //pi->log();
-                confirmPriceInfo(pi->quoteId);
-                forwardPrice(pi);
-            }
-            start = end + 2;
-        }
-    }
-}
-
-void SPTrader::processOrder()
-{
-    //LogHandler::getLogHandler().alert(2, "Processing order", "error occured when receive data from order socket!");
-    /** decode ordermsg string to an order instance and forward to OrderItem Dispatcher Thread **/
+    tcp::resolver::query query(platformInfo_.server, to_string(port));
+    auto endpoint_iterator = resolver_.resolve(query);
+    return endpoint_iterator;
 }
 
 //void SPTrader::processTickerMessage()
