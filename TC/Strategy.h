@@ -12,6 +12,10 @@ public:
 
 	virtual ~Strategy();
 	
+	StrategyInterface* getStrategyInterface() {
+		return this->strategyInterface;
+	}
+
 	void addCounter()
 	{
 		counter++;

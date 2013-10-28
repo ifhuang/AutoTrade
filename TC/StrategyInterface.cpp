@@ -20,65 +20,22 @@ void StrategyInterface::setOptimizeOrderFlow(int pattern)
 
 void StrategyInterface::buy(double submitPrice, double qty, int orderType, int validType)
 {
-    OrderItem* orderItem = NULL;
-    for (; orderListPointer < strategyOrderList.size(); orderListPointer++) {
-        OrderItem* orderItem = strategyOrderList[orderListPointer];
-
-        /* -1, 初始化列表项 */
-        if (orderItem->getStrategyStatus() == INIT) {
-            orderItem->init(tradeUnit->getQuoteId(), submitPrice, qty, BUY,
-                orderType, validType, OPEN);
-            long OrderRefID = createOrder(BUY, OPEN, submitPrice, qty, orderType,
-                validType, STRATEGY_SUBMITTER);
-            orderItem->setOrderRefId(OrderRefID);
-            orderListPointer++;
-            return;
-        }
-        /* 0, 不满足条件，命令不执行*/
-        else if (orderItem->getStrategyStatus() == NOT_EXECUTED) {
-
-            /* 删除定单失败，证明定单已成交，需要平仓 */
-            if (deleteOrder(orderItem->getOrderRefId()) == MY_ERROR) {
-
-                /* 此时买单更新为卖单 */
-                long OrderRefID = createOrder(SELL, CLOSE, getCurrentPriceItem()->lastPrice1,
-                    orderItem->getQty(), orderItem->getOrderType(), orderItem->getValidType(), STRATEGY_SUBMITTER);
-                orderItem->init(tradeUnit->getQuoteId(), getCurrentPriceItem()->lastPrice1,
-                    orderItem->getQty(), SELL, orderItem->getOrderType(),
-                    orderItem->getValidType(), CLOSE);
-                orderItem->setOrderRefId(OrderRefID);
-            }
-        }
-        /* 1, 命令是执行的*/
-        else if (orderItem->getStrategyStatus() == EXECUTED) {
-            /* 如果遇到卖单，无论这个卖单成交与否，需要先将这个卖单删掉，然后再新建一个买单，否则就更新当前买单 */
-            if (orderItem->getBuySell() == SELL) {
-                deleteOrder(orderItem->getOrderRefId());
-                orderItem->init(tradeUnit->getQuoteId(), submitPrice, qty, BUY,
-                    orderType, validType, OPEN);
-                long OrderRefID = createOrder(BUY, OPEN, submitPrice, qty, orderType,
-                    validType, STRATEGY_SUBMITTER);
-                orderItem->setOrderRefId(OrderRefID);
-            }
-            else {
-                updateOrder(orderItem->getOrderRefId(), BUY, OPEN, submitPrice, qty, validType);
-            }
-            orderListPointer++;
-            return;
-        }
-    }
+	createOrder(BUY, OPEN, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
 }
 
 void StrategyInterface::sell(double submitPrice, double qty, int orderType, int validType)
 {
+	createOrder(SELL, CLOSE, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
 }
 
 void StrategyInterface::buytocover(double submitPrice, double qty, int orderType, int validType)
 {
+	createOrder(BUY,CLOSE, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
 }
 
 void StrategyInterface::sellshort(double submitPrice, double qty, int orderType, int validType)
 {
+	createOrder(SELL, OPEN, submitPrice, qty, orderType, validType, STRATEGY_SUBMITTER);
 }
 
 void StrategyInterface::setTradeUnit(TradeUnit* tradeUnit)
