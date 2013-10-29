@@ -1,24 +1,25 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "imainwindow.h"
 #include <QMainWindow>
+#include "imainwindow.h"
 
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStandardItemModel>
-#include "../TC/Dispatcher.h"
 #include "../TC/OrderItem.h"
 #include "../TC/PlatformInfo.h"
 #include "../TC/Position.h"
 #include "../TC/TradeItem.h"
 
+class Dispatcher;
+
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public IMainWindow, public QMainWindow
+class MainWindow : public QMainWindow, public IMainWindow
 {
     Q_OBJECT
 
@@ -83,7 +84,6 @@ private:
     PlatformInfo platforminfo_;
     Dispatcher *disp_;
 
-    void showMaximized();
     void setupToolbar();
     void setupSwingRightPopup();
     void setupComboRightPopup();

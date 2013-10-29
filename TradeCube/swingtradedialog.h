@@ -1,8 +1,8 @@
 #ifndef SWINGTRADEDIALOG_H
 #define SWINGTRADEDIALOG_H
 
-#include "iswingtradedialog.h"
 #include <QDialog>
+#include "iswingtradedialog.h"
 
 #include <QCloseEvent>
 #include <QComboBox>
@@ -13,9 +13,10 @@
 #include <qwt_plot.h>
 #include <qwt_plot_tradingcurve.h>
 #include "../TC/Bar.h"
-#include "../TC/Dispatcher.h"
 #include "../TC/PriceItem.h"
 #include "../TC/SwingTrader.h"
+
+class Dispatcher;
 
 namespace Ui {
 class SwingTradeDialog;
@@ -23,7 +24,7 @@ class SwingTradeDialog;
 
 class SwingTrader;
 
-class SwingTradeDialog : public ISwingTradeDialog, public QDialog
+class SwingTradeDialog : public QDialog, public ISwingTradeDialog
 {
     Q_OBJECT
 
