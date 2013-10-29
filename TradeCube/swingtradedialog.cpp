@@ -275,7 +275,7 @@ void SwingTradeDialog::displayProfit(double profit)
 
 void SwingTradeDialog::on_click_buyask()
 {
-    //swingtrader_->createOrder(BUY, OPEN, swingtrader_->getTradeUnit()->getPrice()->askPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+    swingtrader_->getStrategyInterface()->buy(swingtrader_->getTradeUnit()->getPrice()->askPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY);
 }
 
 void SwingTradeDialog::closeEvent(QCloseEvent *event)
@@ -315,19 +315,19 @@ void SwingTradeDialog::open_close_strategy()
 
 void SwingTradeDialog::on_click_buybid()
 {
-    //swingtrader_->createOrder(BUY, OPEN, swingtrader_->getTradeUnit()->getPrice()->bidPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
     //swingtrader->updateOrder(1, SELL, CLOSE, swingtrader->getTradeUnit()->getPrice()->bidPrice1, ui->spinBox_qty->text().toInt() + 1, DAY);
     //swingtrader->deleteOrder(1);
+    swingtrader_->getStrategyInterface()->buytocover(swingtrader_->getTradeUnit()->getPrice()->bidPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY);
 }
 
 void SwingTradeDialog::on_click_sellbid()
 {
-    //swingtrader_->createOrder(SELL, OPEN, swingtrader_->getTradeUnit()->getPrice()->bidPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+    swingtrader_->getStrategyInterface()->sell(swingtrader_->getTradeUnit()->getPrice()->bidPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY);
 }
 
 void SwingTradeDialog::on_click_sellask()
 {
-    //swingtrader_->createOrder(SELL, OPEN, swingtrader_->getTradeUnit()->getPrice()->askPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY, SPTRADER);
+    swingtrader_->getStrategyInterface()->sellshort(swingtrader_->getTradeUnit()->getPrice()->askPrice1, ui_->spinBox_qty->text().toInt(), MKT, DAY);
 }
 
 void SwingTradeDialog::setPanelEnabled(bool enabled)
