@@ -11,12 +11,13 @@ namespace lex
         return DataRepository::ListStudies();
     }
 
-    LexRunnerInterface* LexImpl::New(std::string signal_name, LexSignalDetail details, TCBarInterface *tc_bar)
+    LexRunnerInterface* LexImpl::New(std::string signal_name,
+        SignalDetail details, TCBarInterface *tc_bar)
     {
         throw std::exception("The method or operation is not implemented.");
     }
 
-    LexSignalDetail LexImpl::GetSignalDetail(std::string signal_name)
+    SignalDetail LexImpl::GetSignalDetail(std::string signal_name)
     {
         throw std::exception("The method or operation is not implemented.");
     }
@@ -48,4 +49,11 @@ namespace lex
             return;
         }
     }
-}
+
+    SignalRunnerInterface* LexImpl::NewSignal(std::string signal_name,
+        SignalDetail details, TCBarInterface *tc_bar)
+    {
+        throw std::exception("The method or operation is not implemented.");
+    }
+
+}  // namespace lex

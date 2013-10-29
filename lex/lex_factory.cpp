@@ -2,7 +2,15 @@
 
 #include "lex_impl.h"
 
-LexInterface* LexFactory::CreateLexInterface()
+namespace
 {
-    return new lex::LexImpl();
-}
+    lex::LexImpl lex_impl;
+}  // namespace
+
+namespace lex
+{
+    LexInterface* LexFactory::CreateLexInterface()
+    {
+        return &lex_impl;
+    }
+}  // namespace lex

@@ -11,10 +11,14 @@ namespace lex
 
         virtual void Compiler(std::string study_name) override;
 
-        virtual LexSignalDetail GetSignalDetail(std::string signal_name) override;
+        virtual SignalDetail GetSignalDetail(std::string signal_name) override;
 
-        virtual LexRunnerInterface* New(std::string signal_name, LexSignalDetail details,
+        virtual LexRunnerInterface* New(std::string signal_name, SignalDetail details,
             TCBarInterface *tc_bar) override;
+
+        virtual SignalRunnerInterface* NewSignal(std::string signal_name,
+            SignalDetail details, TCBarInterface *tc_bar) override;
+
     };
-}
+}  // namespace lex
 #endif  // LEX_LEX_IMPL_H_

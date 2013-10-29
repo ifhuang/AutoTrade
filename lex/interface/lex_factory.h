@@ -3,10 +3,12 @@
 
 #include "lex_interface.h"
 
-class LexFactory
+namespace lex
 {
-public:
-    static LexInterface* CreateLexInterface();
-};
-
+    class LexFactory
+    {
+    public:
+        static LexInterface* CreateLexInterface();
+    };
+}  // namespace lex
 #endif  // LEX_INTERFACE_LEX_FACTORY_H_

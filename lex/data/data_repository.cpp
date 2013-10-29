@@ -27,7 +27,7 @@ vector<LexStudy> DataRepository::ListStudies()
     for (auto study : studies)
     {
         LexStudy lex_study;
-        boost::tie(lex_study.name, lex_study.ready_status) = study;
+        std::tie(lex_study.name, lex_study.ready_status) = study;
         lex_studies.push_back(lex_study);
     }
     return lex_studies;

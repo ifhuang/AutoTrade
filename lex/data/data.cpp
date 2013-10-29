@@ -2,17 +2,17 @@
 
 #include <exception>
 #include <string>
+#include <tuple>
 #include <boost/lexical_cast.hpp>
-#include <boost/tuple/tuple.hpp>
 
 using std::exception;
 using std::string;
+using std::tuple;
 using std::vector;
 using boost::lexical_cast;
-using boost::tuple;
 
-namespace lex{
-
+namespace lex
+{
     void Data::Open(const char *database_file)
     {
         int return_code = sqlite3_open(database_file, &db);
@@ -81,5 +81,4 @@ namespace lex{
         return studies;
     }
 
-
-}
+}  // namespace lex
