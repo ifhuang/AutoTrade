@@ -1,0 +1,6 @@
+el.output
+el.tab.h
+el.tab.c
+lex.yy.c
+lex.yy.cpp
+y.tab.c

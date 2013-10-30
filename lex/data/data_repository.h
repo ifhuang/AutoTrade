@@ -8,7 +8,7 @@
 class DataRepository
 {
 public:
-    static std::vector<LexStudy> ListStudies();
+    static std::vector<lex::LexStudy> ListStudies();
     static void SaveProgram(const lex::Program &p);
     static lex::Program LoadProgram();
 };

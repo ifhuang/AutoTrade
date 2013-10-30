@@ -1,13 +1,13 @@
-#ifndef LEX_DATA_H_
-#define LEX_DATA_H_
+#ifndef LEX_DATA_DATA_H_
+#define LEX_DATA_DATA_H_
 
 #include <string>
+#include <tuple>
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 #include "statements.h"
 
-namespace lex{
-
+namespace lex
+{
     class Data
     {
     public:
@@ -16,7 +16,7 @@ namespace lex{
         ~Data();
         void InsertStudy(const char *program);
         const char * SelectStudy();
-        std::vector<boost::tuple<std::string, bool> > SelectStudies();
+        std::vector<std::tuple<std::string, bool> > SelectStudies();
 
     private:
         void Open(const char *database_file);
@@ -32,5 +32,5 @@ namespace lex{
         static const char *select_studies_query_;
         Statement select_studies_stmt_;
     };
-}
-#endif  // LEX_DATA_H_
+}  // namespace lex
+#endif  // LEX_DATA_DATA_H_

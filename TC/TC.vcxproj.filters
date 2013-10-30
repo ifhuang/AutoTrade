@@ -111,6 +111,12 @@
     <ClInclude Include="sptrader\sptrader_price.h">
       <Filter>Header Files\sptrader</Filter>
     </ClInclude>
+    <ClInclude Include="signal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="study.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComboTrader.cpp">
@@ -178,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="sptrader\sptrader_price.cpp">
       <Filter>Source Files\sptrader</Filter>
+    </ClCompile>
+    <ClCompile Include="signal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="study.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
