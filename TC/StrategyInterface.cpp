@@ -1,5 +1,5 @@
 ﻿#include "StrategyInterface.h"
-
+#define UI_DEBUG
 
 StrategyInterface::StrategyInterface(int traderId, int optimizeOrderFlow
     , Dispatcher *disp) : dispatcher_(disp)

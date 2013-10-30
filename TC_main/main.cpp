@@ -75,8 +75,8 @@ void testSwingTrader()
     PlatformInfo platformInfo;
     platformInfo.platformName = SPTRADER;
     platformInfo.server = "127.0.0.1";
-    platformInfo.accountNo = "DEMO258";
-    platformInfo.password = "12341234";
+    platformInfo.accountNo = "DEMO257";
+    platformInfo.password = "12344321";
     platformInfo.orderPort = 8092;
     platformInfo.pricePort = 8089;
     platformInfo.tickPort = 8090;

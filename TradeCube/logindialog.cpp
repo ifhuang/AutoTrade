@@ -5,11 +5,10 @@
 
 LogInDialog::LogInDialog(PlatformInfo *platforminfo, QWidget *parent) :
     QDialog(parent),
-    ui_(new Ui::LogInDialog)
+    ui_(new Ui::LogInDialog),
+    platforminfo_(platforminfo)
 {
-    this->platforminfo_ = platforminfo;
     ui_->setupUi(this);
-
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

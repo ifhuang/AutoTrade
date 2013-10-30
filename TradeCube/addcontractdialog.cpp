@@ -11,12 +11,11 @@ const QStringList AddContractDialog::tocom_ = QString("").split(",");
 
 AddContractDialog::AddContractDialog(QString *exchange, QString *contract, QWidget *parent) :
     QDialog(parent),
-    ui_(new Ui::AddContractDialog)
+    ui_(new Ui::AddContractDialog),
+    exchange_(exchange),
+    contract_(contract)
 {
-    this->exchange_ = exchange;
-    this->contract_ = contract;
     ui_->setupUi(this);
-
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

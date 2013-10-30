@@ -1,4 +1,5 @@
 ﻿#include "SwingTrader.h"
+#define UI_DEBUG
 
 SwingTrader::SwingTrader(int traderId, Dispatcher *disp,
     ISwingTradeDialog* iSwingTradeDialog,
@@ -22,6 +23,9 @@ void SwingTrader::processTickPrice(MSG& msg) {
     if (tradeUnit != NULL) {
         tradeUnit->updateTickPrice(pi);
     }
+#ifdef UI_DEBUG
+	std::cout<<"processTickPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+#endif
 }
 
 void SwingTrader::updateBars() {
@@ -29,14 +33,15 @@ void SwingTrader::updateBars() {
         Bar* newBar = tradeUnit->updateBars();
         //LogHandler::getLogHandler().log("timer update bar(" + tradeUnit->getQuote()->getQuoteId() + ")");
         if (newBar) {
-            signal();
-            if (iSwingTradeDialog)
-            {
-                iSwingTradeDialog->displayBar(newBar);
+            //signal();
+#ifdef UI_DEBUG
+			std::cout<<"updateBars++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+			iSwingTradeDialog->displayBar(newBar);
+#endif
             }
         }
     }
-}
+
 void SwingTrader::processOrderAccepted(MSG& msg) {
     OrderItem* new_oi = (OrderItem*)msg.lParam;
     OrderItem* ori_oi = tradeUnit->getOrder(new_oi->getOrderRefId());
@@ -54,6 +59,9 @@ void SwingTrader::processOrderAccepted(MSG& msg) {
             "Returned Order from server is not found in local order queues");
     }
     delete new_oi;
+#ifdef UI_DEBUG
+	std::cout<<"processOrderAccepted++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+#endif
 }
 
 void SwingTrader::processTradeDone(MSG& msg) {
@@ -178,10 +186,10 @@ void SwingTrader::processTradeDone(MSG& msg) {
         }
     }
 
-    if (iMainWindow)
-    {
-        iMainWindow->displaySwingAddOrderHistory(ti);
-    }
+#ifdef UI_DEBUG
+	std::cout<<"processTradeDone++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+	iMainWindow->displaySwingAddOrderHistory(ti);
+#endif
 }
 
 void SwingTrader::processPrice(MSG& msg) {
@@ -193,11 +201,10 @@ void SwingTrader::processPrice(MSG& msg) {
     else {
         LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
     }
-
-    if (iSwingTradeDialog)
-    {
-        iSwingTradeDialog->displayPriceItem(pi);
-    }
+#ifdef UI_DEBUG
+	std::cout<<"processPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+	iSwingTradeDialog->displayPriceItem(pi);
+#endif
 }
 
 void SwingTrader::signal() {

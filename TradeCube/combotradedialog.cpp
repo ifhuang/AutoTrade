@@ -12,7 +12,6 @@ ComboTradeDialog::ComboTradeDialog(QWidget *parent) :
     setupStrategyButton();
     setupRightPopup();
     setupConnect();
-
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

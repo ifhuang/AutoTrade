@@ -10,16 +10,15 @@
 
 SwingTradeDialog::SwingTradeDialog(QString exchange_contract, int tradeId, Dispatcher *disp, QWidget *parent) :
     QDialog(parent),
-    ui_(new Ui::SwingTradeDialog)
+    ui_(new Ui::SwingTradeDialog),
+    exchange_contract_(exchange_contract),
+    swingtrader_(new SwingTrader(tradeId, disp, this, qobject_cast<MainWindow *>(parent))),
+    disp_(disp),
+    quoteItem_(nullptr),
+    tradeUnit_(nullptr)
 {
-    this->exchange_contract_ = exchange_contract;
-    swingtrader_ = new SwingTrader(tradeId, disp, this, qobject_cast<MainWindow *>(parent));
     swingtrader_->setIntraBarTrading(true);
     tbtid_ = swingtrader_->startTraderThread();
-    this->disp_ = disp;
-    quoteItem_ = NULL;
-    tradeUnit_ = NULL;
-
     ui_->setupUi(this);
     setupToolbar();
     setupStrategyButton();
@@ -99,6 +98,7 @@ void SwingTradeDialog::setupPlot()
     plot_ = new QwtPlot(this);
     plot_->setGeometry(0, 190, 240, 200);
     curve_ = new QwtPlotTradingCurve;
+    curve_->setOrientation(Qt::Vertical);
     curve_->attach(plot_);
     curve_->setVisible(true);
 }
@@ -173,8 +173,6 @@ void SwingTradeDialog::add_contract()
         quoteItem_->setPriceScale(1);
         tradeUnit_ = new TradeUnit(quoteItem_);
         swingtrader_->setTradeUnit(tradeUnit_);
-        disp_->addPriceThreadId(quoteItem_->getQuoteId(),tbtid_);
-        disp_->addOrderThreadId(swingtrader_->getTraderId(), tbtid_);
         exchange_contract_ = exchange_.append("-").append(contract_);
         setWindowTitle(exchange_contract_);
         swingright_addcon_->setEnabled(false);

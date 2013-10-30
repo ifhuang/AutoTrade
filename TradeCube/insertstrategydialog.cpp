@@ -3,12 +3,11 @@
 
 InsertStrategyDialog::InsertStrategyDialog(QString *name, QWidget *parent) :
     QDialog(parent),
-    ui_(new Ui::InsertStrategyDialog)
+    ui_(new Ui::InsertStrategyDialog),
+    name_(name)
 {
-    this->name_ = name;
     ui_->setupUi(this);
     setupStrategyModel();
-
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

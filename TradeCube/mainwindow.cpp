@@ -15,11 +15,10 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui_(new Ui::MainWindow)
+    ui_(new Ui::MainWindow),
+    swing_counter_(0),
+    combo_counter_(0)
 {
-    swing_counter_ = 0;
-    combo_counter_ = 0;
-
     ui_->setupUi(this);
     //int currentScreenWid = QApplication::desktop()->width();
     //int currentScreenHei = QApplication::desktop()->height();
@@ -32,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setupWorkingOrdersTab();
     setupOrderHistoryTab();
     setupConnect();
-
 //    setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -358,9 +356,16 @@ void MainWindow::connect_dispatcher()
     if(logindialog->exec() == LogInDialog::Accepted)
     {
         disp_ = DispatcherFactory::createDispatcher(platforminfo_);
-        ui_->action_Connect->setEnabled(false);
-        insertswing_->setEnabled(true);
-        insertcombo_->setEnabled(true);
+        if(disp_ != nullptr)
+        {
+            ui_->action_Connect->setEnabled(false);
+            insertswing_->setEnabled(true);
+            insertcombo_->setEnabled(true);
+        }
+        else
+        {
+            std::cerr<<"create Dispatcher failed."<<std::endl;
+        }
     }
 }
 
