@@ -1,6 +1,7 @@
 #ifndef LEX_INTERFACE_LEX_INTERFACE_H_
 #define LEX_INTERFACE_LEX_INTERFACE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -70,7 +71,7 @@ namespace lex
         virtual LexRunnerInterface* New(std::string signal_name, SignalDetail details,
             TCBarInterface *tc_bar) = 0;
 
-        virtual SignalRunnerInterface* NewSignal(std::string signal_name,
+        virtual std::unique_ptr<SignalRunnerInterface> NewSignal(std::string signal_name,
             SignalDetail details, TCBarInterface *tc_bar) = 0;
     };
 }  // namespace lex

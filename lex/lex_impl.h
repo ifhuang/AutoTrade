@@ -16,7 +16,7 @@ namespace lex
         virtual LexRunnerInterface* New(std::string signal_name, SignalDetail details,
             TCBarInterface *tc_bar) override;
 
-        virtual SignalRunnerInterface* NewSignal(std::string signal_name,
+        virtual std::unique_ptr<SignalRunnerInterface> NewSignal(std::string signal_name,
             SignalDetail details, TCBarInterface *tc_bar) override;
 
     };

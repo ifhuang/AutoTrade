@@ -1,17 +1,26 @@
 #include "lex_runner.h"
 
-void LexRunner::Load()
+namespace lex
 {
+    LexRunner::LexRunner(Program p, TCBarInterface *bar) : p_(p), bar_(bar),
+        exe_(&p)
+    {
 
-}
+    }
 
-void LexRunner::Run()
-{
+    LexRunner::~LexRunner()
+    {
 
-}
+    }
 
-LexRunner::~LexRunner()
-{
+    std::vector<OrderInfo> LexRunner::GetOrderInfo()
+    {
+        return std::vector<OrderInfo>();
+    }
 
-}
-
+    std::vector<OrderAction> LexRunner::Run()
+    {
+        exe_.execute();
+        return std::vector<OrderAction>();
+    }
+}  // namespace lex

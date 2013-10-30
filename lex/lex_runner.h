@@ -1,17 +1,27 @@
 #ifndef LEX_LEX_RUNNER_H_
 #define LEX_LEX_RUNNER_H_
 
-#include "lex_runner_interface.h"
+#include "interface/lex_interface.h"
+#include "executor.h"
+#include "type.h"
 
-class LexRunner : public LexRunnerInterface
+namespace lex
 {
-public:
-    virtual void Load() override;
-    virtual void Run() override;
-    virtual ~LexRunner() override;
-};
+    class LexRunner : public SignalRunnerInterface
+    {
+    public:
+        LexRunner(Program p, TCBarInterface *bar);
+        ~LexRunner();
+        virtual std::vector<OrderInfo> GetOrderInfo() override;
 
+        virtual std::vector<OrderAction> Run() override;
 
+    private:
+        Program p_;
+        Executor exe_;
+        TCBarInterface *bar_;
+    };
 
+}  // namespace lex
 
 #endif  // LEX_LEX_RUNNER_INTERFACE_H_

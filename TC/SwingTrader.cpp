@@ -11,6 +11,10 @@ SwingTrader::SwingTrader(int traderId, Dispatcher *disp,
     testOrderID = 0;
 }
 
+SwingTrader::~SwingTrader()
+{
+}
+
 void SwingTrader::processTickPrice(MSG& msg) {
     PriceItem* pi = (PriceItem*)msg.lParam;
     //LogHandler::getLogHandler().log("Tick price");
@@ -222,6 +226,11 @@ void SwingTrader::signal() {
     }*/
     closeAllPositions();
     //LogHandler::getLogHandler().log("signal:" + tradeUnit->getQuoteId());
+    std::unique_lock<std::mutex> _(signals_mutex_);
+    for (Signal *signal : signals_)
+    {
+
+    }
 }
 
 int SwingTrader::setTradeUnit(TradeUnit* tradeUnit)
@@ -310,10 +319,6 @@ double SwingTrader::marketposition(int pos_ago)
         return 0;
 }
 
-SwingTrader::~SwingTrader()
-{
-}
-
 // 追价
 void SwingTrader::triggerWaitingOrder()
 {
@@ -395,4 +400,10 @@ void SwingTrader::closeAllPositions()
 TradeUnit* SwingTrader::getTradeUnit()
 {
     return tradeUnit;
+}
+
+void SwingTrader::AddSignal(std::string name)
+{
+    std::unique_lock<std::mutex> _(signals_mutex_);
+    Signal::GetSignal(name, nullptr);
 }

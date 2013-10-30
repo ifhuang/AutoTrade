@@ -8,13 +8,13 @@
 class Signal : public Study
 {
 public:
-    Signal* GetSignal(std::string name, TCBarInterface *bar);
+    static Signal* GetSignal(std::string name, TCBarInterface *bar);
     ~Signal();
 
 private:
-    Signal(lex::SignalRunnerInterface *runner);
+    Signal(std::unique_ptr<lex::SignalRunnerInterface> runner);
 
-    lex::SignalRunnerInterface *runner_;
+    std::unique_ptr<lex::SignalRunnerInterface> runner_;
 };
 
 #endif  // TC_SIGNAL_H_

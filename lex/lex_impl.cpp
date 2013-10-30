@@ -2,6 +2,7 @@
 
 #include "bison/front.h"
 #include "data/data_repository.h"
+#include "lex_runner.h"
 #include "type.h"
 
 namespace lex
@@ -50,10 +51,12 @@ namespace lex
         }
     }
 
-    SignalRunnerInterface* LexImpl::NewSignal(std::string signal_name,
+    std::unique_ptr<SignalRunnerInterface> LexImpl::NewSignal(std::string signal_name,
         SignalDetail details, TCBarInterface *tc_bar)
     {
-        throw std::exception("The method or operation is not implemented.");
+        Program p = DataRepository::LoadProgram();
+        LexRunner *runner = new LexRunner(p, tc_bar);
+        return std::unique_ptr<SignalRunnerInterface>(runner);
     }
 
 }  // namespace lex
