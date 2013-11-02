@@ -5,10 +5,10 @@ using namespace std;
 
 using namespace lex;
 
-int exec_visitor::get_n_m(ast_t idx) const
+int ExecVisitor::get_n_m(ast_t idx) const
 {
     if (idx == -1)return -1;
-    double dv = exe_->check_value<double>(idx);
+    double dv = exe_.CheckGetValue<double>(idx);
     return (int)dv;
 }
 
@@ -72,15 +72,15 @@ private:
     size_t remain;
 };
 
-void exec_visitor::operator()(const print_stmt & ps) const
+void ExecVisitor::operator()(const print_stmt & ps) const
 {
     if (~ps.list)
     {
         print_visitor pv;
-        for (ast_t item : exe_->astsV_[ps.list])
+        for (ast_t item : exe_.GetAsts(ps.list))
         {
-            const ast &node = exe_->astV_[item];
-            Value v = exe_->value(node.left);
+            const ast &node = exe_.GetAst(item);
+            Value v = exe_.GetValue(node.left);
             int n = get_n_m(node.mid);
             int m = get_n_m(node.right);
             pv.Print(v, n, m);

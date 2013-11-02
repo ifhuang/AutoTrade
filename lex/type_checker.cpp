@@ -4,8 +4,8 @@
 #include <boost/variant.hpp>
 #include "bison/front.h"
 #include "bison/static.h"
-#include "check_visitor.h"
 #include "table.h"
+#include "type.h"
 
 using std::string;
 using std::vector;
@@ -13,7 +13,7 @@ using std::vector;
 namespace lex
 {
     TypeChecker::TypeChecker() : is_input_(false),
-        kAstTrue_(newtf(kDefaultLocation, true))
+        kAstTrue_(newtf(kDefaultLocation, true)), visitor_(*this)
     {
 
     }
@@ -149,7 +149,7 @@ namespace lex
     void TypeChecker::Check(stmt_t stmt)
     {
         if (stmt == -1)return;
-        boost::apply_visitor(CheckVisitor(*this), stmtV[stmt]);
+        boost::apply_visitor(visitor_, stmtV[stmt]);
     }
 
     void TypeChecker::Check()

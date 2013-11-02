@@ -39,9 +39,6 @@
     <ClCompile Include="functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="execution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="exec_visitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -59,9 +56,6 @@
     </ClCompile>
     <ClCompile Include="lex_runner.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="data\type_serialization.cpp">
-      <Filter>Source Files\data</Filter>
     </ClCompile>
     <ClCompile Include="data\sqlite3.c">
       <Filter>Source Files\data</Filter>
@@ -98,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="type_checker.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data\program_serialization.cpp">
+      <Filter>Source Files\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +149,6 @@
     <ClInclude Include="interface\lex_interface.h">
       <Filter>Header Files\interface</Filter>
     </ClInclude>
-    <ClInclude Include="data\type_serialization.h">
-      <Filter>Header Files\data</Filter>
-    </ClInclude>
     <ClInclude Include="data\tree_serialization.h">
       <Filter>Header Files\data</Filter>
     </ClInclude>
@@ -198,6 +192,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="type_checker_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="executor_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data\program_serialization.h">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="abstract_executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

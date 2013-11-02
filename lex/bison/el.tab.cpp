@@ -2304,7 +2304,7 @@ yyreduce:
     {
       asm_stmt as;
       as.var = (yyvsp[-2].fn);
-      as.type = (yyvsp[-1].fn);
+      as.type = static_cast<AsmType>((yyvsp[-1].fn));
       as.type_loc = (yylsp[-1]);
       as.exp = (yyvsp[0].fn);
       (yyval.fn) = stmtV.put(as);

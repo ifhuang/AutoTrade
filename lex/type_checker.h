@@ -1,9 +1,10 @@
 #ifndef LEX_TYPE_CHECKER_H_
 #define LEX_TYPE_CHECKER_H_
 
+#include "check_visitor.h"
 #include "global.h"
 #include "table.h"
-#include "type.h"
+#include "program.h"
 #include "type_checker_interface.h"
 
 namespace lex
@@ -27,6 +28,7 @@ namespace lex
         void CheckParas(const StdFunction *function, asts_t idx,
             const YYLTYPE *loc);
 
+        CheckVisitor visitor_;
         SetUpEnviroment enviroment_;
         const int kAstTrue_;
         bool is_input_;

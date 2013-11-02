@@ -5,10 +5,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "ast.h"
 #include "execution.h"
 #include "global.h"
-#include "type.h"
+#include "program.h"
 
 namespace lex{
     enum class VSource { StdFunction, Input, Variable, Undefined };

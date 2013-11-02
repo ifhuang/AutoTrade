@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "../interface/lex_interface.h"
-#include "../type.h"
+#include "../program.h"
 
 class DataRepository
 {

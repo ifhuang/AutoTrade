@@ -1,18 +1,18 @@
-#ifndef EXEC_VISITOR_H_
-#define EXEC_VISITOR_H_
+#ifndef LEX_EXEC_VISITOR_H_
+#define LEX_EXEC_VISITOR_H_
 
 #include <boost/variant.hpp>
 
-#include "executor.h"
+#include "abstract_executor.h"
 #include "global.h"
 #include "tree.h"
 
 namespace lex
 {
-    class exec_visitor : public boost::static_visitor<>
+    class ExecVisitor : public boost::static_visitor<>
     {
     public:
-        exec_visitor(Executor *exe);
+        ExecVisitor(AbstractExecutor &exe);
 
         void operator()(const if_stmt & is) const;
         void operator()(const once_stmt & os) const;
@@ -29,8 +29,8 @@ namespace lex
     private:
         int get_n_m(ast_t idx) const;
 
-        Executor *exe_;
-        DISALLOW_COPY_AND_ASSIGN(exec_visitor);
+        AbstractExecutor &exe_;
+        DISALLOW_COPY_AND_ASSIGN(ExecVisitor);
     };
-}
-#endif  // EXEC_VISITOR_H_
+}  // namespace lex
+#endif  // LEX_EXEC_VISITOR_H_

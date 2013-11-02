@@ -1,13 +1,11 @@
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#ifndef LEX_EXECUTION_H
+#define LEX_EXECUTION_H
 
 #include <string>
 #include <boost/variant.hpp>
 
-#include "tree.h"
-
-namespace lex{
-
+namespace lex
+{
 	typedef boost::variant<double, bool, std::string> Value;
 
     class RuntimeException : public std::exception
@@ -25,4 +23,4 @@ namespace lex{
 	
 }  // namespace lex
 
-#endif
+#endif  // LEX_EXECUTION_H

@@ -3,7 +3,6 @@
 
 #include "interface/lex_interface.h"
 #include "executor.h"
-#include "type.h"
 
 namespace lex
 {

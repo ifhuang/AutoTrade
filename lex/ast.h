@@ -14,41 +14,41 @@ const YYLTYPE kDefaultLocation = { -1, -1, -1, -1 };
 enum class NodeType
 {
     ADD,
-        SUB,
-        MUL,
-        DIV,
-        AND,
-        OR,
-        NOT,
-        BAR,
-        UPLUS,
-        UMINUS,
+    SUB,
+    MUL,
+    DIV,
+    AND,
+    OR,
+    NOT,
+    BAR,
+    UPLUS,
+    UMINUS,
 
-        VARDEC,
-        ARRDEC,
-        IBPVARDEC,
+    VARDEC,
+    ARRDEC,
+    IBPVARDEC,
 
-        PRINT,
+    PRINT,
 
-        NUMERIC,
-        TF,
-        TEXT,
+    NUMERIC,
+    TF,
+    TEXT,
 
-        VAR,
-        FUNC,
-        VOID,
+    VAR,
+    FUNC,
+    VOID,
 
-        CASE,
-        SECTION,
+    CASE,
+    SECTION,
 
-        EQ = 100,
-        GT,
-        LT,
-        NE,
-        GE,
-        LE,
-        CA,
-        CB
+    EQ = 100,
+    GT,
+    LT,
+    NE,
+    GE,
+    LE,
+    CA,
+    CB
 };
 
 struct ast

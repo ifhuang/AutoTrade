@@ -5,87 +5,88 @@ using namespace std;
 
 #include "execution.h"
 #include "operator.h"
+#include "tree.h"
 
 namespace lex
 {
-    exec_visitor::exec_visitor(lex::Executor *exe) :exe_(exe) {}
+    ExecVisitor::ExecVisitor(AbstractExecutor &exe) :exe_(exe) {}
 
-    void exec_visitor::operator()(const if_stmt & is) const
+    void ExecVisitor::operator()(const if_stmt & is) const
     {
-        bool con = exe_->check_value<bool>(is.con);
-        exe_->exec(con ? is.then : is.then);
+        bool con = exe_.CheckGetValue<bool>(is.con);
+        exe_.Exec(con ? is.then : is.then);
     }
 
-    void exec_visitor::operator()(const once_stmt & os) const
+    void ExecVisitor::operator()(const once_stmt & os) const
     {
-        bool & once = boost::get<bool>(exe_->rte_->GetVar(os.con_position));
+        bool & once = exe_.CheckGetVar<bool>(os.con_position);
         if (!once)return;
-        bool con = os.con == -1 || exe_->check_value<bool>(os.con);
+        bool con = os.con == -1 || exe_.CheckGetValue<bool>(os.con);
         if (con)
         {
             once = false;
-            exe_->exec(os.stmt);
+            exe_.Exec(os.stmt);
         }
     }
 
-    void exec_visitor::operator()(const for_stmt & fs) const
+    void ExecVisitor::operator()(const for_stmt & fs) const
     {
 
     }
 
-    void exec_visitor::operator()(const while_stmt & ws) const
+    void ExecVisitor::operator()(const while_stmt & ws) const
     {
         if (ws.type == 0)
         {
-            while (exe_->check_value<bool>(ws.con))
+            while (exe_.CheckGetValue<bool>(ws.con))
             {
-                exe_->exec_stmts(ws.stmts);
+                exe_.ExecStmts(ws.stmts);
             }
         }
         else
         {
             do
             {
-                exe_->exec_stmts(ws.stmts);
-            } while (!exe_->check_value<bool>(ws.con));
+                exe_.ExecStmts(ws.stmts);
+            } while (!exe_.CheckGetValue<bool>(ws.con));
         }
     }
 
-    void exec_visitor::operator()(const switch_stmt & ws) const
+    void ExecVisitor::operator()(const switch_stmt & ws) const
     {
 
     }
 
-    void exec_visitor::operator()(const order_stmt & os) const
+    void ExecVisitor::operator()(const order_stmt & os) const
     {
 
     }
 
-    void exec_visitor::operator()(const func_stmt & fs) const
+    void ExecVisitor::operator()(const func_stmt & fs) const
     {
 
     }
 
-    void exec_visitor::operator()(const asm_stmt & as) const
+    void ExecVisitor::operator()(const asm_stmt & as) const
     {
-        const ast &var = exe_->astV_[as.var];
-        Value &lhs = exe_->rte_->GetVar(var.idx);
-        Value v = exe_->value(as.exp);
+        const ast &var = exe_.GetAst(as.var);
+        Value &lhs = exe_.GetVar(var.idx);
+        Value v = exe_.GetValue(as.exp);
         switch (as.type)
         {
-        case kEQ:
+        case AsmType::kEQ:
             lhs = v;
             break;
-        case kADD:
+        case AsmType::kADD:
             lhs = boost::apply_visitor(add_visitor(), lhs, v);
             break;
-        case kSUB:
+        case AsmType::kSUB:
             lhs = boost::apply_visitor(sub_visitor(), lhs, v);
             break;
-        case kMUL:
+        case AsmType::kMUL:
             lhs = boost::apply_visitor(mul_visitor(), lhs, v);
             break;
-        case kDIV:
+        case AsmType::kDIV:
             lhs = boost::apply_visitor(div_visitor(), lhs, v);
             break;
         default:
@@ -93,13 +94,13 @@ namespace lex
         }
     }
 
-    void exec_visitor::operator()(const block_stmt & bs) const
+    void ExecVisitor::operator()(const block_stmt & bs) const
     {
-        exe_->exec_stmts(bs.stmts);
+        exe_.ExecStmts(bs.stmts);
     }
 
-    void exec_visitor::operator()(const var_stmt & vs) const
+    void ExecVisitor::operator()(const var_stmt & vs) const
     {
         /* do nothing */
     }
-}
+}  // namespace lex

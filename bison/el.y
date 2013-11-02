@@ -231,7 +231,7 @@ assignment: name asm exp //%prec ASM
     {
       asm_stmt as;
       as.var = $1;
-      as.type = $2;
+      as.type = static_cast<AsmType>($2);
       as.type_loc = @2;
       as.exp = $3;
       $$ = stmtV.put(as);
@@ -273,6 +273,7 @@ nexp: nexp MUL nexp { $$ = newast(@$, NodeType::MUL, $1, $3); }
 
 name: NAME  { $$ = newname(@$, $1); }
     | CLOSE { $$ = newname(@$, 0); }
+
     ;
 
 name_call: name { $$ = newast(@$, NodeType::FUNC, $1, -2); }

@@ -4,7 +4,6 @@
 #include <boost/variant.hpp>
 using namespace std;
 
-#include "exec_visitor.h"
 #include "operator.h"
 #include "table.h"
 
@@ -13,7 +12,7 @@ namespace lex{
     Executor::Executor(const Program *program) : rte_(NULL), program_(program),
         sue_(*program->sue), strVector_(*program->strVector),
         astV_(*program->astV), astsV_(*program->astsV),
-        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV) {}
+        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV) , visitor_(*this) {}
 
     Executor::~Executor()
     {
@@ -31,7 +30,7 @@ namespace lex{
         const vector<ast_t> &args = astsV_[idx];
         for (size_t i = 0; i < args.size(); i++)
         {
-            r.push_back(value(args[i]));
+            r.push_back(GetValue(args[i]));
         }
         return r;
     }
@@ -48,36 +47,39 @@ namespace lex{
             vector<Value> args = exec_paras(func.right);
             return function->call(0, args);
                                    }
+        case VSource::Input:{
+
+        }
         default:
             throw RuntimeException();
         }
     }
 
-    Value Executor::value(ast_t idx)
+    Value Executor::GetValue(ast_t idx)
     {
         const ast &n = astV_[idx];
         switch (n.type)
         {
         case NodeType::ADD:
-            return boost::apply_visitor(add_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(add_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::SUB:
-            return boost::apply_visitor(sub_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(sub_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::MUL:
-            return boost::apply_visitor(mul_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(mul_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::DIV:
-            return boost::apply_visitor(div_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(div_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::AND:
-            return boost::apply_visitor(and_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(and_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::OR:
-            return boost::apply_visitor(or_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(or_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::NOT:
-            return boost::apply_visitor(not_visitor(), value(n.left));
+            return boost::apply_visitor(not_visitor(), GetValue(n.left));
         case NodeType::BAR:
-            return boost::apply_visitor(or_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(or_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::UPLUS:
-            return check_value<double>(n.left);
+            return CheckGetValue<double>(n.left);
         case NodeType::UMINUS:
-            return boost::apply_visitor(not_visitor(), value(n.left));
+            return boost::apply_visitor(not_visitor(), GetValue(n.left));
         case NodeType::NUMERIC:
             return n.dv;
         case NodeType::TF:
@@ -85,21 +87,21 @@ namespace lex{
         case NodeType::TEXT:
             return strVector_[n.idx];
         case NodeType::EQ:
-            return boost::apply_visitor(eq_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(eq_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::NE:
-            return boost::apply_visitor(ne_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(ne_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::GT:
-            return boost::apply_visitor(gt_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(gt_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::LT:
-            return boost::apply_visitor(gt_visitor(), value(n.right), value(n.left));
+            return boost::apply_visitor(gt_visitor(), GetValue(n.right), GetValue(n.left));
         case NodeType::GE:
-            return boost::apply_visitor(ge_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(ge_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::LE:
-            return boost::apply_visitor(ge_visitor(), value(n.right), value(n.left));
+            return boost::apply_visitor(ge_visitor(), GetValue(n.right), GetValue(n.left));
         case NodeType::CA:
-            return boost::apply_visitor(ca_visitor(), value(n.left), value(n.right));
+            return boost::apply_visitor(ca_visitor(), GetValue(n.left), GetValue(n.right));
         case NodeType::CB:
-            return boost::apply_visitor(ca_visitor(), value(n.right), value(n.left));
+            return boost::apply_visitor(ca_visitor(), GetValue(n.right), GetValue(n.left));
         case NodeType::FUNC:
             return exec_func(idx);
         case NodeType::VAR:
@@ -110,19 +112,19 @@ namespace lex{
         return double(0.0);
     }
 
-    void Executor::exec_stmts(stmts_t idx)
+    void Executor::ExecStmts(stmts_t idx)
     {
         if (idx == -1)return;
         for (stmt_t stmt : stmtsV_[idx])
         {
-            exec(stmt);
+            Exec(stmt);
         }
     }
 
-    void Executor::exec(stmt_t stmt)
+    void Executor::Exec(stmt_t stmt)
     {
         if (stmt == -1)return;
-        boost::apply_visitor(exec_visitor(this), stmtV_[stmt]);
+        boost::apply_visitor(visitor_, stmtV_[stmt]);
     }
 
     void Executor::SetUp()
@@ -135,7 +137,7 @@ namespace lex{
             {
                 const Initialize &init = sue_.initialize_list[i];
                 rte_list[i].size = init.size;
-                rte_list[i].value = value(init.exp);
+                rte_list[i].value = GetValue(init.exp);
             }
             rte_ = new RunTimeEnvironment(rte_list);
         }
@@ -144,7 +146,7 @@ namespace lex{
     void Executor::execute()
     {
         SetUp();
-        exec_stmts(program_->root);
+        ExecStmts(program_->root);
     }
 
     std::string Executor::get_var(ast_t idx)
@@ -154,4 +156,18 @@ namespace lex{
         return strVector_[node.idx];
     }
 
+    const ast& Executor::GetAst(ast_t idx)
+    {
+        return astV_[idx];
+    }
+
+    const std::vector<ast_t>& Executor::GetAsts(asts_t idx)
+    {
+        return astsV_[idx];
+    }
+
+    Value& Executor::GetVar(int position)
+    {
+        return rte_->GetVar(position);
+    }
 }  // namespace lex

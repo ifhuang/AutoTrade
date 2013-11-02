@@ -133,11 +133,11 @@ namespace lex
         case VType::NUMERIC:
             break;
         case VType::TEXT:
-            if (as.type != kEQ && as.type != kADD)
+            if (as.type != AsmType::kEQ && as.type != AsmType::kADD)
                 throw InvalidTypeOperation(&as.type_loc);
             break;
         case VType::TF:
-            if (as.type != kEQ)throw InvalidTypeOperation(&as.type_loc);
+            if (as.type != AsmType::kEQ)throw InvalidTypeOperation(&as.type_loc);
             break;
         }
         VType rightType = checker_.GetType(as.exp);

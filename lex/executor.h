@@ -3,28 +3,37 @@
 
 #include <vector>
 
+#include "abstract_executor.h"
+#include "exec_visitor.h"
 #include "execution.h"
 #include "run_time_environment.h"
-#include "type.h"
+#include "program.h"
 
-namespace lex {
-    class Executor
+namespace lex
+{
+    class Executor : public AbstractExecutor
     {
     public:
         Executor(const Program *program);
-        ~Executor();
+        virtual ~Executor();
 
         void execute();
-        Value value(ast_t idx);
-        void exec(stmt_t stmt);
-        void exec_stmts(stmts_t idx);
+        virtual Value GetValue(ast_t idx) override;
+        virtual Value& GetVar(int position) override;
 
-        template<typename T>
-        T check_value(ast_t idx)
-        {
-            return boost::get<T>(value(idx));
-        }
+        virtual void Exec(stmt_t stmt) override;
+        virtual void ExecStmts(stmts_t idx) override;
 
+    private:
+        void SetUp();
+        std::vector<Value> exec_paras(asts_t idx);
+        std::string get_var(ast_t idx);
+        Value exec_func(ast_t idx);
+
+        virtual const ast& GetAst(ast_t idx);
+        virtual const std::vector<ast_t>& GetAsts(asts_t idx);
+
+        ExecVisitor visitor_;
         RunTimeEnvironment *rte_;
         const Program *program_;
         const SetUpEnviroment &sue_;
@@ -33,11 +42,6 @@ namespace lex {
         const VV<std::vector<stmt_t>> &astsV_;
         const VV<stmt> &stmtV_;
         const VV<std::vector<ast_t>> &stmtsV_;
-    private:
-        void SetUp();
-        std::vector<Value> exec_paras(asts_t idx);
-        std::string get_var(ast_t idx);
-        Value exec_func(ast_t idx);
 
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };

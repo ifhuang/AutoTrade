@@ -8,7 +8,7 @@
 #include <boost/serialization/variant.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include "../type.h"
+#include "../program.h"
 #include "ast_serialization.h"
 
 namespace boost {

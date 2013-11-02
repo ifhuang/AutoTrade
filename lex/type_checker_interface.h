@@ -1,7 +1,7 @@
 #ifndef LEX_TYPE_CHECKER_INTERFACE_H_
 #define LEX_TYPE_CHECKER_INTERFACE_H_
 
-#include "type.h"
+#include "program.h"
 
 namespace lex
 {
