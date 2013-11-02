@@ -1,5 +1,5 @@
 %{
-#include "tree.h"
+#include "bison.h"
 extern int yylex();
 %}
 

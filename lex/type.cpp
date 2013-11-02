@@ -23,9 +23,9 @@ namespace lex
         init_table();
     }
 
-    void storage(TypeChecker &checker)
+    void storage(const TypeChecker &checker)
     {
-        Program p = { root, &checker.enviroment_, &strVector, &astV, &astsV, &stmtV, &stmtsV };
+        Program p = checker.GetProgram();
         DataRepository::SaveProgram(p);
     }
 
@@ -33,7 +33,7 @@ namespace lex
     {
         init();
         TypeChecker checker;
-        checker.check();
+        checker.Check();
         storage(checker);
     }
 }  // namespace lex

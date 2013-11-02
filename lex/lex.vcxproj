@@ -124,6 +124,7 @@
     <ClInclude Include="type.h" />
     <ClInclude Include="data\type_serialization.h" />
     <ClInclude Include="type_checker.h" />
+    <ClInclude Include="type_checker_interface.h" />
     <ClInclude Include="vv.h" />
   </ItemGroup>
   <ItemGroup>

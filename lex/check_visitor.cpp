@@ -10,22 +10,22 @@ namespace lex
 {
     void CheckVisitor::operator()(if_stmt & is) const
     {
-        if (checker_.get_type(is.con) != VType::TF)throw LogicalExpressionExpected(GetLocation(is.con));
-        checker_.check(is.then);
-        checker_.check(is.els);
+        if (checker_.GetType(is.con) != VType::TF)throw LogicalExpressionExpected(GetLocation(is.con));
+        checker_.Check(is.then);
+        checker_.Check(is.els);
     }
 
     void CheckVisitor::operator()(once_stmt & os) const
     {
-        if (~os.con && checker_.get_type(os.con) != VType::TF)
+        if (~os.con && checker_.GetType(os.con) != VType::TF)
             throw LogicalExpressionExpected(GetLocation(os.con));
-        checker_.check(os.stmt);
-        os.con_position = checker_.enviroment_.ReserveSpace(checker_.kAstTrue);
+        checker_.Check(os.stmt);
+        os.con_position = checker_.ReserverTrue();
     }
 
     void CheckVisitor::operator()(for_stmt & fs) const
     {
-        string name = checker_.get_var(fs.var);
+        string name = checker_.GetVar(fs.var);
         VSource source = find_name(name);
         if (source != VSource::Variable)
         {
@@ -36,18 +36,18 @@ namespace lex
         {
             throw InvalidTypeOperation(GetLocation(fs.var));
         }
-        VType ft = checker_.get_type(fs.from);
+        VType ft = checker_.GetType(fs.from);
         if (ft == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.from));
-        VType tt = checker_.get_type(fs.to);
+        VType tt = checker_.GetType(fs.to);
         if (tt == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.to));
-        checker_.check(fs.block);
+        checker_.Check(fs.block);
     }
 
     void CheckVisitor::operator()(while_stmt & ws) const
     {
-        if (checker_.get_type(ws.con) != VType::TF)
+        if (checker_.GetType(ws.con) != VType::TF)
             throw LogicalExpressionExpected(GetLocation(ws.con));
-        checker_.check_stmts(ws.stmts);
+        checker_.CheckStmts(ws.stmts);
     }
 
     void CheckVisitor::operator()(switch_stmt & ws) const
@@ -62,12 +62,12 @@ namespace lex
 
     void CheckVisitor::operator()(func_stmt & fs) const
     {
-        checker_.check_func(fs.func);
+        checker_.GetType(fs.func);
     }
 
     void CheckVisitor::operator()(asm_stmt & as) const
     {
-        string name = checker_.get_var(as.var);
+        string name = checker_.GetVar(as.var);
         VSource source = find_name(name);
         switch (source)
         {
@@ -81,7 +81,7 @@ namespace lex
 
     void CheckVisitor::operator()(block_stmt & bs) const
     {
-        checker_.check_stmts(bs.stmts);
+        checker_.CheckStmts(bs.stmts);
     }
 
     void CheckVisitor::operator()(var_stmt & vs) const
@@ -89,14 +89,14 @@ namespace lex
         for (ast_t idx : astsV[vs.vars])
         {
             ast &var = astV[idx];
-            string name = checker_.get_var(var.left);
+            string name = checker_.GetVar(var.left);
             VSource source = find_name(name);
             if (source != VSource::Undefined)
             {
                 throw SemanticError("this word has already been defined", GetLocation(var.left));
             }
-            VType type = checker_.get_type(var.right);
-            int position = checker_.enviroment_.ReserveSpace(var.right);
+            VType type = checker_.GetType(var.right);
+            int position = checker_.Reserve(var.right);
             declare_var(name, position, type);
         }
     }
@@ -108,7 +108,7 @@ namespace lex
             for (ast_t item : astsV[ps.list])
             {
                 ast &print = astV[item];
-                VType l_type = checker_.get_type(print.left);
+                VType l_type = checker_.GetType(print.left);
                 int nm = check_n_m(print);
                 switch (l_type)
                 {
@@ -140,7 +140,7 @@ namespace lex
             if (as.type != kEQ)throw InvalidTypeOperation(&as.type_loc);
             break;
         }
-        VType rightType = checker_.get_type(as.exp);
+        VType rightType = checker_.GetType(as.exp);
         if (variable.type != rightType)
         {
             throw TypesNotCompatible(&as.type_loc);
@@ -152,10 +152,10 @@ namespace lex
     int CheckVisitor::check_n_m(ast &print) const
     {
         if (print.mid == -1)return 0;
-        if (checker_.get_type(print.mid) != VType::NUMERIC)
+        if (checker_.GetType(print.mid) != VType::NUMERIC)
             throw SemanticError("n must be numeric", GetLocation(print.mid));
         if (print.right == -1)return 1;
-        if (checker_.get_type(print.right) != VType::NUMERIC)
+        if (checker_.GetType(print.right) != VType::NUMERIC)
             throw SemanticError("m must be numeric", GetLocation(print.right));
         return 2;
     }

@@ -6,14 +6,14 @@
 
 #include "global.h"
 #include "tree.h"
-#include "type_checker.h"
+#include "type_checker_interface.h"
 
 namespace lex
 {
     class CheckVisitor : public boost::static_visitor<>
     {
     public:
-        CheckVisitor(TypeChecker &checker) : checker_(checker) {}
+        CheckVisitor(TypeCheckerInterface &checker) : checker_(checker) {}
 
         void operator()(if_stmt & is) const;
 
@@ -41,7 +41,7 @@ namespace lex
         void check_asm_variable(std::string name, asm_stmt &as) const;
         int check_n_m(ast &print) const;
 
-        TypeChecker &checker_;
+        TypeCheckerInterface &checker_;
         DISALLOW_COPY_AND_ASSIGN(CheckVisitor);
     };
 }

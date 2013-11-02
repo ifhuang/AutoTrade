@@ -12,12 +12,13 @@ using std::vector;
 
 namespace lex
 {
-    TypeChecker::TypeChecker()
+    TypeChecker::TypeChecker() : is_input_(false),
+        kAstTrue_(newtf(kDefaultLocation, true))
     {
-        kAstTrue = newtf(kDefaultLocation, true);
+
     }
 
-    VType lex::TypeChecker::get_type(ast_t &idx, bool is_input /*= false*/)
+    VType lex::TypeChecker::GetType(ast_t idx)
     {
         ast &node = astV[idx];
         auto loc = GetLocation(idx);
@@ -25,38 +26,38 @@ namespace lex
         {
             VType l, r;
         case NodeType::ADD:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l != r)throw TypesNotCompatible(loc);
             if (l == VType::NUMERIC || l == VType::TEXT)return l;
             throw InvalidTypeOperation(loc);
         case NodeType::SUB:
         case NodeType::MUL:
         case NodeType::DIV:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l != r)throw TypesNotCompatible(loc);
             if (l == VType::NUMERIC)return l;
             throw InvalidTypeOperation(loc);
         case NodeType::AND:
         case NodeType::OR:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l != r)throw TypesNotCompatible(loc);
             if (l == VType::TF)return l;
             throw InvalidTypeOperation(loc);
         case NodeType::NOT:
-            l = get_type(node.left);
+            l = GetType(node.left);
             if (l == VType::TF)return l;
             throw InvalidTypeOperation(loc);
         case NodeType::BAR:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (r == VType::TEXT)throw InvalidTypeOperation(loc);
             return l;
         case NodeType::UMINUS:
         case NodeType::UPLUS:
-            l = get_type(node.left);
+            l = GetType(node.left);
             if (l == VType::NUMERIC)return l;
             throw InvalidTypeOperation(loc);
         case NodeType::NUMERIC:
@@ -75,62 +76,61 @@ namespace lex
             return VType::TEXT;
         case NodeType::EQ:
         case NodeType::NE:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l == r)return VType::TF;
             throw TypesNotCompatible(loc);
         case NodeType::GT:
         case NodeType::LT:
         case NodeType::GE:
         case NodeType::LE:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l != r)throw TypesNotCompatible(loc);
             if (l == VType::NUMERIC || l == VType::TEXT)return VType::TF;
             throw InvalidTypeOperation(loc);
         case NodeType::CA:
         case NodeType::CB:
-            l = get_type(node.left);
-            r = get_type(node.right);
+            l = GetType(node.left);
+            r = GetType(node.right);
             if (l != r)throw TypesNotCompatible(loc);
             if (l == VType::NUMERIC)return VType::TF;
             throw InvalidTypeOperation(loc);
         case NodeType::FUNC:
-            return check_func(idx, is_input);
+            return CheckFunc(idx);
         default:
             throw SemanticError();
         }
     }
 
-    std::string TypeChecker::get_var(ast_t idx)
+    std::string TypeChecker::GetVar(ast_t idx)
     {
-        ast &node = astV[idx];
-        if (node.type != NodeType::VAR)throw SemanticError("Internal get_var", &kDefaultLocation);
+        const ast &node = astV[idx];
+        if (node.type != NodeType::VAR)throw SemanticError("Internal GetVar", &kDefaultLocation);
         return strVector[node.idx];
     }
 
-    VType TypeChecker::check_func(ast_t &idx, bool is_input /*= false*/)
+    VType TypeChecker::CheckFunc(ast_t idx)
     {
         ast &func = astV[idx];
         auto loc = GetLocation(func.left);
-        string name = get_var(func.left);
+        string name = GetVar(func.left);
         VSource source = find_name(name);
         switch (source)
         {
         case VSource::StdFunction: {
                                        const StdFunction *function = funcTable.at(name);
-                                       check_paras(function, func.right, loc, is_input);
+                                       CheckParas(function, func.right, loc);
                                        return function->result;
         }
         case VSource::Input: {
-                                 if (is_input)throw SemanticError("input cannot contain input", loc);
+                                 if (is_input_)throw SemanticError("input cannot contain input", loc);
                                  if (func.right != -2)throw SemanticError("not a function, is input", loc);
                                  Input input = inputTable[name];
-                                 idx = input.exp;
                                  return input.type;
         }
         case VSource::Variable:	{
-                                    if (is_input)throw SemanticError("input cannot contain variable", loc);
+                                    if (is_input_)throw SemanticError("input cannot contain variable", loc);
                                     if (func.right != -2)throw SemanticError("not a function, is variable", loc);
                                     Variable variable = varTable[name];
                                     func.type = NodeType::VAR;
@@ -146,28 +146,28 @@ namespace lex
         }
     }
 
-    void TypeChecker::check(stmt_t stmt)
+    void TypeChecker::Check(stmt_t stmt)
     {
         if (stmt == -1)return;
         boost::apply_visitor(CheckVisitor(*this), stmtV[stmt]);
     }
 
-    void TypeChecker::check()
+    void TypeChecker::Check()
     {
-        check_input();
-        check_stmts(root);
+        CheckInput();
+        CheckStmts(root);
     }
 
-    void TypeChecker::check_stmts(stmts_t idx)
+    void TypeChecker::CheckStmts(stmts_t idx)
     {
         for (stmt_t stmt : stmtsV[idx])
         {
-            check(stmt);
+            Check(stmt);
         }
     }
 
-    void TypeChecker::check_paras(const StdFunction *function, asts_t idx,
-        const YYLTYPE *loc, bool is_input /*= false*/)
+    void TypeChecker::CheckParas(const StdFunction *function, asts_t idx,
+        const YYLTYPE *loc)
     {
         auto &paras = function->paras;
         if (idx < 0)
@@ -178,7 +178,7 @@ namespace lex
             }
             return;
         }
-        vector<ast_t> &args = astsV[idx];
+        const vector<ast_t> &args = astsV[idx];
         if (function->min == -1 && paras.size() != args.size()
             || function->min != -1 && paras.size() < args.size())
         {
@@ -186,7 +186,7 @@ namespace lex
         }
         for (size_t i = 0; i < args.size(); i++)
         {
-            VType at = get_type(args[i], is_input);
+            VType at = GetType(args[i]);
             if (at != paras[i])
             {
                 throw SemanticError("incorrect argument type", loc);
@@ -194,23 +194,24 @@ namespace lex
         }
     }
 
-    void TypeChecker::check_input()
+    void TypeChecker::CheckInput()
     {
+        is_input_ = true;
         for (ast_t idx : inputVector)
         {
-            ast &input = astV[idx];
+            const ast &input = astV[idx];
             auto loc = GetLocation(idx);
             if (input.type == NodeType::IBPVARDEC)
             {
                 throw SemanticError("This attribute can be applied only for variables", loc);
             }
-            string name = get_var(input.left);
+            string name = GetVar(input.left);
             VSource source = find_name(name);
             if (source != VSource::Undefined)
             {
                 throw SemanticError("this word has already been defined", loc);
             }
-            VType type = get_type(input.right, true);
+            VType type = GetType(input.right);
             Input in = { name, type, input.right };
             //in.name = name;
             //in.type = type;
@@ -218,5 +219,23 @@ namespace lex
             inputTable[name] = in;
             enviroment_.inputs.push_back(in);
         }
+        is_input_ = false;
     }
-}
+
+    int TypeChecker::ReserverTrue()
+    {
+        return enviroment_.ReserveSpace(kAstTrue_);
+    }
+
+    int TypeChecker::Reserve(ast_t exp)
+    {
+        return enviroment_.ReserveSpace(exp);
+    }
+
+    lex::Program TypeChecker::GetProgram() const
+    {
+        Program p = { root, &enviroment_, &strVector, &astV, &astsV, &stmtV, &stmtsV };
+        return p;
+    }
+
+}  // namespace lex

@@ -197,6 +197,9 @@
     <ClInclude Include="type_checker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="type_checker_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\lex.sql">

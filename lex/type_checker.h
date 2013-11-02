@@ -4,27 +4,32 @@
 #include "global.h"
 #include "table.h"
 #include "type.h"
+#include "type_checker_interface.h"
 
 namespace lex
 {
-    class TypeChecker
+    class TypeChecker : public TypeCheckerInterface
     {
     public:
         TypeChecker();
-        void check();
-        VType get_type(ast_t &idx, bool is_input = false);
-        std::string get_var(ast_t idx);
-        VType check_func(ast_t &idx, bool is_input = false);
-        void check(stmt_t stmt);
-        void check_stmts(stmts_t idx);
+        void Check();
+        virtual VType GetType(ast_t idx) override;
+        virtual std::string GetVar(ast_t idx) override;
+        virtual void Check(stmt_t stmt) override;
+        virtual void CheckStmts(stmts_t idx) override;
+        virtual int Reserve(ast_t exp) override;
+        virtual int ReserverTrue() override;
+        Program GetProgram() const;
+
+    private:
+        VType CheckFunc(ast_t idx);
+        void CheckInput();
+        void CheckParas(const StdFunction *function, asts_t idx,
+            const YYLTYPE *loc);
 
         SetUpEnviroment enviroment_;
-        int kAstTrue;
-    private:
-        void check_input();
-        void check_paras(const StdFunction *function, asts_t idx,
-            const YYLTYPE *loc, bool is_input = false);
-
+        const int kAstTrue_;
+        bool is_input_;
         DISALLOW_COPY_AND_ASSIGN(TypeChecker);
     };
 }

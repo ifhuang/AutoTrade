@@ -139,37 +139,3 @@ return NAME; }
 .    { yyerror("Mystery character %c\n", *yytext); return *yytext; }
 %%
 
-std::string location_print(YYLTYPE const * const yylocp)
-{
-    std::stringstream res;
-    int end_col = yylocp->last_column ? yylocp->last_column - 1 : 0;
-    if (0 <= yylocp->first_line)
-    {
-        res << yylocp->first_line;
-        if (0 <= yylocp->first_column)
-            res << '.' << yylocp->first_column;
-    }
-    if (0 <= yylocp->last_line)
-    {
-        if (yylocp->first_line < yylocp->last_line)
-        {
-            res << '-' << yylocp->last_line;
-            if (0 <= end_col)res << '.' << end_col;
-        }
-        else if (0 <= end_col && yylocp->first_column < end_col)
-            res << '-' << end_col;
-    }
-    return res.str();
-}
-
-void yyerror(const char *s, ...)
-{
-    va_list ap;
-    va_start(ap, s);
-    static char str[1000];
-    vsprintf_s(str, s, ap);
-	va_end(ap);
-	errorMessage += "(" + location_print(&yylloc) + "): error: ";
-	errorMessage += str;
-}
-

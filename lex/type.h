@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include "interface/lex_interface.h"
 #include "ast.h"
 #include "global.h"
 #include "tree.h"
@@ -42,12 +42,13 @@ namespace lex{
 
     struct Program{
         stmts_t root;
-        SetUpEnviroment *sue;
+        const SetUpEnviroment *sue;
         std::vector<std::string> *strVector;
         VV<ast> *astV;
         VV<std::vector<stmt_t>> *astsV;
         VV<stmt> *stmtV;
         VV<std::vector<ast_t>> *stmtsV;
+        std::vector<OrderInfo> order_info;
     };
 
     class SemanticError : public std::exception
