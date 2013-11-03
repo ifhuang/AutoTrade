@@ -35,6 +35,7 @@ enum class NodeType
     TEXT,
 
     VAR,
+    INPUT,
     FUNC,
     VOID,
 

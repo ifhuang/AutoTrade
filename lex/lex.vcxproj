@@ -85,6 +85,7 @@
     <ClCompile Include="execution\run_time_environment.cpp" />
     <ClCompile Include="data\sqlite3.c" />
     <ClCompile Include="data\statements.cpp" />
+    <ClCompile Include="std_table.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="bison\tree.cpp" />
     <ClCompile Include="type.cpp" />
@@ -120,6 +121,8 @@
     <ClInclude Include="data\sqlite3.h" />
     <ClInclude Include="data\statements.h" />
     <ClInclude Include="bison\static.h" />
+    <ClInclude Include="execution\runtime_interface.h" />
+    <ClInclude Include="std_table.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="data\tree_serialization.h" />

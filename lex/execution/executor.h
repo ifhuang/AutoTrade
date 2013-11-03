@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../program.h"
+#include "../std_table.h"
 #include "abstract_executor.h"
 #include "exec_visitor.h"
 #include "execution.h"
@@ -34,7 +35,7 @@ namespace lex
         virtual const std::vector<ast_t>& GetAsts(asts_t idx);
 
         ExecVisitor visitor_;
-        RunTimeEnvironment *rte_;
+        StdTable table_;
         const Program *program_;
         const SetUpEnviroment &sue_;
         const std::vector<std::string> &strVector_;
@@ -42,6 +43,7 @@ namespace lex
         const VV<std::vector<stmt_t>> &astsV_;
         const VV<stmt> &stmtV_;
         const VV<std::vector<ast_t>> &stmtsV_;
+        RunTimeEnvironment rte_;
 
         DISALLOW_COPY_AND_ASSIGN(Executor);
     };

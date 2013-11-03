@@ -115,33 +115,39 @@ namespace lex
         ast &func = astV[idx];
         auto loc = GetLocation(func.left);
         string name = GetVar(func.left);
-        VSource source = find_name(name);
+        VSource source = table_.FindName(name);
         switch (source)
         {
-        case VSource::StdFunction: {
-                                       const StdFunction *function = funcTable.at(name);
-                                       CheckParas(function, func.right, loc);
-                                       return function->result;
-        }
-        case VSource::Input: {
-                                 if (is_input_)throw SemanticError("input cannot contain input", loc);
-                                 if (func.right != -2)throw SemanticError("not a function, is input", loc);
-                                 Input input = inputTable[name];
-                                 return input.type;
-        }
-        case VSource::Variable:	{
-                                    if (is_input_)throw SemanticError("input cannot contain variable", loc);
-                                    if (func.right != -2)throw SemanticError("not a function, is variable", loc);
-                                    Variable variable = varTable[name];
-                                    func.type = NodeType::VAR;
-                                    func.idx = variable.position;
-                                    return variable.type;
-        }
-        case VSource::Undefined: {
-                                     string es = "'" + name + "' : undeclared identifier";
-                                     throw SemanticError(es.c_str(), loc);
-        }
-        default:
+          case VSource::StdFunction:
+          {
+            const StdFunction *function = table_.GetStdFunction(name);
+            CheckParas(function, func.right, loc);
+            return function->result;
+          }
+          case VSource::Input:
+          {
+            if (is_input_)throw SemanticError("input cannot contain input", loc);
+            if (func.right != -2)throw SemanticError("not a function, is input", loc);
+            Input input = table_.GetInput(name);
+            func.type = NodeType::INPUT;
+            func.idx = input.id;
+            return input.type;
+          }
+          case VSource::Variable:
+          {
+            if (is_input_)throw SemanticError("input cannot contain variable", loc);
+            if (func.right != -2)throw SemanticError("not a function, is variable", loc);
+            Variable variable = table_.GetVariable(name);
+            func.type = NodeType::VAR;
+            func.idx = variable.position;
+            return variable.type;
+          }
+          case VSource::Undefined:
+          {
+            string es = "'" + name + "' : undeclared identifier";
+            throw SemanticError(es.c_str(), loc);
+          }
+          default:
             throw SemanticError();
         }
     }
@@ -206,35 +212,36 @@ namespace lex
                 throw SemanticError("This attribute can be applied only for variables", loc);
             }
             string name = GetVar(input.left);
-            VSource source = find_name(name);
+            VSource source = table_.FindName(name);
             if (source != VSource::Undefined)
             {
                 throw SemanticError("this word has already been defined", loc);
             }
             VType type = GetType(input.right);
-            Input in = { name, type, input.right };
-            //in.name = name;
-            //in.type = type;
-            //in.exp = input.right;
-            inputTable[name] = in;
-            enviroment_.inputs.push_back(in);
+            table_.NewInput(name, type, input.right);
         }
         is_input_ = false;
     }
 
     int TypeChecker::ReserverTrue()
     {
-        return enviroment_.ReserveSpace(kAstTrue_);
+        return table_.ReserveSpace(kAstTrue_);
     }
 
     int TypeChecker::Reserve(ast_t exp)
     {
-        return enviroment_.ReserveSpace(exp);
+        return table_.ReserveSpace(exp);
     }
 
-    lex::Program TypeChecker::GetProgram() const
+    Table& TypeChecker::GetTable()
     {
-        Program p = { root, &enviroment_, &strVector, &astV, &astsV, &stmtV, &stmtsV };
+        return table_;
+    }
+
+    Program TypeChecker::GetProgram() const
+    {
+        SetUpEnviroment sue = table_.GetSetupEnviroment();
+        Program p = { root, sue, &strVector, &astV, &astsV, &stmtV, &stmtsV };
         return p;
     }
 

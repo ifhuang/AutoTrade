@@ -25,13 +25,14 @@ namespace lex
 
     void CheckVisitor::operator()(for_stmt & fs) const
     {
+        Table &table = checker_.GetTable();
         string name = checker_.GetVar(fs.var);
-        VSource source = find_name(name);
+        VSource source = table.FindName(name);
         if (source != VSource::Variable)
         {
             throw SemanticError("array or varable expected", GetLocation(fs.var));
         }
-        Variable var = varTable[name];
+        Variable var = table.GetVariable(name);
         if (var.type != VType::NUMERIC)
         {
             throw InvalidTypeOperation(GetLocation(fs.var));
@@ -68,7 +69,7 @@ namespace lex
     void CheckVisitor::operator()(asm_stmt & as) const
     {
         string name = checker_.GetVar(as.var);
-        VSource source = find_name(name);
+        VSource source = checker_.GetTable().FindName(name);
         switch (source)
         {
         case VSource::Variable:
@@ -90,14 +91,13 @@ namespace lex
         {
             ast &var = astV[idx];
             string name = checker_.GetVar(var.left);
-            VSource source = find_name(name);
+            VSource source = checker_.GetTable().FindName(name);
             if (source != VSource::Undefined)
             {
                 throw SemanticError("this word has already been defined", GetLocation(var.left));
             }
             VType type = checker_.GetType(var.right);
-            int position = checker_.Reserve(var.right);
-            declare_var(name, position, type);
+            checker_.GetTable().DeclareVar(name, type, var.right);
         }
     }
 
@@ -127,7 +127,7 @@ namespace lex
 
     void CheckVisitor::check_asm_variable(string name, asm_stmt &as) const
     {
-        Variable variable = varTable[name];
+        Variable variable = checker_.GetTable().GetVariable(name);
         switch (variable.type)
         {
         case VType::NUMERIC:

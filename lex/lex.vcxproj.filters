@@ -102,6 +102,9 @@
     <ClCompile Include="execution\run_time_environment.cpp">
       <Filter>Source Files\execution</Filter>
     </ClCompile>
+    <ClCompile Include="std_table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="table.h">
@@ -211,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="execution\abstract_executor.h">
       <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\runtime_interface.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="std_table.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

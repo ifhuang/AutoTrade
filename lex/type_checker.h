@@ -20,6 +20,7 @@ namespace lex
         virtual void CheckStmts(stmts_t idx) override;
         virtual int Reserve(ast_t exp) override;
         virtual int ReserverTrue() override;
+        virtual Table& GetTable();
         Program GetProgram() const;
 
     private:
@@ -29,7 +30,7 @@ namespace lex
             const YYLTYPE *loc);
 
         CheckVisitor visitor_;
-        SetUpEnviroment enviroment_;
+        Table table_;
         const int kAstTrue_;
         bool is_input_;
         DISALLOW_COPY_AND_ASSIGN(TypeChecker);

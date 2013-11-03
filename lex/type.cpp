@@ -7,22 +7,6 @@
 
 namespace lex
 {
-    int SetUpEnviroment::ReserveSpace(ast_t exp, int size /*= 1*/)
-    {
-        int position = num_variables;
-        num_variables += size;
-        Initialize init;
-        init.size = size;
-        init.exp = exp;
-        initialize_list.push_back(init);
-        return position;
-    }
-
-    void init()
-    {
-        init_table();
-    }
-
     void storage(const TypeChecker &checker)
     {
         Program p = checker.GetProgram();
@@ -31,7 +15,6 @@ namespace lex
 
     void type_check()
     {
-        init();
         TypeChecker checker;
         checker.Check();
         storage(checker);

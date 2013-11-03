@@ -4,49 +4,41 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
 #include "execution/execution.h"
 #include "global.h"
 #include "program.h"
+#include "std_table.h"
 
-namespace lex{
+namespace lex
+{
     enum class VSource { StdFunction, Input, Variable, Undefined };
 
-    struct TableInfo
+    struct Variable
     {
-        int inputsNumeric;
-        int inputsTF;
-        int inputsText;
-        int varsNumeric;
-        int varsTF;
-        int varsText;
-    };
-
-    class StdFunction{
-    public:
-        StdFunction(VType result, std::vector<VType> paras) : result(result), paras(paras), min(-1) {}
-
-        virtual Value call(int bar, std::vector<Value> ps) const = 0;
-
-        VType result;
-        std::vector<VType> paras;
-        int min;
-    private:
-        DISALLOW_COPY_AND_ASSIGN(StdFunction);
-    };
-
-    struct Variable{
         VType type;
         int position;
     };
 
-    extern std::unordered_map<std::string, const StdFunction *> funcTable;
-    extern std::unordered_map<std::string, Input> inputTable;
-    extern std::unordered_map<std::string, Variable> varTable;
+    class Table : public StdTable
+    {
+    public:
+        Table();
+        VSource FindName(std::string name);
+        Input GetInput(std::string name);
+        Variable GetVariable(std::string name);
+        int DeclareVar(std::string name, VType type, ast_t exp);
+        int NewInput(std::string name, VType type, ast_t exp);
+        int ReserveSpace(ast_t exp);
+        int ReserveSpace(ast_t exp, int size);
+        SetUpEnviroment GetSetupEnviroment() const;
 
-    void init_table();
-    VSource find_name(std::string name);
-    void declare_var(std::string name, int postion, VType type);
+    private:
+        SetUpEnviroment sue_;
+        int num_variables_;
+        int num_inputs_;
+        std::unordered_map<std::string, Input> input_table_;
+        std::unordered_map<std::string, Variable> var_table_;
+    };
 
 }  // namespace lex
 #endif  // TABLE_H_

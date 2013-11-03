@@ -2,6 +2,7 @@
 #define LEX_TYPE_CHECKER_INTERFACE_H_
 
 #include "program.h"
+#include "table.h"
 
 namespace lex
 {
@@ -15,6 +16,7 @@ namespace lex
         virtual std::string GetVar(ast_t idx) = 0;
         virtual int Reserve(ast_t exp) = 0;
         virtual int ReserverTrue() = 0;
+        virtual Table& GetTable() = 0;
     };
 
 }  // namespace lex

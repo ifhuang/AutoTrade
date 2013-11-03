@@ -4,20 +4,18 @@
 #include <boost/variant.hpp>
 using namespace std;
 
-#include "../table.h"
 #include "operator.h"
 
-namespace lex{
-
-    Executor::Executor(const Program *program) : rte_(NULL), program_(program),
-        sue_(*program->sue), strVector_(*program->strVector),
+namespace lex
+{
+    Executor::Executor(const Program *program) : visitor_(*this), program_(program),
+        sue_(program->sue), strVector_(*program->strVector),
         astV_(*program->astV), astsV_(*program->astsV),
-        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV) , visitor_(*this) {}
+        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV), rte_(*program) {}
 
     Executor::~Executor()
     {
-        if (rte_)delete rte_;
-        //if (program_)delete program_;
+        
     }
 
     vector<Value> Executor::exec_paras(asts_t idx)
@@ -39,20 +37,9 @@ namespace lex{
     {
         const ast &func = astV_[idx];
         string name = get_var(func.left);
-        VSource source = find_name(name);
-        switch (source)
-        {
-        case VSource::StdFunction: {
-            const StdFunction *function = funcTable.at(name);
-            vector<Value> args = exec_paras(func.right);
-            return function->call(0, args);
-                                   }
-        case VSource::Input:{
-
-        }
-        default:
-            throw RuntimeException();
-        }
+        const StdFunction *function = table_.GetStdFunction(name);
+        vector<Value> args = exec_paras(func.right);
+        return function->call(0, args);
     }
 
     Value Executor::GetValue(ast_t idx)
@@ -105,7 +92,9 @@ namespace lex{
         case NodeType::FUNC:
             return exec_func(idx);
         case NodeType::VAR:
-            return rte_->GetVar(n.idx);
+            return rte_.GetVar(n.idx);
+        case NodeType::INPUT:
+            return GetValue(rte_.GetInput(n.idx));
         default:
             throw RuntimeException();
         }
@@ -129,7 +118,7 @@ namespace lex{
 
     void Executor::SetUp()
     {
-        if (!rte_)
+        if (!rte_.Initialized())
         {
             int n = sue_.initialize_list.size();
             vector<RteInitialize> rte_list(n);
@@ -139,7 +128,7 @@ namespace lex{
                 rte_list[i].size = init.size;
                 rte_list[i].value = GetValue(init.exp);
             }
-            rte_ = new RunTimeEnvironment(rte_list);
+            rte_.Initialize(rte_list);
         }
     }
 
@@ -168,6 +157,6 @@ namespace lex{
 
     Value& Executor::GetVar(int position)
     {
-        return rte_->GetVar(position);
+        return rte_.GetVar(position);
     }
 }  // namespace lex

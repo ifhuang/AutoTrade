@@ -17,31 +17,27 @@ namespace lex
     {
         std::string name;
         VType type;
+        int id;
         ast_t exp;
         std::string exp_string;
     };
 
-    struct Initialize{
+    struct Initialize
+    {
         int size;
         ast_t exp;
     };
 
-    class SetUpEnviroment{
-    public:
-        SetUpEnviroment() : num_variables(0) {}
-        int ReserveSpace(ast_t exp, int size = 1);
-
+    struct SetUpEnviroment
+    {
         std::vector<Input> inputs;
         std::vector<Initialize> initialize_list;
-    private:
-        int num_variables;
-
-        DISALLOW_COPY_AND_ASSIGN(SetUpEnviroment);
     };
 
-    struct Program{
+    struct Program
+    {
         stmts_t root;
-        const SetUpEnviroment *sue;
+        SetUpEnviroment sue;
         std::vector<std::string> *strVector;
         VV<ast> *astV;
         VV<std::vector<stmt_t>> *astsV;

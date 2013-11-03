@@ -5,7 +5,7 @@
 
 #include "../global.h"
 #include "../program.h"
-#include "execution.h"
+#include "runtime_interface.h"
 
 namespace lex
 {
@@ -15,16 +15,25 @@ namespace lex
         Value value;
     };
 
-    class RunTimeEnvironment
+    class RunTimeEnvironment : public RuntimeInterface
     {
     public:
-        RunTimeEnvironment(std::vector<RteInitialize> list);
-        ~RunTimeEnvironment();
-        Value& GetVar(int position);
+        RunTimeEnvironment(const Program &p);
+        bool Initialized();
+        void Initialize(std::vector<RteInitialize> list);
+        virtual ~RunTimeEnvironment();
+        virtual Value& GetVar(int position) override;
+        virtual ast_t GetInput(int id) override;
 
     private:
+        const Program &program_;
+        bool initialized_;
+
         int num_variables_;
         Value *variable_array_;
+
+        int num_inputs_;
+        int *inputs_array_;
         DISALLOW_COPY_AND_ASSIGN(RunTimeEnvironment);
     };
 

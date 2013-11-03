@@ -1,43 +1,71 @@
 #include "table.h"
 
-#include <stdio.h>
-#include <algorithm>
-#include <map>
-#include <unordered_map>
-#include <boost/variant.hpp>
-using namespace std;
-
-#include "functions.h"
-
-namespace{
-    const Func::SNumToStr s_numtostr;
-}
-
-namespace lex{
-    unordered_map<string, const StdFunction *> funcTable;
-
-    void init_table()
+namespace lex
+{
+    Table::Table() : num_variables_(0), num_inputs_(0)
     {
-        funcTable.insert(make_pair("numtostr", &s_numtostr));
+
     }
 
-    unordered_map<string, Input> inputTable;
-    unordered_map<string, Variable> varTable;
-
-    VSource find_name(string name)
+    lex::VSource Table::FindName(std::string name)
     {
-        if (funcTable.count(name))return VSource::StdFunction;
-        if (inputTable.count(name))return VSource::Input;
-        if (varTable.count(name))return VSource::Variable;
+        if (func_table_.count(name))return VSource::StdFunction;
+        if (input_table_.count(name))return VSource::Input;
+        if (var_table_.count(name))return VSource::Variable;
         return VSource::Undefined;
     }
 
-    void declare_var(string name, int postion, VType type)
+    int Table::DeclareVar(std::string name, VType type, ast_t exp)
     {
+        int position = ReserveSpace(exp);
         Variable var;
-        var.position = postion;
+        var.position = position;
         var.type = type;
-        varTable[name] = var;
+        var_table_[name] = var;
+        return position;
+    }
+
+    int Table::NewInput(std::string name, VType type, ast_t exp)
+    {
+        Input in;
+        in.id = num_inputs_++;
+        in.name = name;
+        in.type = type;
+        in.exp = exp;
+        input_table_[name] = in;
+        sue_.inputs.push_back(in);
+        return in.id;
+    }
+
+    int Table::ReserveSpace(ast_t exp, int size)
+    {
+        int position = num_variables_;
+        num_variables_ += size;
+        Initialize init;
+        init.size = size;
+        init.exp = exp;
+        sue_.initialize_list.push_back(init);
+        return position;
+    }
+
+    int Table::ReserveSpace(ast_t exp)
+    {
+        return ReserveSpace(exp, 1);
+    }
+
+    Input Table::GetInput(std::string name)
+    {
+        return input_table_.at(name);
+    }
+
+    Variable Table::GetVariable(std::string name)
+    {
+        return var_table_.at(name);
+    }
+
+    SetUpEnviroment Table::GetSetupEnviroment() const
+    {
+        return sue_;
     }
 
 }  // namespace lex
