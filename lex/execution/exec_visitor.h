@@ -1,11 +1,11 @@
-#ifndef LEX_EXEC_VISITOR_H_
-#define LEX_EXEC_VISITOR_H_
+#ifndef LEX_EXECUTION_EXEC_VISITOR_H_
+#define LEX_EXECUTION_EXEC_VISITOR_H_
 
 #include <boost/variant.hpp>
 
+#include "../global.h"
+#include "../tree.h"
 #include "abstract_executor.h"
-#include "global.h"
-#include "tree.h"
 
 namespace lex
 {
@@ -33,4 +33,4 @@ namespace lex
         DISALLOW_COPY_AND_ASSIGN(ExecVisitor);
     };
 }  // namespace lex
-#endif  // LEX_EXEC_VISITOR_H_
+#endif  // LEX_EXECUTION_EXEC_VISITOR_H_

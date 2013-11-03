@@ -1,14 +1,14 @@
-#ifndef RUN_TIME_ENVIRONMENT_H_
-#define RUN_TIME_ENVIRONMENT_H_
+#ifndef LEX_EXECUTION_RUN_TIME_ENVIRONMENT_H_
+#define LEX_EXECUTION_RUN_TIME_ENVIRONMENT_H_
 
 #include <vector>
 
+#include "../global.h"
+#include "../program.h"
 #include "execution.h"
-#include "global.h"
-#include "program.h"
 
-namespace lex{
-
+namespace lex
+{
     struct RteInitialize
     {
         int size;
@@ -29,4 +29,4 @@ namespace lex{
     };
 
 }  // namespace lex
-#endif  // RUN_TIME_ENVIRONMENT_H_
+#endif  // LEX_EXECUTION_RUN_TIME_ENVIRONMENT_H_

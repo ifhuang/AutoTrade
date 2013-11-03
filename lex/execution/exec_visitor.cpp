@@ -3,9 +3,9 @@
 #include <string>
 using namespace std;
 
+#include "../tree.h"
 #include "execution.h"
 #include "operator.h"
-#include "tree.h"
 
 namespace lex
 {

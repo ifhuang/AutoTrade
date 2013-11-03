@@ -28,30 +28,21 @@
     <Filter Include="Source Files\bison">
       <UniqueIdentifier>{447bfacc-4921-4fa6-8bd5-0dffa74f91e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\execution">
+      <UniqueIdentifier>{7eb95042-75ab-4fdd-8f73-03e1778c1e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\execution">
+      <UniqueIdentifier>{4b8820c2-ab54-4480-ae8d-28ad7dd20001}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="operator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="exec_visitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="check_visitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="run_time_environment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="executor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="exec_visitor_print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lex_runner.cpp">
@@ -96,15 +87,27 @@
     <ClCompile Include="data\program_serialization.cpp">
       <Filter>Source Files\data</Filter>
     </ClCompile>
+    <ClCompile Include="execution\operator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="execution\exec_visitor.cpp">
+      <Filter>Source Files\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="execution\exec_visitor_print.cpp">
+      <Filter>Source Files\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="execution\executor.cpp">
+      <Filter>Source Files\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="execution\run_time_environment.cpp">
+      <Filter>Source Files\execution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="operator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ast.h">
@@ -119,22 +122,10 @@
     <ClInclude Include="functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="execution.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="exec_visitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="check_visitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="run_time_environment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lex_runner_interface.h">
@@ -194,17 +185,32 @@
     <ClInclude Include="type_checker_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="executor_interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="data\program_serialization.h">
       <Filter>Header Files\data</Filter>
     </ClInclude>
-    <ClInclude Include="abstract_executor.h">
+    <ClInclude Include="execution\operator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\exec_visitor.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\execution.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\executor.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\executor_interface.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\run_time_environment.h">
+      <Filter>Header Files\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\abstract_executor.h">
+      <Filter>Header Files\execution</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

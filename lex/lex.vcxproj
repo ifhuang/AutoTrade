@@ -73,16 +73,16 @@
     <ClCompile Include="data\data.cpp" />
     <ClCompile Include="data\data_repository.cpp" />
     <ClCompile Include="bison\el.tab.cpp" />
-    <ClCompile Include="executor.cpp" />
-    <ClCompile Include="exec_visitor.cpp" />
-    <ClCompile Include="exec_visitor_print.cpp" />
+    <ClCompile Include="execution\executor.cpp" />
+    <ClCompile Include="execution\exec_visitor.cpp" />
+    <ClCompile Include="execution\exec_visitor_print.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="bison\lex.yy.cpp" />
     <ClCompile Include="lex_factory.cpp" />
     <ClCompile Include="lex_impl.cpp" />
     <ClCompile Include="lex_runner.cpp" />
-    <ClCompile Include="operator.cpp" />
-    <ClCompile Include="run_time_environment.cpp" />
+    <ClCompile Include="execution\operator.cpp" />
+    <ClCompile Include="execution\run_time_environment.cpp" />
     <ClCompile Include="data\sqlite3.c" />
     <ClCompile Include="data\statements.cpp" />
     <ClCompile Include="table.cpp" />
@@ -92,7 +92,7 @@
     <ClCompile Include="type_checker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="abstract_executor.h" />
+    <ClInclude Include="execution\abstract_executor.h" />
     <ClInclude Include="ast.h" />
     <ClInclude Include="bison\bison.h" />
     <ClInclude Include="data\ast_serialization.h" />
@@ -100,10 +100,10 @@
     <ClInclude Include="data\data.h" />
     <ClInclude Include="data\data_repository.h" />
     <ClInclude Include="bison\el.tab.h" />
-    <ClInclude Include="execution.h" />
-    <ClInclude Include="executor.h" />
-    <ClInclude Include="executor_interface.h" />
-    <ClInclude Include="exec_visitor.h" />
+    <ClInclude Include="execution\execution.h" />
+    <ClInclude Include="execution\executor.h" />
+    <ClInclude Include="execution\executor_interface.h" />
+    <ClInclude Include="execution\exec_visitor.h" />
     <ClInclude Include="bison\front.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="global.h" />
@@ -114,9 +114,9 @@
     <ClInclude Include="lex_impl.h" />
     <ClInclude Include="lex_runner.h" />
     <ClInclude Include="lex_runner_interface.h" />
-    <ClInclude Include="operator.h" />
+    <ClInclude Include="execution\operator.h" />
     <ClInclude Include="program.h" />
-    <ClInclude Include="run_time_environment.h" />
+    <ClInclude Include="execution\run_time_environment.h" />
     <ClInclude Include="data\sqlite3.h" />
     <ClInclude Include="data\statements.h" />
     <ClInclude Include="bison\static.h" />

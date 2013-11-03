@@ -4,8 +4,8 @@
 #include <boost/variant.hpp>
 using namespace std;
 
+#include "../table.h"
 #include "operator.h"
-#include "table.h"
 
 namespace lex{
 

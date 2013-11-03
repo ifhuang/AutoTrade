@@ -1,5 +1,5 @@
-#ifndef LEX_EXECUTION_H
-#define LEX_EXECUTION_H
+#ifndef LEX_EXECUTION_EXECUTION_H_
+#define LEX_EXECUTION_EXECUTION_H_
 
 #include <string>
 #include <boost/variant.hpp>
@@ -23,4 +23,4 @@ namespace lex
 	
 }  // namespace lex
 
-#endif  // LEX_EXECUTION_H
+#endif  // LEX_EXECUTION_EXECUTION_H_

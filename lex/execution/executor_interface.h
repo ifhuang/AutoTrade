@@ -1,9 +1,9 @@
-#ifndef LEX_EXECUTOR_INTERFACE_H_
-#define LEX_EXECUTOR_INTERFACE_H_
+#ifndef LEX_EXECUTION_EXECUTOR_INTERFACE_H_
+#define LEX_EXECUTION_EXECUTOR_INTERFACE_H_
 
-#include "ast.h"
+#include "../ast.h"
+#include "../tree.h"
 #include "execution.h"
-#include "tree.h"
 
 namespace lex
 {
@@ -22,4 +22,4 @@ namespace lex
         virtual const std::vector<ast_t>& GetAsts(asts_t idx) = 0;
     };
 }  // namespace lex
-#endif  // LEX_EXECUTOR_INTERFACE_H_
+#endif  // LEX_EXECUTION_EXECUTOR_INTERFACE_H_

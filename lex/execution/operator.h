@@ -1,11 +1,11 @@
 #ifndef OPERATOR_H_
 #define OPERATOR_H_
 
+#include "../tree.h"
 #include "execution.h"
-#include "tree.h"
 
-namespace lex{
-
+namespace lex
+{
 	struct add_visitor : public boost::static_visitor<Value>
 	{
 		template <typename T, typename U>

@@ -2,7 +2,7 @@
 #define LEX_LEX_RUNNER_H_
 
 #include "interface/lex_interface.h"
-#include "executor.h"
+#include "execution/executor.h"
 
 namespace lex
 {

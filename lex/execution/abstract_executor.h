@@ -1,5 +1,5 @@
-#ifndef LEX_ABSTRACT_EXECUTOR_H_
-#define LEX_ABSTRACT_EXECUTOR_H_
+#ifndef LEX_EXECUTION_ABSTRACT_EXECUTOR_H_
+#define LEX_EXECUTION_ABSTRACT_EXECUTOR_H_
 
 #include "executor_interface.h"
 
@@ -23,4 +23,4 @@ namespace lex
         }
     };
 }  // namespace lex
-#endif  // LEX_ABSTRACT_EXECUTOR_H_
+#endif  // LEX_EXECUTION_ABSTRACT_EXECUTOR_H_
