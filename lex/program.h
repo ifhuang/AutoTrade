@@ -38,11 +38,11 @@ namespace lex
     {
         stmts_t root;
         SetUpEnviroment sue;
-        std::vector<std::string> *strVector;
-        VV<ast> *astV;
-        VV<std::vector<stmt_t>> *astsV;
-        VV<stmt> *stmtV;
-        VV<std::vector<ast_t>> *stmtsV;
+        std::vector<std::string> strVector;
+        VV<ast> astV;
+        VV<std::vector<stmt_t>> astsV;
+        VV<stmt> stmtV;
+        VV<std::vector<ast_t>> stmtsV;
         std::vector<OrderInfo> order_info;
     };
 }  // namespace lex

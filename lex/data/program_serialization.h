@@ -41,6 +41,13 @@ namespace boost {
         }
 
         template<class Archive>
+        void serialize(Archive &ar, OrderInfo &oi, const unsigned int version)
+        {
+            ar & oi.buy_sell;
+            ar & oi.type;
+        }
+
+        template<class Archive>
         void serialize(Archive &ar, Program &p, const unsigned int version)
         {
             ar & p.root;
@@ -50,6 +57,7 @@ namespace boost {
             ar & p.astsV;
             ar & p.stmtV;
             ar & p.stmtsV;
+            ar & p.order_info;
         }
 
     } // namespace serialization

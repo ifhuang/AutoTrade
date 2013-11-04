@@ -31,7 +31,7 @@ namespace lex
             printf("file open failed.");
             return;
         }
-        int g = elparse(f);
+        int g = ElParse(f);
         fclose(f);
         if (g)
         {
@@ -45,7 +45,7 @@ namespace lex
         }
         catch (SemanticError e)
         {
-            printf("(%s): error: ", location_print(e.loc_).c_str());
+            printf("(%s): error: ", LocationPrint(e.loc_).c_str());
             printf("%s\n", e.what());
             return;
         }

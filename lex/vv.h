@@ -78,7 +78,6 @@ private:
 
     std::vector<T> v_;
     std::string n_;
-    DISALLOW_COPY_AND_ASSIGN(VV);
 };
 
 #endif  // LEX_VV_H_

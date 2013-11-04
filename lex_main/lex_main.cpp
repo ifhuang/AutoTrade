@@ -15,10 +15,5 @@ int main()
     Program p = DataRepository::LoadProgram();
     Executor executor(&p);
     executor.execute();
-    delete p.strVector;
-    delete p.astV;
-    delete p.astsV;
-    delete p.stmtV;
-    delete p.stmtsV;
     return 0;
 }

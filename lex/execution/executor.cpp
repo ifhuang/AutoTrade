@@ -9,9 +9,9 @@ using namespace std;
 namespace lex
 {
     Executor::Executor(const Program *program) : visitor_(*this), program_(program),
-        sue_(program->sue), strVector_(*program->strVector),
-        astV_(*program->astV), astsV_(*program->astsV),
-        stmtV_(*program->stmtV), stmtsV_(*program->stmtsV), rte_(*program) {}
+        sue_(program->sue), strVector_(program->strVector),
+        astV_(program->astV), astsV_(program->astsV),
+        stmtV_(program->stmtV), stmtsV_(program->stmtsV), rte_(*program) {}
 
     Executor::~Executor()
     {

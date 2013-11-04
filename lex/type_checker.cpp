@@ -241,7 +241,7 @@ namespace lex
     Program TypeChecker::GetProgram() const
     {
         SetUpEnviroment sue = table_.GetSetupEnviroment();
-        Program p = { root, sue, &strVector, &astV, &astsV, &stmtV, &stmtsV };
+        Program p = { root, sue, strVector, astV, astsV, stmtV, stmtsV };
         return p;
     }
 

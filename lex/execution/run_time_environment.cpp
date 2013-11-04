@@ -17,6 +17,7 @@ namespace lex
     RunTimeEnvironment::~RunTimeEnvironment()
     {
         delete[] variable_array_;
+        delete[] inputs_array_;
     }
 
     bool RunTimeEnvironment::Initialized()

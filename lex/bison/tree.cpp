@@ -89,7 +89,7 @@ void post()
 	astpost();
 }
 
-int elparse(FILE *f)
+int ElParse(FILE *f)
 {
 	//yydebug = 1;
 	yyrestart(f);

@@ -112,7 +112,7 @@ void applyBar(ast *node, int bar)
     }
 }
 
-std::string location_print(YYLTYPE const * const yylocp)
+std::string LocationPrint(YYLTYPE const * const yylocp)
 {
     std::stringstream res;
     int end_col = yylocp->last_column ? yylocp->last_column - 1 : 0;
@@ -142,7 +142,7 @@ void yyerror(const char *s, ...)
     static char str[1000];
     vsprintf_s(str, s, ap);
     va_end(ap);
-    errorMessage += "(" + location_print(&yylloc) + "): error: ";
+    errorMessage += "(" + LocationPrint(&yylloc) + "): error: ";
     errorMessage += str;
 }
 
