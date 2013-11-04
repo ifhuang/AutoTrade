@@ -49,12 +49,14 @@ struct switch_stmt
 
 struct order_stmt
 {
+    int idx;
     int op;
     ast_t name;
     ast_t num;
     int time;
     int type;
     ast_t price;
+    YYLTYPE loc;
 };
 
 struct func_stmt

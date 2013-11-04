@@ -36,7 +36,7 @@ namespace lex
     Value Executor::exec_func(ast_t idx)
     {
         const ast &func = astV_[idx];
-        string name = get_var(func.left);
+        string name = GetFunctionName(func.left);
         const StdFunction *function = table_.GetStdFunction(name);
         vector<Value> args = exec_paras(func.right);
         return function->call(0, args);
@@ -138,10 +138,10 @@ namespace lex
         ExecStmts(program_->root);
     }
 
-    std::string Executor::get_var(ast_t idx)
+    std::string Executor::GetFunctionName(ast_t idx)
     {
         const ast &node = astV_[idx];
-        if (node.type != NodeType::VAR)throw RuntimeException("Internal get_var");
+        if (node.type != NodeType::VAR)throw RuntimeException("Internal GetFunctionName");
         return strVector_[node.idx];
     }
 

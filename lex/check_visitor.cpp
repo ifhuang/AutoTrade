@@ -41,14 +41,20 @@ namespace lex
         if (ft == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.from));
         VType tt = checker_.GetType(fs.to);
         if (tt == VType::TEXT)throw TypesNotCompatible(GetLocation(fs.to));
+        bool older_loop = checker_.IsLoop();
+        checker_.SetLoop(true);
         checker_.Check(fs.block);
+        checker_.SetLoop(older_loop);
     }
 
     void CheckVisitor::operator()(while_stmt & ws) const
     {
         if (checker_.GetType(ws.con) != VType::TF)
             throw LogicalExpressionExpected(GetLocation(ws.con));
+        bool older_loop = checker_.IsLoop();
+        checker_.SetLoop(true);
         checker_.CheckStmts(ws.stmts);
+        checker_.SetLoop(older_loop);
     }
 
     void CheckVisitor::operator()(switch_stmt & ws) const
@@ -58,7 +64,14 @@ namespace lex
 
     void CheckVisitor::operator()(order_stmt & os) const
     {
-
+        if (checker_.IsLoop())
+        {
+            throw SemanticError("order cannot be inside a loop", &os.loc);
+        }
+        OrderInfo oi;
+        oi.buy_sell = static_cast<BuySell>(os.op);
+        oi.type = OrderType::Market;
+        os.idx = checker_.NewOrder(oi);
     }
 
     void CheckVisitor::operator()(func_stmt & fs) const

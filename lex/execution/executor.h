@@ -28,7 +28,7 @@ namespace lex
     private:
         void SetUp();
         std::vector<Value> exec_paras(asts_t idx);
-        std::string get_var(ast_t idx);
+        std::string GetFunctionName(ast_t idx);
         Value exec_func(ast_t idx);
 
         virtual const ast& GetAst(ast_t idx);

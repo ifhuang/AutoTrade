@@ -7,10 +7,10 @@ using namespace std;
 using lex::Data;
 
 namespace lex_test
-{		
-	TEST_CLASS(SqliteTest)
-	{
-	public:
+{
+    TEST_CLASS(SqliteTest)
+    {
+    public:
 
         TEST_METHOD(TestSelectStudies)
         {
@@ -18,8 +18,8 @@ namespace lex_test
             auto studies = d.SelectStudies();
             Assert::AreEqual(1U, studies.size());
             auto study = studies[0];
-            Assert::AreEqual(string("test"), study.get<0>());
-            Assert::AreEqual(true, study.get<1>());
+            Assert::AreEqual(string("test"), std::get<0>(study));
+            Assert::AreEqual(true, std::get<1>(study));
         }
 
         TEST_METHOD(TestSelectStudiesEmpty)
@@ -28,7 +28,7 @@ namespace lex_test
             auto studies = d.SelectStudies();
             Assert::AreEqual(0U, studies.size());
         }
-	};
+    };
 
 
 }

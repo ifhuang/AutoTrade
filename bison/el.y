@@ -190,11 +190,12 @@ case: exp            { $$ = newcase(@$, $1, -1, 0); }
 
 order_stmt: order_verb order_name order_amount order_time order_action
     {
-      auto &oa = boost::get<order_stmt>(stmtV[$$ = $5]);
-      oa.op = $1;
-      oa.name = $2;
-      oa.num = $3;
-      oa.time = $4;
+      auto &os = boost::get<order_stmt>(stmtV[$$ = $5]);
+      os.op = $1;
+      os.name = $2;
+      os.num = $3;
+      os.time = $4;
+      os.loc = @$;
     }
     ;
 
@@ -273,7 +274,6 @@ nexp: nexp MUL nexp { $$ = newast(@$, NodeType::MUL, $1, $3); }
 
 name: NAME  { $$ = newname(@$, $1); }
     | CLOSE { $$ = newname(@$, 0); }
-
     ;
 
 name_call: name { $$ = newast(@$, NodeType::FUNC, $1, -2); }

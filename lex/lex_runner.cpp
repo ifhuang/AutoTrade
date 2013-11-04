@@ -15,7 +15,7 @@ namespace lex
 
     std::vector<OrderInfo> LexRunner::GetOrderInfo()
     {
-        return std::vector<OrderInfo>();
+        return p_.order_info;
     }
 
     std::vector<OrderAction> LexRunner::Run()

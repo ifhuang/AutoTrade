@@ -60,12 +60,14 @@ namespace boost {
         template<class Archive>
         void serialize(Archive &ar, order_stmt &os, const unsigned int version)
         {
+            ar & os.idx;
             ar & os.op;
             ar & os.name;
             ar & os.num;
             ar & os.time;
             ar & os.type;
             ar & os.price;
+            ar & os.loc;
         }
 
         template<class Archive>

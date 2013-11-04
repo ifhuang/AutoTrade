@@ -21,8 +21,10 @@ namespace lex
         virtual int Reserve(ast_t exp) override;
         virtual int ReserverTrue() override;
         virtual Table& GetTable();
+        virtual int NewOrder(OrderInfo oi);
         Program GetProgram() const;
-
+        virtual bool IsLoop() override;
+        virtual void SetLoop(bool is_loop) override;
     private:
         VType CheckFunc(ast_t idx);
         void CheckInput();
@@ -31,8 +33,10 @@ namespace lex
 
         CheckVisitor visitor_;
         Table table_;
+        std::vector<OrderInfo> order_infos_;
         const int kAstTrue_;
         bool is_input_;
+        bool is_loop_;
         DISALLOW_COPY_AND_ASSIGN(TypeChecker);
     };
 }

@@ -17,6 +17,10 @@ namespace lex
         virtual int Reserve(ast_t exp) = 0;
         virtual int ReserverTrue() = 0;
         virtual Table& GetTable() = 0;
+        virtual int NewOrder(OrderInfo oi) = 0;
+        
+        virtual bool IsLoop() = 0;
+        virtual void SetLoop(bool is_loop) = 0;
     };
 
 }  // namespace lex

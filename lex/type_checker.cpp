@@ -12,7 +12,7 @@ using std::vector;
 
 namespace lex
 {
-    TypeChecker::TypeChecker() : is_input_(false),
+    TypeChecker::TypeChecker() : is_input_(false), is_loop_(false),
         kAstTrue_(newtf(kDefaultLocation, true)), visitor_(*this)
     {
 
@@ -238,11 +238,29 @@ namespace lex
         return table_;
     }
 
+    int TypeChecker::NewOrder(OrderInfo oi)
+    {
+        int idx = order_infos_.size();
+        order_infos_.push_back(oi);
+        return idx;
+    }
+
     Program TypeChecker::GetProgram() const
     {
         SetUpEnviroment sue = table_.GetSetupEnviroment();
         Program p = { root, sue, strVector, astV, astsV, stmtV, stmtsV };
+        p.order_info = order_infos_;
         return p;
+    }
+
+    bool TypeChecker::IsLoop()
+    {
+        return is_loop_;
+    }
+
+    void TypeChecker::SetLoop(bool is_loop)
+    {
+        is_loop_ = is_loop;
     }
 
 }  // namespace lex
