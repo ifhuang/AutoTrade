@@ -3,7 +3,7 @@
 namespace lex
 {
     LexRunner::LexRunner(Program p, TCBarInterface *bar) : p_(p), bar_(bar),
-        exe_(&p)
+        exe_(p_)
     {
 
     }
@@ -20,7 +20,7 @@ namespace lex
 
     std::vector<OrderAction> LexRunner::Run()
     {
-        exe_.execute();
-        return std::vector<OrderAction>();
+        auto oas = exe_.Execute();
+        return oas;
     }
 }  // namespace lex

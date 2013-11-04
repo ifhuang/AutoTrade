@@ -59,7 +59,9 @@ namespace lex
 
     void ExecVisitor::operator()(const order_stmt & os) const
     {
-
+        OrderAction oa;
+        oa.qty = 1;
+        exe_.SetOrderAction(os.id, oa);
     }
 
     void ExecVisitor::operator()(const func_stmt & fs) const

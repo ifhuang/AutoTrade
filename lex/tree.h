@@ -49,7 +49,7 @@ struct switch_stmt
 
 struct order_stmt
 {
-    int idx;
+    int id;
     int op;
     ast_t name;
     ast_t num;

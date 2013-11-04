@@ -71,7 +71,7 @@ namespace lex
         OrderInfo oi;
         oi.buy_sell = static_cast<BuySell>(os.op);
         oi.type = OrderType::Market;
-        os.idx = checker_.NewOrder(oi);
+        os.id = checker_.NewOrder(oi);
     }
 
     void CheckVisitor::operator()(func_stmt & fs) const

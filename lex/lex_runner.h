@@ -2,7 +2,7 @@
 #define LEX_LEX_RUNNER_H_
 
 #include "interface/lex_interface.h"
-#include "execution/executor.h"
+#include "execution/signal_executor.h"
 
 namespace lex
 {
@@ -17,7 +17,7 @@ namespace lex
 
     private:
         Program p_;
-        Executor exe_;
+        SignalExecutor exe_;
         TCBarInterface *bar_;
     };
 

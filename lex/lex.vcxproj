@@ -76,6 +76,7 @@
     <ClCompile Include="execution\executor.cpp" />
     <ClCompile Include="execution\exec_visitor.cpp" />
     <ClCompile Include="execution\exec_visitor_print.cpp" />
+    <ClCompile Include="execution\signal_executor.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="bison\lex.yy.cpp" />
     <ClCompile Include="lex_factory.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="data\statements.h" />
     <ClInclude Include="bison\static.h" />
     <ClInclude Include="execution\runtime_interface.h" />
+    <ClInclude Include="execution\signal_executor.h" />
     <ClInclude Include="std_table.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tree.h" />

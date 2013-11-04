@@ -14,6 +14,9 @@ namespace lex
     public:
         TypeChecker();
         void Check();
+        Program GetProgram() const;
+
+    private:
         virtual VType GetType(ast_t idx) override;
         virtual std::string GetVar(ast_t idx) override;
         virtual void Check(stmt_t stmt) override;
@@ -22,10 +25,9 @@ namespace lex
         virtual int ReserverTrue() override;
         virtual Table& GetTable();
         virtual int NewOrder(OrderInfo oi);
-        Program GetProgram() const;
         virtual bool IsLoop() override;
         virtual void SetLoop(bool is_loop) override;
-    private:
+
         VType CheckFunc(ast_t idx);
         void CheckInput();
         void CheckParas(const StdFunction *function, asts_t idx,

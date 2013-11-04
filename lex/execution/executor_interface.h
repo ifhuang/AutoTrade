@@ -2,6 +2,7 @@
 #define LEX_EXECUTION_EXECUTOR_INTERFACE_H_
 
 #include "../ast.h"
+#include "../interface/lex_interface.h"
 #include "../tree.h"
 #include "execution.h"
 
@@ -20,6 +21,8 @@ namespace lex
 
         virtual const ast& GetAst(ast_t idx) = 0;
         virtual const std::vector<ast_t>& GetAsts(asts_t idx) = 0;
+
+        virtual void SetOrderAction(int id, OrderAction oa) = 0;
     };
 }  // namespace lex
 #endif  // LEX_EXECUTION_EXECUTOR_INTERFACE_H_

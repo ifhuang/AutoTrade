@@ -105,6 +105,9 @@
     <ClCompile Include="std_table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="execution\signal_executor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="table.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="std_table.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="execution\signal_executor.h">
+      <Filter>Header Files\execution</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

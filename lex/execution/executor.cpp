@@ -8,10 +8,10 @@ using namespace std;
 
 namespace lex
 {
-    Executor::Executor(const Program *program) : visitor_(*this), program_(program),
-        sue_(program->sue), strVector_(program->strVector),
-        astV_(program->astV), astsV_(program->astsV),
-        stmtV_(program->stmtV), stmtsV_(program->stmtsV), rte_(*program) {}
+    Executor::Executor(const Program &program) : visitor_(*this), program_(program),
+        sue_(program.sue), strVector_(program.strVector),
+        astV_(program.astV), astsV_(program.astsV),
+        stmtV_(program.stmtV), stmtsV_(program.stmtsV), rte_(program) {}
 
     Executor::~Executor()
     {
@@ -132,10 +132,10 @@ namespace lex
         }
     }
 
-    void Executor::execute()
+    void Executor::Execute()
     {
         SetUp();
-        ExecStmts(program_->root);
+        ExecStmts(program_.root);
     }
 
     std::string Executor::GetFunctionName(ast_t idx)
@@ -159,4 +159,10 @@ namespace lex
     {
         return rte_.GetVar(position);
     }
+
+    void Executor::SetOrderAction(int id, OrderAction oa)
+    {
+        throw RuntimeException("order stmt not supported by this study");
+    }
+
 }  // namespace lex

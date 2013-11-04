@@ -13,7 +13,7 @@ int main()
     LexInterface *lex = LexFactory::CreateLexInterface();
     lex->Compiler("in.txt");
     Program p = DataRepository::LoadProgram();
-    Executor executor(&p);
-    executor.execute();
+    Executor executor(p);
+    executor.Execute();
     return 0;
 }

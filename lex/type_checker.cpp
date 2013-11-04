@@ -240,9 +240,9 @@ namespace lex
 
     int TypeChecker::NewOrder(OrderInfo oi)
     {
-        int idx = order_infos_.size();
+        int id = order_infos_.size();
         order_infos_.push_back(oi);
-        return idx;
+        return id;
     }
 
     Program TypeChecker::GetProgram() const
