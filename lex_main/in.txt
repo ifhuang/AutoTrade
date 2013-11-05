@@ -2,6 +2,7 @@
 
 input: zzz(1+1);
 var: zrc(1) , x(true), y("hello");
+zrc=1;y="hello";
    repeat 
 print (zrc, x, y,zzz);
 zrc+=1;x = not x; y += " world";
