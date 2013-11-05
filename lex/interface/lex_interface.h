@@ -66,7 +66,7 @@ namespace lex
         virtual ~LexInterface() {}
 
         virtual std::vector<LexStudy> ListStudies() = 0;
-        virtual void Compiler(std::string study_name) = 0;
+        virtual void Compiler(const std::string &study_name, const char *file) = 0;
         virtual SignalDetail GetSignalDetail(std::string signal_name) = 0;
         virtual LexRunnerInterface* New(std::string signal_name, SignalDetail details,
             TCBarInterface *tc_bar) = 0;

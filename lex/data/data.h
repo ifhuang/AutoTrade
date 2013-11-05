@@ -14,8 +14,8 @@ namespace lex
         Data();
         Data(const char *database_file);
         ~Data();
-        void InsertStudy(const char *program);
-        const char * SelectStudy();
+        void InsertStudy(const char *name, const char *program);
+        const char * SelectStudy(const char *name);
         std::vector<std::tuple<std::string, bool> > SelectStudies();
 
     private:

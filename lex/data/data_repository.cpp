@@ -5,17 +5,17 @@
 using namespace std;
 using namespace lex;
 
-void DataRepository::SaveProgram(const Program &p)
+void DataRepository::SaveProgram(const std::string &study_name, const Program &p)
 {
     const string &s = save(p);
     Data data;
-    data.InsertStudy(s.c_str());
+    data.InsertStudy(study_name.c_str(), s.c_str());
 }
 
-lex::Program DataRepository::LoadProgram()
+lex::Program DataRepository::LoadProgram(const std::string &study_name)
 {
     Data data;
-    string s = data.SelectStudy();
+    string s = data.SelectStudy(study_name.c_str());
     return load(s);
 }
 

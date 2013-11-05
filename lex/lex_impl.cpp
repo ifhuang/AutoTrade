@@ -24,9 +24,9 @@ namespace lex
         return sd;
     }
 
-    void LexImpl::Compiler(std::string study_name)
+    void LexImpl::Compiler(const std::string &study_name, const char *file)
     {
-        FILE *f = fopen(study_name.c_str(), "r");
+        FILE *f = fopen(file, "r");
         if (!f)
         {
             printf("file open failed.");
@@ -42,7 +42,7 @@ namespace lex
 
         try
         {
-            type_check();
+            type_check(study_name);
         }
         catch (SemanticError e)
         {
@@ -55,7 +55,7 @@ namespace lex
     std::unique_ptr<SignalRunnerInterface> LexImpl::NewSignal(std::string signal_name,
         SignalDetail details, TCBarInterface *tc_bar)
     {
-        Program p = DataRepository::LoadProgram();
+        Program p = DataRepository::LoadProgram(signal_name);
         LexRunner *runner = new LexRunner(p, tc_bar);
         return std::unique_ptr<SignalRunnerInterface>(runner);
     }

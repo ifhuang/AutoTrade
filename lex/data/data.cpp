@@ -48,20 +48,20 @@ namespace lex
         "insert into study values(?1, 1, 1, ?2);"
         "commit;";
 
-    void Data::InsertStudy(const char *program)
+    void Data::InsertStudy(const char *name, const char *program)
     {
         insert_study_stmt_.Reset(db);
-        insert_study_stmt_.Bind(1, "test");
+        insert_study_stmt_.Bind(1, name);
         insert_study_stmt_.Bind(2, program);
         insert_study_stmt_.Step();
     }
 
     const char* Data::select_study_query_ = "select program from study where name = ?";
 
-    const char* Data::SelectStudy()
+    const char* Data::SelectStudy(const char *name)
     {
         select_study_stmt_.Reset(db);
-        select_study_stmt_.Bind(1, "test");
+        select_study_stmt_.Bind(1, name);
         if (!select_study_stmt_.Step())return nullptr;
         return select_study_stmt_.ColumnText(0);
     }

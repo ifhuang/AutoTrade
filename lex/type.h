@@ -2,6 +2,7 @@
 #define LEX_TYPE_H_
 
 #include <exception>
+#include <string>
 #include "bison/el.tab.h"
 
 namespace lex
@@ -28,7 +29,7 @@ namespace lex
         TypesNotCompatible(const YYLTYPE * const loc) : SemanticError("types not compatible", loc) {}
     };
 
-    void type_check();
+    void type_check(const std::string &study_name);
 }  // namespace lex
 
 #endif  // LEX_TYPE_H_

@@ -7,16 +7,11 @@
 
 namespace lex
 {
-    void storage(const TypeChecker &checker)
-    {
-        Program p = checker.GetProgram();
-        DataRepository::SaveProgram(p);
-    }
-
-    void type_check()
+    void type_check(const std::string &study_name)
     {
         TypeChecker checker;
         checker.Check();
-        storage(checker);
+        Program p = checker.GetProgram();
+        DataRepository::SaveProgram(study_name, p);
     }
 }  // namespace lex

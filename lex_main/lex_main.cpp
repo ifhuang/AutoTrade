@@ -11,8 +11,8 @@ using namespace lex;
 int main()
 {
     LexInterface *lex = LexFactory::CreateLexInterface();
-    lex->Compiler("in.txt");
-    Program p = DataRepository::LoadProgram();
+    lex->Compiler("test", "in.txt");
+    Program p = DataRepository::LoadProgram("test");
     Executor executor(p);
     executor.Execute();
     return 0;

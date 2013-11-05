@@ -9,7 +9,7 @@ namespace lex
     {
         virtual std::vector<LexStudy> ListStudies() override;
 
-        virtual void Compiler(std::string study_name) override;
+        virtual void Compiler(const std::string &study_name, const char *file) override;
 
         virtual SignalDetail GetSignalDetail(std::string signal_name) override;
 
