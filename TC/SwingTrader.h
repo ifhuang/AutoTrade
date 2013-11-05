@@ -1,7 +1,7 @@
 #ifndef __SWINGTRADER__
 #define __SWINGTRADER__
 #include <mutex>
-#include <string> 
+#include <string>
 #include <windows.h>
 #include "Dispatcher.h"
 #include "Strategy.h"
@@ -25,6 +25,7 @@ public:
     int deleteTradeUnit();
     void closeAllPositions();
     void deleteStrategyOrder();
+    void AddSignal(std::string name);
 
 protected:
     void triggerWaitingOrder();
@@ -38,7 +39,6 @@ private:
     virtual void processPrice(MSG& msg);
     virtual void signal();
     bool isBarsEnough();
-    void AddSignal(std::string name);
 
     TradeUnit* tradeUnit;
     UINT_PTR iTimerID;
@@ -49,7 +49,7 @@ private:
     ISwingTradeDialog* iSwingTradeDialog;
     IMainWindow* iMainWindow;
 
-    std::vector<Signal*> signals_;
+    std::vector<std::unique_ptr<Signal>> signals_;
     std::mutex signals_mutex_;
 };
 #endif

@@ -20,7 +20,8 @@ namespace lex
 
     SignalDetail LexImpl::GetSignalDetail(std::string signal_name)
     {
-        throw std::exception("The method or operation is not implemented.");
+        SignalDetail sd;
+        return sd;
     }
 
     void LexImpl::Compiler(std::string study_name)

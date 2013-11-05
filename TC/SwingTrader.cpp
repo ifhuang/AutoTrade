@@ -1,5 +1,5 @@
 ﻿#include "SwingTrader.h"
-#define UI_DEBUG
+//#define UI_DEBUG
 
 SwingTrader::SwingTrader(int traderId, Dispatcher *disp,
     ISwingTradeDialog* iSwingTradeDialog,
@@ -24,7 +24,7 @@ void SwingTrader::processTickPrice(MSG& msg) {
         tradeUnit->updateTickPrice(pi);
     }
 #ifdef UI_DEBUG
-	std::cout<<"processTickPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    std::cout<<"processTickPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
 #endif
 }
 
@@ -33,14 +33,14 @@ void SwingTrader::updateBars() {
         Bar* newBar = tradeUnit->updateBars();
         //LogHandler::getLogHandler().log("timer update bar(" + tradeUnit->getQuote()->getQuoteId() + ")");
         if (newBar) {
-            //signal();
+            signal();
 #ifdef UI_DEBUG
-			std::cout<<"updateBars++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
-			iSwingTradeDialog->displayBar(newBar);
+            std::cout<<"updateBars++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+            iSwingTradeDialog->displayBar(newBar);
 #endif
-            }
         }
     }
+}
 
 void SwingTrader::processOrderAccepted(MSG& msg) {
     OrderItem* new_oi = (OrderItem*)msg.lParam;
@@ -60,7 +60,7 @@ void SwingTrader::processOrderAccepted(MSG& msg) {
     }
     delete new_oi;
 #ifdef UI_DEBUG
-	std::cout<<"processOrderAccepted++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    std::cout<<"processOrderAccepted++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
 #endif
 }
 
@@ -187,8 +187,8 @@ void SwingTrader::processTradeDone(MSG& msg) {
     }
 
 #ifdef UI_DEBUG
-	std::cout<<"processTradeDone++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
-	iMainWindow->displaySwingAddOrderHistory(ti);
+    std::cout<<"processTradeDone++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    iMainWindow->displaySwingAddOrderHistory(ti);
 #endif
 }
 
@@ -202,8 +202,8 @@ void SwingTrader::processPrice(MSG& msg) {
         LogHandler::getLogHandler().alert(3, "Price Message", "Trade Unit is not found for price message");
     }
 #ifdef UI_DEBUG
-	std::cout<<"processPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
-	iSwingTradeDialog->displayPriceItem(pi);
+    std::cout<<"processPrice++++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    iSwingTradeDialog->displayPriceItem(pi);
 #endif
 }
 
@@ -231,12 +231,12 @@ void SwingTrader::signal() {
     for (map<int, OrderItem*>::iterator it = orderlist.begin(); it != orderlist.end(); it++) {
     it->second->log();
     }*/
-    closeAllPositions();
+    //closeAllPositions();
     //LogHandler::getLogHandler().log("signal:" + tradeUnit->getQuoteId());
     std::unique_lock<std::mutex> _(signals_mutex_);
-    for (Signal *signal : signals_)
+    for (auto &signal : signals_)
     {
-
+        auto oa = signal->Run();
     }
 }
 
@@ -412,5 +412,6 @@ TradeUnit* SwingTrader::getTradeUnit()
 void SwingTrader::AddSignal(std::string name)
 {
     std::unique_lock<std::mutex> _(signals_mutex_);
-    Signal::GetSignal(name, nullptr);
+    auto signal = Signal::GetSignal(name, nullptr);
+    signals_.push_back(std::move(signal));
 }

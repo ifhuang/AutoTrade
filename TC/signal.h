@@ -8,8 +8,9 @@
 class Signal : public Study
 {
 public:
-    static Signal* GetSignal(std::string name, TCBarInterface *bar);
+    static std::unique_ptr<Signal> GetSignal(std::string name, TCBarInterface *bar);
     ~Signal();
+    std::vector<lex::OrderAction> Run();
 
 private:
     Signal(std::unique_ptr<lex::SignalRunnerInterface> runner);
