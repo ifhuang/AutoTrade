@@ -1,6 +1,7 @@
 var: zrc(1);
 zrc+=1;
 
+print (zrc);
 if zrc = 5  then
 begin
 zrc = 1; 

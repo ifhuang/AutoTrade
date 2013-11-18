@@ -100,7 +100,8 @@ void testSwingTrader()
     swingTrader->setTradeUnit(tu1);
 
     swingTrader->turnOnStrategy();
-    swingTrader->AddSignal("test");
+    //swingTrader->AddSignal("test");
+	swingTrader->AddSignal("test1");
     Sleep(10000000);
 }
 

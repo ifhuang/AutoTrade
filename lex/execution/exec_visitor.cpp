@@ -14,7 +14,7 @@ namespace lex
     void ExecVisitor::operator()(const if_stmt & is) const
     {
         bool con = exe_.CheckGetValue<bool>(is.con);
-        exe_.Exec(con ? is.then : is.then);
+		exe_.Exec(con ? is.then : is.els);
     }
 
     void ExecVisitor::operator()(const once_stmt & os) const

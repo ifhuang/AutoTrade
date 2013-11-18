@@ -236,7 +236,11 @@ void SwingTrader::signal() {
     std::unique_lock<std::mutex> _(signals_mutex_);
     for (auto &signal : signals_)
     {
-        auto oa = signal->Run();
+        std::vector<lex::OrderAction> oa = signal->Run();
+		std::cout << "signal execute" << endl;
+		for (int i = 0; i < oa.size(); i++) {
+			std::cout << "*** " << oa[i].price << " " << oa[i].qty << endl;
+		}
     }
 }
 
