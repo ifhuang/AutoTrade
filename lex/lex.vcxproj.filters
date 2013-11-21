@@ -106,7 +106,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="execution\signal_executor.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\execution</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
