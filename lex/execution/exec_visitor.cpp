@@ -60,6 +60,7 @@ namespace lex
     void ExecVisitor::operator()(const order_stmt & os) const
     {
         OrderAction oa;
+        oa.price = 0;
         oa.qty = 1;
         exe_.SetOrderAction(os.id, oa);
     }

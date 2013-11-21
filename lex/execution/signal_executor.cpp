@@ -11,7 +11,7 @@ namespace lex
     void SignalExecutor::SetUp()
     {
         Executor::SetUp();
-        for (OrderAction oa : order_actions_)
+        for (OrderAction &oa : order_actions_)
         {
             oa.price = 0;
             oa.qty = 0;
