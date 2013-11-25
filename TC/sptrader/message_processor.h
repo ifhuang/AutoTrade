@@ -22,7 +22,7 @@ public:
     SplitedMessageProcessor() {}
     virtual void Processor(std::string msg) override final
     {
-        LogHandler::getLogHandler().log(msg);
+        //LogHandler::getLogHandler().log(msg);
         Message message(msg);
         Processor(message);
     }

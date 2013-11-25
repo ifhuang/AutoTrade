@@ -53,6 +53,12 @@ Bar* StrategyInterface::getBar(int position)
     }
 }
 
+long StrategyInterface::createOrder(OrderItem* oi)
+{
+	return createOrder(oi->getBuySell(), oi->getOpenClose(), oi->getSubmitPrice(), 
+		oi->getQty(), oi->getOrderType(), oi->getValidType(), oi->getSubmitter());
+}
+
 long StrategyInterface::createOrder(char buysell, string openclose, double submitPrice,
     double qty, int orderType, int validType, int submitter)
 {
@@ -109,6 +115,11 @@ long StrategyInterface::createOrder(char buysell, string openclose, double submi
     return oi->getOrderRefId();
 }
 
+long StrategyInterface::updateOrder(OrderItem* oi)
+{
+	return updateOrder(oi->getOrderRefId(), oi->getBuySell(), 
+		oi->getOpenClose(), oi->getSubmitPrice(), oi->getQty(), oi->getValidType());
+}
 
 long StrategyInterface::updateOrder(long orderRefId, char buysell, string openclose,
     double submitPrice, double qty, int validType)

@@ -25,3 +25,7 @@ std::vector<lex::OrderAction> Signal::Run()
 {
     return runner_->Run();
 }
+
+std::vector<lex::OrderInfo> Signal::getOrderInfo() {
+	return runner_->GetOrderInfo();
+}

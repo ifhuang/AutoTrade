@@ -51,5 +51,6 @@ private:
 
     std::vector<std::unique_ptr<Signal>> signals_;
     std::mutex signals_mutex_;
+	std::vector<OrderItem*> orders;
 };
 #endif

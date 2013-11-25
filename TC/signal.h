@@ -11,7 +11,7 @@ public:
     static std::unique_ptr<Signal> GetSignal(std::string name, TCBarInterface *bar);
     ~Signal();
     std::vector<lex::OrderAction> Run();
-
+	std::vector<lex::OrderInfo> getOrderInfo();
 private:
     Signal(std::unique_ptr<lex::SignalRunnerInterface> runner);
 

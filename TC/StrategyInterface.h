@@ -20,8 +20,10 @@ public:
 	Bar* getBar(int position);
 	int decomposeOrder(TradeUnit* tradeUnit, OrderItem* poi);
 	int deleteOrder(long orderRefId);
+	long createOrder(OrderItem* oi);
     long createOrder(char buysell, string openclose, double submitPrice,
         double qty, int orderType, int validType, int submitter);
+	long updateOrder(OrderItem* oi);
 	long updateOrder(long orderRefId, char buysell, string openclose,
         double submitPrice, double qty, int validType);
 private:

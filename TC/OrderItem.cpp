@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include "LogHandler.h"
+#include "constants.h"
 using namespace std;
 
 OrderItem::OrderItem(string quoteId, double submitPrice,
@@ -29,6 +30,7 @@ void OrderItem::init(string quoteId, double submitPrice, double qty,
     this->orderNo = 0;
     this->orderRefId = 0;
     this->returnCode = 0;
+	this->submitter = STRATEGY_SUBMITTER;
 }
 
 void OrderItem::log() const

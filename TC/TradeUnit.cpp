@@ -15,7 +15,7 @@ TradeUnit::TradeUnit(QuoteItem* quote)
     price = NULL;
 
     // added by xie
-    barPeriod = 3; // unit=second
+    barPeriod = 30; // unit=second
     maxRefBarNum = 2;
     tickPrice = NULL;
     //barStartTime = 0;//time(0); 

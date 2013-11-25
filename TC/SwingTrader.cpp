@@ -14,6 +14,9 @@ SwingTrader::SwingTrader(int traderId, Dispatcher *disp,
 
 SwingTrader::~SwingTrader()
 {
+	for (int i = 0; i < orders.size(); i++) {
+		delete orders[i];
+	}
 }
 
 void SwingTrader::processTickPrice(MSG& msg) {
@@ -234,12 +237,62 @@ void SwingTrader::signal() {
     //closeAllPositions();
     //LogHandler::getLogHandler().log("signal:" + tradeUnit->getQuoteId());
     std::unique_lock<std::mutex> _(signals_mutex_);
+    double price = 0;
+    if (tradeUnit != NULL) {
+		price = tradeUnit->getPrice()->lastPrice1;
+    }
+	if (price == 0) {
+		LogHandler::getLogHandler().alert(1, "Signal", "get current price failed!");
+		return;
+	}
+	
+	int ordersPointer = 0;
     for (auto &signal : signals_)
     {
         std::vector<lex::OrderAction> oa = signal->Run();
+		std::vector<lex::OrderInfo> ot = signal->getOrderInfo();
 		std::cout << "signal execute" << endl;
 		for (int i = 0; i < oa.size(); i++) {
+
 			std::cout << "*** " << oa[i].price << " " << oa[i].qty << endl;
+			if (oa[i].price == 0) {
+				orders[ordersPointer]->setSubmitPrice(price);
+			}
+			orders[ordersPointer]->setQty(oa[i].qty);
+
+			// 初始化订单
+			if (orders[ordersPointer] ->getSubmitPrice() == 0) { 
+				long orderRefID = strategyInterface->createOrder(orders[ordersPointer]);
+				orders[ordersPointer]->setOrderRefId(orderRefID);
+				LogHandler::getLogHandler().log("init order");
+				orders[ordersPointer]->log();
+			}
+			// 执行订单
+			else if (oa[i].qty > 0) {
+				// 如果没成交则更新，已经成交就不管了
+                strategyInterface->updateOrder(orders[ordersPointer]);
+				LogHandler::getLogHandler().log("execute order");
+				orders[ordersPointer]->log();
+			} 
+			// 不执行订单
+			else if (oa[i].qty == 0) {
+				/* 删除定单失败，证明定单已成交，需要平仓 */
+				if (strategyInterface->deleteOrder(orders[ordersPointer]->getOrderRefId()) == MY_ERROR) {
+
+					/* 此时买单更新为卖单 */
+					if (orders[ordersPointer]->getBuySell() == BUY) {
+						orders[ordersPointer]->setBuySell(SELL);
+					} else if (orders[ordersPointer]->getBuySell() == SELL) {
+						orders[ordersPointer]->setBuySell(BUY);
+					}
+					orders[ordersPointer]->setOpenClose(CLOSE);
+					long orderRefID = strategyInterface->createOrder(orders[ordersPointer]);					
+					orders[ordersPointer]->setOrderRefId(orderRefID);
+					LogHandler::getLogHandler().log("close order");
+					orders[ordersPointer]->log();
+				}
+			}
+			ordersPointer++;
 		}
     }
 }
@@ -418,4 +471,17 @@ void SwingTrader::AddSignal(std::string name)
     std::unique_lock<std::mutex> _(signals_mutex_);
     auto signal = Signal::GetSignal(name, nullptr);
     signals_.push_back(std::move(signal));
+	
+	std::vector<lex::OrderInfo> ot = signal->getOrderInfo();
+	char buySell;
+	for (int i = 0; i < ot.size(); i++) {
+		if (ot[i].buy_sell == lex::BuySell::Buy || ot[i].buy_sell == lex::BuySell::BuyToCover) {
+			buySell = BUY;
+		} else if (ot[i].buy_sell == lex::BuySell::Sell || ot[i].buy_sell == lex::BuySell::SellShort) {
+			buySell = SELL;
+		}
+		OrderItem* orderItem = new OrderItem(tradeUnit->getQuoteId(), 0, 0, buySell,
+			MKT, DAY, OPEN);
+		orders.push_back(orderItem);
+	}
 }
