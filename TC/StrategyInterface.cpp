@@ -1,5 +1,5 @@
 ﻿#include "StrategyInterface.h"
-#define UI_DEBUG
+//#define UI_DEBUG
 
 StrategyInterface::StrategyInterface(int traderId, int optimizeOrderFlow
     , Dispatcher *disp) : dispatcher_(disp)
@@ -125,9 +125,9 @@ long StrategyInterface::updateOrder(long orderRefId, char buysell, string opencl
     double submitPrice, double qty, int validType)
 {
     OrderItem* oi = tradeUnit->getOrder(orderRefId);
-    oi->addCounter();
     if (oi != NULL)
     {
+		oi->addCounter();
         if (dispatcher_->isSupport(oi->getOrderType()))
         {
             oi->setValidType(validType);

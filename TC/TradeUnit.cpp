@@ -15,7 +15,7 @@ TradeUnit::TradeUnit(QuoteItem* quote)
     price = NULL;
 
     // added by xie
-    barPeriod = 30; // unit=second
+    barPeriod = 10; // unit=second
     maxRefBarNum = 2;
     tickPrice = NULL;
     //barStartTime = 0;//time(0); 
@@ -108,8 +108,8 @@ void TradeUnit::updateTickPrice(PriceItem* pi) {
     ptime current = second_clock::local_time();
     // 更新服务器时间和本地时间的差别
     timeDiff = current - pi->currentTime;
-    cout << "time diff:" << timeDiff.seconds() << endl;
-    updateBars();
+    //cout << "time diff:" << timeDiff.seconds() << endl;
+    //updateBars();
 }
 
 QuoteItem* TradeUnit::getQuote()
